@@ -9,11 +9,13 @@ namespace BookkeepingAssistant
     public class Data
     {
         private string _repositoryDir;
-        string _assetsDataFile;
-        string _transactionTypeDataFile;
+        private string _assetsDataFile;
+        private string _transactionTypeDataFile;
+        private string _transactionRecord;
+        private Repository _repo;
 
         public Dictionary<string, int> DicAssets { get; } = new Dictionary<string, int>();
-        private Dictionary<string, string> _dicDisplayAssets =new Dictionary<string, string>();
+        private Dictionary<string, string> _dicDisplayAssets = new Dictionary<string, string>();
         public Dictionary<string, string> DicDisplayAssets
         {
             get
@@ -26,7 +28,8 @@ namespace BookkeepingAssistant
                 return _dicDisplayAssets;
             }
         }
-        public List<string> TransactionTypes = new List<string>();
+        public List<string> TransactionTypes { get; } = new List<string>();
+        public List<TransactionRecord> TransactionRecords { get; } = new List<TransactionRecord>();
 
         private static readonly Data _singletonInstance = new Data();
         public static Data SingletonInstance
@@ -52,9 +55,12 @@ namespace BookkeepingAssistant
             {
                 Repository.Init(_repositoryDir);
             }
+            _repo = new Repository(_repositoryDir);
 
             _assetsDataFile = Path.Combine(_repositoryDir, "资产.txt");
             _transactionTypeDataFile = Path.Combine(_repositoryDir, "交易类型.txt");
+            _transactionRecord = Path.Combine(_repositoryDir, "交易记录.txt");
+
             ReadData();
         }
 
@@ -88,6 +94,24 @@ namespace BookkeepingAssistant
                     TransactionTypes.Add(line.Trim());
                 }
             }
+
+            if (File.Exists(_transactionRecord))
+            {
+                string[] lines = File.ReadAllLines(_transactionRecord);
+                foreach (var line in lines)
+                {
+                    string[] arr = line.Trim().Split(',');
+                    if (arr.Length != 2)
+                    {
+                        continue;
+                    }
+                    int assetValue;
+                    if (!int.TryParse(arr[1].Trim(), out assetValue))
+                    {
+                        continue;
+                    }
+                }
+            }
         }
 
         public void WriteAssetsDataFile()
@@ -98,6 +122,11 @@ namespace BookkeepingAssistant
                 sbAssets.AppendLine(string.Join('：', kvp.Key, kvp.Value));
             }
             File.WriteAllText(_assetsDataFile, sbAssets.ToString());
+
+            _repo.Index.Add(Path.GetRelativePath(_repositoryDir, _assetsDataFile));
+            Signature signature = new Signature("ciyuanhuixing", "ciyuanhuixing@qq.com", DateTimeOffset.Now);
+            _repo.Commit("新增或删除资产", signature, signature);
+            _repo.Network.Push(_repo.Head);
         }
 
         public void WriteTransactionTypesData()
@@ -108,6 +137,11 @@ namespace BookkeepingAssistant
                 sb.AppendLine(asset);
             }
             File.WriteAllText(_transactionTypeDataFile, sb.ToString());
+
+            _repo.Index.Add(Path.GetRelativePath(_repositoryDir, _transactionTypeDataFile));
+            Signature signature = new Signature("ciyuanhuixing", "ciyuanhuixing@qq.com", DateTimeOffset.Now);
+            _repo.Commit("新增或删除交易类型", signature, signature);
+            _repo.Network.Push(_repo.Head);
         }
     }
 }
