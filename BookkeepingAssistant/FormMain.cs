@@ -12,10 +12,10 @@ using LibGit2Sharp;
 
 namespace BookkeepingAssistant
 {
-    public partial class Form1 : Form
+    public partial class FormMain : Form
     {
         private string _repositoryDir;
-        public Form1()
+        public FormMain()
         {
             InitializeComponent();
         }
@@ -36,23 +36,6 @@ namespace BookkeepingAssistant
                 Repository.Init(_repositoryDir);
             }
 
-            string assetType = ConfigHelper.GetValue("AssetType").Trim();
-            string[] arrAssetType=null;
-            if (!string.IsNullOrEmpty(assetType))
-            {
-                arrAssetType = assetType.Split('|');
-                comboBoxAssetType.DataSource = arrAssetType;
-            }
-
-            string transactionType = ConfigHelper.GetValue("TransactionType").Trim();
-            string[] arrTransactionType;
-            if (!string.IsNullOrEmpty(transactionType))
-            {
-                arrTransactionType = transactionType.Split('|');
-                comboBoxTransactionType.DataSource = arrTransactionType;
-            }
-
-
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -62,8 +45,14 @@ namespace BookkeepingAssistant
 
         private void linkLabelModifyAssets_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            ModifyAssets modifyAssets = new ModifyAssets(Path.Combine(_repositoryDir,"资产.txt"));
-            modifyAssets.ShowDialog();
+            FormManageAssets formManageAssets = new FormManageAssets(Path.Combine(_repositoryDir,"资产.txt"));
+            formManageAssets.ShowDialog();
+        }
+
+        private void linkLabelModifyTransactionType_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            FormManageTransactionType formManageTransactionType =new FormManageTransactionType(Path.Combine(_repositoryDir, "交易类型.txt"));
+            formManageTransactionType.ShowDialog();
         }
     }
 }

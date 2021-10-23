@@ -10,4 +10,10 @@
     <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="FormManageTransactionType.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

@@ -1,7 +1,7 @@
 ﻿
 namespace BookkeepingAssistant
 {
-    partial class Form1
+    partial class FormMain
     {
         /// <summary>
         ///  Required designer variable.
@@ -33,19 +33,20 @@ namespace BookkeepingAssistant
             this.btnAdd = new System.Windows.Forms.Button();
             this.comboBoxAssetType = new System.Windows.Forms.ComboBox();
             this.comboBoxTransactionType = new System.Windows.Forms.ComboBox();
-            this.linkLabelModifyAssets = new System.Windows.Forms.LinkLabel();
+            this.linkLabelManageAssets = new System.Windows.Forms.LinkLabel();
+            this.linkLabelManageTransactionType = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // txtDir
             // 
-            this.txtDir.Location = new System.Drawing.Point(101, 31);
+            this.txtDir.Location = new System.Drawing.Point(129, 147);
             this.txtDir.Name = "txtDir";
             this.txtDir.Size = new System.Drawing.Size(132, 30);
             this.txtDir.TabIndex = 0;
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(964, 31);
+            this.btnAdd.Location = new System.Drawing.Point(992, 145);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(112, 34);
             this.btnAdd.TabIndex = 3;
@@ -61,7 +62,7 @@ namespace BookkeepingAssistant
             "1",
             "2",
             "3"});
-            this.comboBoxAssetType.Location = new System.Drawing.Point(339, 33);
+            this.comboBoxAssetType.Location = new System.Drawing.Point(367, 146);
             this.comboBoxAssetType.Name = "comboBoxAssetType";
             this.comboBoxAssetType.Size = new System.Drawing.Size(182, 32);
             this.comboBoxAssetType.TabIndex = 1;
@@ -74,34 +75,46 @@ namespace BookkeepingAssistant
             "1",
             "2",
             "3"});
-            this.comboBoxTransactionType.Location = new System.Drawing.Point(656, 33);
+            this.comboBoxTransactionType.Location = new System.Drawing.Point(684, 146);
             this.comboBoxTransactionType.Name = "comboBoxTransactionType";
             this.comboBoxTransactionType.Size = new System.Drawing.Size(182, 32);
             this.comboBoxTransactionType.TabIndex = 2;
             // 
-            // linkLabelModifyAssets
+            // linkLabelManageAssets
             // 
-            this.linkLabelModifyAssets.AutoSize = true;
-            this.linkLabelModifyAssets.Location = new System.Drawing.Point(101, 152);
-            this.linkLabelModifyAssets.Name = "linkLabelModifyAssets";
-            this.linkLabelModifyAssets.Size = new System.Drawing.Size(82, 24);
-            this.linkLabelModifyAssets.TabIndex = 4;
-            this.linkLabelModifyAssets.TabStop = true;
-            this.linkLabelModifyAssets.Text = "修改资产";
-            this.linkLabelModifyAssets.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelModifyAssets_LinkClicked);
+            this.linkLabelManageAssets.AutoSize = true;
+            this.linkLabelManageAssets.Location = new System.Drawing.Point(25, 22);
+            this.linkLabelManageAssets.Name = "linkLabelManageAssets";
+            this.linkLabelManageAssets.Size = new System.Drawing.Size(82, 24);
+            this.linkLabelManageAssets.TabIndex = 4;
+            this.linkLabelManageAssets.TabStop = true;
+            this.linkLabelManageAssets.Text = "管理资产";
+            this.linkLabelManageAssets.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelModifyAssets_LinkClicked);
             // 
-            // Form1
+            // linkLabelManageTransactionType
+            // 
+            this.linkLabelManageTransactionType.AutoSize = true;
+            this.linkLabelManageTransactionType.Location = new System.Drawing.Point(157, 22);
+            this.linkLabelManageTransactionType.Name = "linkLabelManageTransactionType";
+            this.linkLabelManageTransactionType.Size = new System.Drawing.Size(118, 24);
+            this.linkLabelManageTransactionType.TabIndex = 5;
+            this.linkLabelManageTransactionType.TabStop = true;
+            this.linkLabelManageTransactionType.Text = "管理交易类型";
+            this.linkLabelManageTransactionType.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelModifyTransactionType_LinkClicked);
+            // 
+            // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1129, 450);
-            this.Controls.Add(this.linkLabelModifyAssets);
+            this.Controls.Add(this.linkLabelManageTransactionType);
+            this.Controls.Add(this.linkLabelManageAssets);
             this.Controls.Add(this.comboBoxTransactionType);
             this.Controls.Add(this.comboBoxAssetType);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.txtDir);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "FormMain";
+            this.Text = "记账助手";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -114,7 +127,8 @@ namespace BookkeepingAssistant
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.ComboBox comboBoxAssetType;
         private System.Windows.Forms.ComboBox comboBoxTransactionType;
-        private System.Windows.Forms.LinkLabel linkLabelModifyAssets;
+        private System.Windows.Forms.LinkLabel linkLabelManageAssets;
+        private System.Windows.Forms.LinkLabel linkLabelManageTransactionType;
     }
 }
 

@@ -9,13 +9,13 @@ using System.IO;
 
 namespace BookkeepingAssistant
 {
-    public partial class ModifyAssets : Form
+    public partial class FormManageAssets : Form
     {
         private string _assetsDataFile;
         private Dictionary<string, int> _dicAssets = new Dictionary<string, int>();
         private Dictionary<string, string> _dicDisplayAssets = new Dictionary<string, string>();
 
-        public ModifyAssets(string assetsDataFile)
+        public FormManageAssets(string assetsDataFile)
         {
             if (string.IsNullOrWhiteSpace(assetsDataFile))
             {
@@ -25,7 +25,7 @@ namespace BookkeepingAssistant
             InitializeComponent();
         }
 
-        private void ModifyAssets_Load(object sender, EventArgs e)
+        private void FormManageAssets_Load(object sender, EventArgs e)
         {
             if (!File.Exists(_assetsDataFile))
             {
@@ -40,14 +40,13 @@ namespace BookkeepingAssistant
                 {
                     continue;
                 }
-                int value;
-                if (!int.TryParse(arr[1], out value))
+                int assetValue;
+                if (!int.TryParse(arr[1].Trim(), out assetValue))
                 {
                     continue;
                 }
 
-                string key = arr[0].Trim();
-                _dicAssets.Add(key, value);
+                _dicAssets.Add(arr[0].Trim(), assetValue);
             }
 
             DisplayAssets();
@@ -55,21 +54,23 @@ namespace BookkeepingAssistant
 
         private void addAsset_Click(object sender, EventArgs e)
         {
-            if (_dicAssets.ContainsKey(txtAssetName.Text))
+            string assetName = txtAssetName.Text.Trim();
+            if (_dicAssets.ContainsKey(assetName))
             {
                 MessageBox.Show("新增失败：已存在该名称的资产。");
                 return;
             }
 
-            int value;
-            if (!int.TryParse(txtAssetValue.Text.Trim(), out value))
+            int assetValue;
+            if (!int.TryParse(txtAssetValue.Text.Trim(), out assetValue))
             {
                 MessageBox.Show("新增失败：资产余额不能填非数字。");
                 return;
             }
 
-            _dicAssets.Add(txtAssetName.Text.Trim(), value);
+            _dicAssets.Add(assetName, assetValue);
             WriteAssetsDataFile();
+            MessageBox.Show($"已新增「{assetName}」");
         }
 
         private void DisplayAssets()
@@ -77,7 +78,7 @@ namespace BookkeepingAssistant
             _dicDisplayAssets.Clear();
             foreach (var kvp in _dicAssets)
             {
-                _dicDisplayAssets.Add(kvp.Key,string.Join('：', kvp.Key, kvp.Value));
+                _dicDisplayAssets.Add(kvp.Key, string.Join('：', kvp.Key, kvp.Value));
             }
             BindingSource bs = new BindingSource();
             bs.DataSource = _dicDisplayAssets;
@@ -89,9 +90,9 @@ namespace BookkeepingAssistant
         private void WriteAssetsDataFile()
         {
             StringBuilder sbAssets = new StringBuilder();
-            foreach (var asset in _dicAssets)
+            foreach (var kvp in _dicAssets)
             {
-                sbAssets.AppendLine(string.Join('：', asset.Key, asset.Value));
+                sbAssets.AppendLine(string.Join('：', kvp.Key, kvp.Value));
             }
             File.WriteAllText(_assetsDataFile, sbAssets.ToString());
             DisplayAssets();
@@ -99,13 +100,13 @@ namespace BookkeepingAssistant
 
         private void btnRemove_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("确认删除？", "确认删除？",MessageBoxButtons.OKCancel) !=  DialogResult.OK)
+            string assetName = (string)comboBoxAssets.SelectedValue;
+            if (MessageBox.Show($"确认删除{assetName}？", "确认删除？", MessageBoxButtons.OKCancel) != DialogResult.OK)
             {
                 return;
             }
 
-            string key = (string)comboBoxAssets.SelectedValue;
-            _dicAssets.Remove(key);
+            _dicAssets.Remove(assetName);
             WriteAssetsDataFile();
         }
     }
