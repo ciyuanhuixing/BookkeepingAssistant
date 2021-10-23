@@ -14,6 +14,7 @@ namespace BookkeepingAssistant
 {
     public partial class Form1 : Form
     {
+        private string _repositoryDir;
         public Form1()
         {
             InitializeComponent();
@@ -21,18 +22,18 @@ namespace BookkeepingAssistant
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            string dir = ConfigHelper.GetValue("GitRepositoryDir");
-            if (string.IsNullOrWhiteSpace(dir))
+            _repositoryDir = ConfigHelper.GetValue("GitRepositoryDir");
+            if (string.IsNullOrWhiteSpace(_repositoryDir))
             {
-                dir = Path.Combine(Directory.GetCurrentDirectory(), "记账");
+                _repositoryDir = Path.Combine(Directory.GetCurrentDirectory(), "记账");
             }
-            if (!Directory.Exists(dir))
+            if (!Directory.Exists(_repositoryDir))
             {
-                Directory.CreateDirectory(dir);
+                Directory.CreateDirectory(_repositoryDir);
             }
-            if (!Repository.IsValid(dir))
+            if (!Repository.IsValid(_repositoryDir))
             {
-                Repository.Init(dir);
+                Repository.Init(_repositoryDir);
             }
 
             string assetType = ConfigHelper.GetValue("AssetType").Trim();
@@ -57,6 +58,12 @@ namespace BookkeepingAssistant
         private void btnAdd_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void linkLabelModifyAssets_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            ModifyAssets modifyAssets = new ModifyAssets(Path.Combine(_repositoryDir,"资产.txt"));
+            modifyAssets.ShowDialog();
         }
     }
 }

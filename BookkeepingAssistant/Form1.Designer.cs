@@ -33,6 +33,7 @@ namespace BookkeepingAssistant
             this.btnAdd = new System.Windows.Forms.Button();
             this.comboBoxAssetType = new System.Windows.Forms.ComboBox();
             this.comboBoxTransactionType = new System.Windows.Forms.ComboBox();
+            this.linkLabelModifyAssets = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // txtDir
@@ -78,11 +79,23 @@ namespace BookkeepingAssistant
             this.comboBoxTransactionType.Size = new System.Drawing.Size(182, 32);
             this.comboBoxTransactionType.TabIndex = 2;
             // 
+            // linkLabelModifyAssets
+            // 
+            this.linkLabelModifyAssets.AutoSize = true;
+            this.linkLabelModifyAssets.Location = new System.Drawing.Point(101, 152);
+            this.linkLabelModifyAssets.Name = "linkLabelModifyAssets";
+            this.linkLabelModifyAssets.Size = new System.Drawing.Size(82, 24);
+            this.linkLabelModifyAssets.TabIndex = 4;
+            this.linkLabelModifyAssets.TabStop = true;
+            this.linkLabelModifyAssets.Text = "修改资产";
+            this.linkLabelModifyAssets.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelModifyAssets_LinkClicked);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1129, 450);
+            this.Controls.Add(this.linkLabelModifyAssets);
             this.Controls.Add(this.comboBoxTransactionType);
             this.Controls.Add(this.comboBoxAssetType);
             this.Controls.Add(this.btnAdd);
@@ -101,6 +114,7 @@ namespace BookkeepingAssistant
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.ComboBox comboBoxAssetType;
         private System.Windows.Forms.ComboBox comboBoxTransactionType;
+        private System.Windows.Forms.LinkLabel linkLabelModifyAssets;
     }
 }
 
