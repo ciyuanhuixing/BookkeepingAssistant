@@ -22,11 +22,26 @@ namespace BookkeepingAssistant
         private void Form1_Load(object sender, EventArgs e)
         {
             RefreshComboBox();
+            dgvDetail.DataSource = Data.SingletonInstance.TransactionRecords;
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
+            TransactionRecord tr = new TransactionRecord();
+            tr.Time = DateTime.Now;
+            tr.isIncome = (string)comboBoxInOut.SelectedValue == "收" ? true : false;
+            int amount;
+            if (!int.TryParse(txtAmount.Text.Trim(),out amount))
+            {
+                MessageBox.Show("新增失败：金额不能填入非数字。");
+                return;
+            }
+            tr.Amount = amount;
+            tr.AssetName = (string)comboBoxAssets.SelectedValue;
+            tr.TransactionType = (string)comboBoxTransactionTypes.SelectedValue;
 
+            Data.SingletonInstance.TransactionRecords.Add(tr);
+            Data.SingletonInstance.AppendToTransactionRecordsDataFile(tr);
         }
 
         private void linkLabelModifyAssets_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -51,8 +66,8 @@ namespace BookkeepingAssistant
             comboBoxAssets.ValueMember = "Key";
             comboBoxAssets.DataSource = bs;
 
-            comboBoxTypes.DataSource = null;
-            comboBoxTypes.DataSource = Data.SingletonInstance.TransactionTypes;
+            comboBoxTransactionTypes.DataSource = null;
+            comboBoxTransactionTypes.DataSource = Data.SingletonInstance.TransactionTypes;
         }
     }
 }

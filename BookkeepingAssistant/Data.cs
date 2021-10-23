@@ -8,10 +8,13 @@ namespace BookkeepingAssistant
 {
     public class Data
     {
+        private const string _gitName = "ciyuanhuixing";
+        private const string _gitEmail = "ciyuanhuixing@qq.com";
+
         private string _repositoryDir;
         private string _assetsDataFile;
         private string _transactionTypeDataFile;
-        private string _transactionRecord;
+        private string _transactionRecordDataFile;
         private Repository _repo;
 
         public Dictionary<string, int> DicAssets { get; } = new Dictionary<string, int>();
@@ -59,7 +62,7 @@ namespace BookkeepingAssistant
 
             _assetsDataFile = Path.Combine(_repositoryDir, "资产.txt");
             _transactionTypeDataFile = Path.Combine(_repositoryDir, "交易类型.txt");
-            _transactionRecord = Path.Combine(_repositoryDir, "交易记录.txt");
+            _transactionRecordDataFile = Path.Combine(_repositoryDir, "交易记录.txt");
 
             ReadData();
         }
@@ -95,21 +98,51 @@ namespace BookkeepingAssistant
                 }
             }
 
-            if (File.Exists(_transactionRecord))
+            if (File.Exists(_transactionRecordDataFile))
             {
-                string[] lines = File.ReadAllLines(_transactionRecord);
+                string[] lines = File.ReadAllLines(_transactionRecordDataFile);
                 foreach (var line in lines)
                 {
-                    string[] arr = line.Trim().Split(',');
-                    if (arr.Length != 2)
+                    string[] arr = line.Trim().Split('|');
+                    if (arr.Length != 5)
                     {
                         continue;
                     }
-                    int assetValue;
-                    if (!int.TryParse(arr[1].Trim(), out assetValue))
+
+                    TransactionRecord record = new TransactionRecord();
+                    DateTime time;
+                    if (!DateTime.TryParse(arr[0].Trim(), out time))
                     {
                         continue;
                     }
+                    record.Time = time;
+
+                    if (arr[1].Trim() != "收" && arr[1] != "支")
+                    {
+                        continue;
+                    }
+                    record.isIncome = arr[1].Trim() == "收" ? true : false;
+
+                    int amount;
+                    if (!int.TryParse(arr[2], out amount))
+                    {
+                        continue;
+                    }
+                    record.Amount = amount;
+
+                    record.AssetName = arr[3].Trim();
+                    if (string.IsNullOrEmpty(record.AssetName))
+                    {
+                        continue;
+                    }
+
+                    record.TransactionType = arr[4].Trim();
+                    if (string.IsNullOrEmpty(record.TransactionType))
+                    {
+                        continue;
+                    }
+
+                    TransactionRecords.Add(record);
                 }
             }
         }
@@ -124,7 +157,7 @@ namespace BookkeepingAssistant
             File.WriteAllText(_assetsDataFile, sbAssets.ToString());
 
             _repo.Index.Add(Path.GetRelativePath(_repositoryDir, _assetsDataFile));
-            Signature signature = new Signature("ciyuanhuixing", "ciyuanhuixing@qq.com", DateTimeOffset.Now);
+            Signature signature = new Signature(_gitName, _gitEmail, DateTimeOffset.Now);
             _repo.Commit("新增或删除资产", signature, signature);
             _repo.Network.Push(_repo.Head);
         }
@@ -139,8 +172,19 @@ namespace BookkeepingAssistant
             File.WriteAllText(_transactionTypeDataFile, sb.ToString());
 
             _repo.Index.Add(Path.GetRelativePath(_repositoryDir, _transactionTypeDataFile));
-            Signature signature = new Signature("ciyuanhuixing", "ciyuanhuixing@qq.com", DateTimeOffset.Now);
+            Signature signature = new Signature(_gitName, _gitEmail, DateTimeOffset.Now);
             _repo.Commit("新增或删除交易类型", signature, signature);
+            _repo.Network.Push(_repo.Head);
+        }
+
+        public void AppendToTransactionRecordsDataFile(TransactionRecord tr)
+        {
+            List<string> lines = new List<string>();
+            lines.Add(string.Join('|', tr.Time, tr.isIncome ? "收" : "支", tr.Amount, tr.AssetName, tr.TransactionType));
+            File.AppendAllLines(_transactionRecordDataFile, lines);
+            Commands.Stage(_repo, Path.GetRelativePath(_repositoryDir, _transactionRecordDataFile));
+            Signature signature = new Signature(_gitName, _gitEmail, DateTimeOffset.Now);
+            _repo.Commit("新增收支记录", signature, signature);
             _repo.Network.Push(_repo.Head);
         }
     }

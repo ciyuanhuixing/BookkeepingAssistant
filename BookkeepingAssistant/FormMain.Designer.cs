@@ -29,26 +29,26 @@ namespace BookkeepingAssistant
         /// </summary>
         private void InitializeComponent()
         {
-            this.txtDir = new System.Windows.Forms.TextBox();
+            this.txtAmount = new System.Windows.Forms.TextBox();
             this.btnAdd = new System.Windows.Forms.Button();
             this.linkLabelManageAssets = new System.Windows.Forms.LinkLabel();
             this.linkLabelManageTransactionType = new System.Windows.Forms.LinkLabel();
             this.label3 = new System.Windows.Forms.Label();
             this.comboBoxAssets = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.comboBoxTypes = new System.Windows.Forms.ComboBox();
+            this.comboBoxTransactionTypes = new System.Windows.Forms.ComboBox();
             this.dgvDetail = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBoxInOut = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetail)).BeginInit();
             this.SuspendLayout();
             // 
-            // txtDir
+            // txtAmount
             // 
-            this.txtDir.Location = new System.Drawing.Point(187, 15);
-            this.txtDir.Name = "txtDir";
-            this.txtDir.Size = new System.Drawing.Size(132, 30);
-            this.txtDir.TabIndex = 0;
+            this.txtAmount.Location = new System.Drawing.Point(187, 15);
+            this.txtAmount.Name = "txtAmount";
+            this.txtAmount.Size = new System.Drawing.Size(132, 30);
+            this.txtAmount.TabIndex = 0;
             // 
             // btnAdd
             // 
@@ -109,14 +109,14 @@ namespace BookkeepingAssistant
             this.label2.TabIndex = 11;
             this.label2.Text = "交易类型";
             // 
-            // comboBoxTypes
+            // comboBoxTransactionTypes
             // 
-            this.comboBoxTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxTypes.FormattingEnabled = true;
-            this.comboBoxTypes.Location = new System.Drawing.Point(805, 14);
-            this.comboBoxTypes.Name = "comboBoxTypes";
-            this.comboBoxTypes.Size = new System.Drawing.Size(182, 32);
-            this.comboBoxTypes.TabIndex = 12;
+            this.comboBoxTransactionTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTransactionTypes.FormattingEnabled = true;
+            this.comboBoxTransactionTypes.Location = new System.Drawing.Point(805, 14);
+            this.comboBoxTransactionTypes.Name = "comboBoxTransactionTypes";
+            this.comboBoxTransactionTypes.Size = new System.Drawing.Size(182, 32);
+            this.comboBoxTransactionTypes.TabIndex = 12;
             // 
             // dgvDetail
             // 
@@ -159,13 +159,13 @@ namespace BookkeepingAssistant
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dgvDetail);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.comboBoxTypes);
+            this.Controls.Add(this.comboBoxTransactionTypes);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.comboBoxAssets);
             this.Controls.Add(this.linkLabelManageTransactionType);
             this.Controls.Add(this.linkLabelManageAssets);
             this.Controls.Add(this.btnAdd);
-            this.Controls.Add(this.txtDir);
+            this.Controls.Add(this.txtAmount);
             this.Name = "FormMain";
             this.Text = "记账助手";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -177,14 +177,14 @@ namespace BookkeepingAssistant
 
         #endregion
 
-        private System.Windows.Forms.TextBox txtDir;
+        private System.Windows.Forms.TextBox txtAmount;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.LinkLabel linkLabelManageAssets;
         private System.Windows.Forms.LinkLabel linkLabelManageTransactionType;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox comboBoxAssets;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox comboBoxTypes;
+        private System.Windows.Forms.ComboBox comboBoxTransactionTypes;
         private System.Windows.Forms.DataGridView dgvDetail;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox comboBoxInOut;
