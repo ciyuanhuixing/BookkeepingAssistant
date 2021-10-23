@@ -63,7 +63,7 @@ namespace BookkeepingAssistant
             this.addAsset.TabIndex = 2;
             this.addAsset.Text = "新增";
             this.addAsset.UseVisualStyleBackColor = true;
-            this.addAsset.Click += new System.EventHandler(this.addAsset_Click);
+            this.addAsset.Click += new System.EventHandler(this.btnAddAsset_Click);
             // 
             // btnRemove
             // 

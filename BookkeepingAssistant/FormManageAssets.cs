@@ -11,48 +11,19 @@ namespace BookkeepingAssistant
 {
     public partial class FormManageAssets : Form
     {
-        private string _assetsDataFile;
-        private Dictionary<string, int> _dicAssets = new Dictionary<string, int>();
-        private Dictionary<string, string> _dicDisplayAssets = new Dictionary<string, string>();
+        public Dictionary<string, int> _dicAssets = Data.SingletonInstance.DicAssets;
 
-        public FormManageAssets(string assetsDataFile)
+        public FormManageAssets()
         {
-            if (string.IsNullOrWhiteSpace(assetsDataFile))
-            {
-                throw new Exception("资产数据文件路径不能为空。");
-            }
-            _assetsDataFile = assetsDataFile;
             InitializeComponent();
         }
 
         private void FormManageAssets_Load(object sender, EventArgs e)
         {
-            if (!File.Exists(_assetsDataFile))
-            {
-                return;
-            }
-
-            string[] assetLines = File.ReadAllLines(_assetsDataFile);
-            foreach (var line in assetLines)
-            {
-                string[] arr = line.Trim().Split('：', ':');
-                if (arr.Length != 2)
-                {
-                    continue;
-                }
-                int assetValue;
-                if (!int.TryParse(arr[1].Trim(), out assetValue))
-                {
-                    continue;
-                }
-
-                _dicAssets.Add(arr[0].Trim(), assetValue);
-            }
-
             DisplayAssets();
         }
 
-        private void addAsset_Click(object sender, EventArgs e)
+        private void btnAddAsset_Click(object sender, EventArgs e)
         {
             string assetName = txtAssetName.Text.Trim();
             if (_dicAssets.ContainsKey(assetName))
@@ -69,33 +40,18 @@ namespace BookkeepingAssistant
             }
 
             _dicAssets.Add(assetName, assetValue);
-            WriteAssetsDataFile();
+            Data.SingletonInstance.WriteAssetsDataFile();
+            DisplayAssets();
             MessageBox.Show($"已新增「{assetName}」");
         }
 
         private void DisplayAssets()
         {
-            _dicDisplayAssets.Clear();
-            foreach (var kvp in _dicAssets)
-            {
-                _dicDisplayAssets.Add(kvp.Key, string.Join('：', kvp.Key, kvp.Value));
-            }
             BindingSource bs = new BindingSource();
-            bs.DataSource = _dicDisplayAssets;
+            bs.DataSource = Data.SingletonInstance.DicDisplayAssets;
             comboBoxAssets.DisplayMember = "Value";
             comboBoxAssets.ValueMember = "Key";
             comboBoxAssets.DataSource = bs;
-        }
-
-        private void WriteAssetsDataFile()
-        {
-            StringBuilder sbAssets = new StringBuilder();
-            foreach (var kvp in _dicAssets)
-            {
-                sbAssets.AppendLine(string.Join('：', kvp.Key, kvp.Value));
-            }
-            File.WriteAllText(_assetsDataFile, sbAssets.ToString());
-            DisplayAssets();
         }
 
         private void btnRemove_Click(object sender, EventArgs e)
@@ -107,7 +63,8 @@ namespace BookkeepingAssistant
             }
 
             _dicAssets.Remove(assetName);
-            WriteAssetsDataFile();
+            Data.SingletonInstance.WriteAssetsDataFile();
+            DisplayAssets();
         }
     }
 }

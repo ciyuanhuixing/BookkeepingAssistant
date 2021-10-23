@@ -11,36 +11,19 @@ namespace BookkeepingAssistant
 {
     public partial class FormManageTransactionType : Form
     {
-        private string _dataFile;
-        private List<string> _transactionTypes = new List<string>();
+        public List<string> _transactionTypes = Data.SingletonInstance.TransactionTypes;
 
-        public FormManageTransactionType(string dataFile)
+        public FormManageTransactionType()
         {
-            if (string.IsNullOrWhiteSpace(dataFile))
-            {
-                throw new Exception("交易类型数据文件路径不能为空。");
-            }
-            _dataFile = dataFile;
             InitializeComponent();
         }
 
         private void FormManageTransactionType_Load(object sender, EventArgs e)
         {
-            if (!File.Exists(_dataFile))
-            {
-                return;
-            }
-
-            string[] lines = File.ReadAllLines(_dataFile);
-            foreach (var line in lines)
-            {
-                _transactionTypes.Add(line.Trim());
-            }
-
             DisplayTransactionTypes();
         }
 
-        private void addType_Click(object sender, EventArgs e)
+        private void btnAddType_Click(object sender, EventArgs e)
         {
             string type = txtType.Text.Trim();
             if (_transactionTypes.Contains(type))
@@ -50,7 +33,8 @@ namespace BookkeepingAssistant
             }
 
             _transactionTypes.Add(type);
-            WriteAssetsDataFile();
+            Data.SingletonInstance.WriteTransactionTypesData();
+            DisplayTransactionTypes();
             MessageBox.Show($"已新增「{type}」");
         }
 
@@ -58,17 +42,6 @@ namespace BookkeepingAssistant
         {
             comboBoxTypes.DataSource = null;
             comboBoxTypes.DataSource = _transactionTypes;
-        }
-
-        private void WriteAssetsDataFile()
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (var asset in _transactionTypes)
-            {
-                sb.AppendLine(asset);
-            }
-            File.WriteAllText(_dataFile, sb.ToString());
-            DisplayTransactionTypes();
         }
 
         private void btnRemove_Click(object sender, EventArgs e)
@@ -80,7 +53,8 @@ namespace BookkeepingAssistant
             }
 
             _transactionTypes.Remove(type);
-            WriteAssetsDataFile();
+            Data.SingletonInstance.WriteTransactionTypesData();
+            DisplayTransactionTypes();
         }
     }
 }

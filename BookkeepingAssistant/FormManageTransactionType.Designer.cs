@@ -61,7 +61,7 @@ namespace BookkeepingAssistant
             this.btnAdd.TabIndex = 2;
             this.btnAdd.Text = "新增";
             this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.addType_Click);
+            this.btnAdd.Click += new System.EventHandler(this.btnAddType_Click);
             // 
             // btnRemove
             // 

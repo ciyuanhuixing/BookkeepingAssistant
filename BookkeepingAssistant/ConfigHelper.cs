@@ -39,7 +39,7 @@ namespace BookkeepingAssistant
             if (config.AppSettings.Settings[key] == null)
                 return "";
             else
-                return config.AppSettings.Settings[key].Value;
+                return config.AppSettings.Settings[key].Value.Trim();
         }
     }
 }
