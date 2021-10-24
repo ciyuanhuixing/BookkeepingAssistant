@@ -11,7 +11,7 @@ namespace BookkeepingAssistant
 {
     public partial class FormManageAssets : Form
     {
-        public Dictionary<string, int> _dicAssets = Data.SingletonInstance.DicAssets;
+        public Dictionary<string, decimal> _dicAssets = Data.SingletonInstance.DicAssets;
 
         public FormManageAssets()
         {
@@ -32,8 +32,8 @@ namespace BookkeepingAssistant
                 return;
             }
 
-            int assetValue;
-            if (!int.TryParse(txtAssetValue.Text.Trim(), out assetValue))
+            decimal assetValue;
+            if (!decimal.TryParse(txtAssetValue.Text.Trim(), out assetValue))
             {
                 MessageBox.Show("新增失败：资产余额不能填非数字。");
                 return;
@@ -57,6 +57,12 @@ namespace BookkeepingAssistant
         private void btnRemove_Click(object sender, EventArgs e)
         {
             string assetName = (string)comboBoxAssets.SelectedValue;
+            if (_dicAssets[assetName] != 0)
+            {
+                MessageBox.Show("删除失败：该资产余额不为零，不可删除。");
+                return;
+            }
+
             if (MessageBox.Show($"确认删除{assetName}？", "确认删除？", MessageBoxButtons.OKCancel) != DialogResult.OK)
             {
                 return;

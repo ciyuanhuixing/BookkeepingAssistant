@@ -29,165 +29,180 @@ namespace BookkeepingAssistant
         /// </summary>
         private void InitializeComponent()
         {
-            this.txtAmount = new System.Windows.Forms.TextBox();
-            this.btnAdd = new System.Windows.Forms.Button();
-            this.linkLabelManageAssets = new System.Windows.Forms.LinkLabel();
-            this.linkLabelManageTransactionType = new System.Windows.Forms.LinkLabel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.comboBoxAssets = new System.Windows.Forms.ComboBox();
+            this.dgvDetail = new System.Windows.Forms.DataGridView();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.comboBoxInOut = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.comboBoxTransactionTypes = new System.Windows.Forms.ComboBox();
-            this.dgvDetail = new System.Windows.Forms.DataGridView();
-            this.label1 = new System.Windows.Forms.Label();
-            this.comboBoxInOut = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.comboBoxAssets = new System.Windows.Forms.ComboBox();
+            this.linkLabelManageTransactionType = new System.Windows.Forms.LinkLabel();
+            this.linkLabelManageAssets = new System.Windows.Forms.LinkLabel();
+            this.btnAdd = new System.Windows.Forms.Button();
+            this.txtAmount = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetail)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // txtAmount
+            // dgvDetail
             // 
-            this.txtAmount.Location = new System.Drawing.Point(187, 15);
-            this.txtAmount.Name = "txtAmount";
-            this.txtAmount.Size = new System.Drawing.Size(132, 30);
-            this.txtAmount.TabIndex = 0;
+            this.dgvDetail.AllowUserToAddRows = false;
+            this.dgvDetail.AllowUserToDeleteRows = false;
+            this.dgvDetail.AllowUserToResizeColumns = false;
+            this.dgvDetail.AllowUserToResizeRows = false;
+            this.dgvDetail.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvDetail.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvDetail.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvDetail.Location = new System.Drawing.Point(0, 58);
+            this.dgvDetail.MultiSelect = false;
+            this.dgvDetail.Name = "dgvDetail";
+            this.dgvDetail.ReadOnly = true;
+            this.dgvDetail.RowHeadersWidth = 62;
+            this.dgvDetail.RowTemplate.Height = 32;
+            this.dgvDetail.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvDetail.Size = new System.Drawing.Size(1421, 750);
+            this.dgvDetail.TabIndex = 13;
             // 
-            // btnAdd
+            // panel1
             // 
-            this.btnAdd.Location = new System.Drawing.Point(1030, 13);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(112, 34);
-            this.btnAdd.TabIndex = 3;
-            this.btnAdd.Text = "新增";
-            this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            this.panel1.Controls.Add(this.comboBoxInOut);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.comboBoxTransactionTypes);
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.comboBoxAssets);
+            this.panel1.Controls.Add(this.linkLabelManageTransactionType);
+            this.panel1.Controls.Add(this.linkLabelManageAssets);
+            this.panel1.Controls.Add(this.btnAdd);
+            this.panel1.Controls.Add(this.txtAmount);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1421, 58);
+            this.panel1.TabIndex = 0;
             // 
-            // linkLabelManageAssets
+            // comboBoxInOut
             // 
-            this.linkLabelManageAssets.AutoSize = true;
-            this.linkLabelManageAssets.Location = new System.Drawing.Point(1185, 18);
-            this.linkLabelManageAssets.Name = "linkLabelManageAssets";
-            this.linkLabelManageAssets.Size = new System.Drawing.Size(82, 24);
-            this.linkLabelManageAssets.TabIndex = 4;
-            this.linkLabelManageAssets.TabStop = true;
-            this.linkLabelManageAssets.Text = "管理资产";
-            this.linkLabelManageAssets.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelModifyAssets_LinkClicked);
+            this.comboBoxInOut.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxInOut.FormattingEnabled = true;
+            this.comboBoxInOut.Location = new System.Drawing.Point(12, 12);
+            this.comboBoxInOut.Name = "comboBoxInOut";
+            this.comboBoxInOut.Size = new System.Drawing.Size(110, 32);
+            this.comboBoxInOut.TabIndex = 15;
             // 
-            // linkLabelManageTransactionType
+            // label1
             // 
-            this.linkLabelManageTransactionType.AutoSize = true;
-            this.linkLabelManageTransactionType.Location = new System.Drawing.Point(1288, 18);
-            this.linkLabelManageTransactionType.Name = "linkLabelManageTransactionType";
-            this.linkLabelManageTransactionType.Size = new System.Drawing.Size(118, 24);
-            this.linkLabelManageTransactionType.TabIndex = 5;
-            this.linkLabelManageTransactionType.TabStop = true;
-            this.linkLabelManageTransactionType.Text = "管理交易类型";
-            this.linkLabelManageTransactionType.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelModifyTransactionType_LinkClicked);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(336, 18);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(82, 24);
-            this.label3.TabIndex = 9;
-            this.label3.Text = "资产类型";
-            // 
-            // comboBoxAssets
-            // 
-            this.comboBoxAssets.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxAssets.FormattingEnabled = true;
-            this.comboBoxAssets.Location = new System.Drawing.Point(422, 14);
-            this.comboBoxAssets.Name = "comboBoxAssets";
-            this.comboBoxAssets.Size = new System.Drawing.Size(273, 32);
-            this.comboBoxAssets.TabIndex = 10;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(128, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(46, 24);
+            this.label1.TabIndex = 24;
+            this.label1.Text = "金额";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(717, 18);
+            this.label2.Location = new System.Drawing.Point(717, 16);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(82, 24);
-            this.label2.TabIndex = 11;
+            this.label2.TabIndex = 23;
             this.label2.Text = "交易类型";
             // 
             // comboBoxTransactionTypes
             // 
             this.comboBoxTransactionTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxTransactionTypes.FormattingEnabled = true;
-            this.comboBoxTransactionTypes.Location = new System.Drawing.Point(805, 14);
+            this.comboBoxTransactionTypes.Location = new System.Drawing.Point(805, 12);
             this.comboBoxTransactionTypes.Name = "comboBoxTransactionTypes";
             this.comboBoxTransactionTypes.Size = new System.Drawing.Size(182, 32);
-            this.comboBoxTransactionTypes.TabIndex = 12;
+            this.comboBoxTransactionTypes.TabIndex = 18;
             // 
-            // dgvDetail
+            // label3
             // 
-            this.dgvDetail.AllowUserToAddRows = false;
-            this.dgvDetail.AllowUserToDeleteRows = false;
-            this.dgvDetail.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvDetail.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.dgvDetail.Location = new System.Drawing.Point(0, 64);
-            this.dgvDetail.Name = "dgvDetail";
-            this.dgvDetail.ReadOnly = true;
-            this.dgvDetail.RowHeadersWidth = 62;
-            this.dgvDetail.RowTemplate.Height = 32;
-            this.dgvDetail.Size = new System.Drawing.Size(1421, 744);
-            this.dgvDetail.TabIndex = 13;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(336, 16);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(82, 24);
+            this.label3.TabIndex = 22;
+            this.label3.Text = "资产类型";
             // 
-            // label1
+            // comboBoxAssets
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(128, 18);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(46, 24);
-            this.label1.TabIndex = 14;
-            this.label1.Text = "金额";
+            this.comboBoxAssets.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxAssets.FormattingEnabled = true;
+            this.comboBoxAssets.Location = new System.Drawing.Point(422, 12);
+            this.comboBoxAssets.Name = "comboBoxAssets";
+            this.comboBoxAssets.Size = new System.Drawing.Size(273, 32);
+            this.comboBoxAssets.TabIndex = 17;
             // 
-            // comboBoxInOut
+            // linkLabelManageTransactionType
             // 
-            this.comboBoxInOut.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxInOut.FormattingEnabled = true;
-            this.comboBoxInOut.Location = new System.Drawing.Point(12, 14);
-            this.comboBoxInOut.Name = "comboBoxInOut";
-            this.comboBoxInOut.Size = new System.Drawing.Size(110, 32);
-            this.comboBoxInOut.TabIndex = 15;
+            this.linkLabelManageTransactionType.AutoSize = true;
+            this.linkLabelManageTransactionType.Location = new System.Drawing.Point(1288, 16);
+            this.linkLabelManageTransactionType.Name = "linkLabelManageTransactionType";
+            this.linkLabelManageTransactionType.Size = new System.Drawing.Size(118, 24);
+            this.linkLabelManageTransactionType.TabIndex = 21;
+            this.linkLabelManageTransactionType.TabStop = true;
+            this.linkLabelManageTransactionType.Text = "管理交易类型";
+            // 
+            // linkLabelManageAssets
+            // 
+            this.linkLabelManageAssets.AutoSize = true;
+            this.linkLabelManageAssets.Location = new System.Drawing.Point(1185, 16);
+            this.linkLabelManageAssets.Name = "linkLabelManageAssets";
+            this.linkLabelManageAssets.Size = new System.Drawing.Size(82, 24);
+            this.linkLabelManageAssets.TabIndex = 20;
+            this.linkLabelManageAssets.TabStop = true;
+            this.linkLabelManageAssets.Text = "管理资产";
+            // 
+            // btnAdd
+            // 
+            this.btnAdd.Location = new System.Drawing.Point(1030, 11);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(112, 34);
+            this.btnAdd.TabIndex = 19;
+            this.btnAdd.Text = "新增";
+            this.btnAdd.UseVisualStyleBackColor = true;
+            // 
+            // txtAmount
+            // 
+            this.txtAmount.Location = new System.Drawing.Point(187, 13);
+            this.txtAmount.Name = "txtAmount";
+            this.txtAmount.Size = new System.Drawing.Size(132, 30);
+            this.txtAmount.TabIndex = 16;
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1421, 808);
-            this.Controls.Add(this.comboBoxInOut);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.dgvDetail);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.comboBoxTransactionTypes);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.comboBoxAssets);
-            this.Controls.Add(this.linkLabelManageTransactionType);
-            this.Controls.Add(this.linkLabelManageAssets);
-            this.Controls.Add(this.btnAdd);
-            this.Controls.Add(this.txtAmount);
+            this.Controls.Add(this.panel1);
             this.Name = "FormMain";
             this.Text = "记账助手";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetail)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox txtAmount;
-        private System.Windows.Forms.Button btnAdd;
-        private System.Windows.Forms.LinkLabel linkLabelManageAssets;
-        private System.Windows.Forms.LinkLabel linkLabelManageTransactionType;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox comboBoxAssets;
+        private System.Windows.Forms.DataGridView dgvDetail;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.ComboBox comboBoxInOut;
+        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox comboBoxTransactionTypes;
-        private System.Windows.Forms.DataGridView dgvDetail;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox comboBoxInOut;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox comboBoxAssets;
+        private System.Windows.Forms.LinkLabel linkLabelManageTransactionType;
+        private System.Windows.Forms.LinkLabel linkLabelManageAssets;
+        private System.Windows.Forms.Button btnAdd;
+        private System.Windows.Forms.TextBox txtAmount;
     }
 }
 

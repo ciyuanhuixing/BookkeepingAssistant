@@ -8,7 +8,7 @@ namespace BookkeepingAssistant
     {
         public DateTime Time { get; set; }
         public bool isIncome { get; set; }
-        public int Amount { get; set; }
+        public decimal Amount { get; set; }
         public string AssetName { get; set; }
         public string TransactionType { get; set; }
     }

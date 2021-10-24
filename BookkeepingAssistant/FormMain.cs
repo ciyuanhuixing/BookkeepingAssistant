@@ -16,22 +16,44 @@ namespace BookkeepingAssistant
         public FormMain()
         {
             InitializeComponent();
-            comboBoxInOut.DataSource = new string[] { "支", "收" };
+            comboBoxInOut.DataSource = new string[] { "支出", "收入" };
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             RefreshComboBox();
-            dgvDetail.DataSource = Data.SingletonInstance.TransactionRecords;
+            RefreshDetailView(Data.SingletonInstance.TransactionRecords);
+        }
+
+        private void RefreshDetailView(List<TransactionRecord> records)
+        {
+            records.Reverse();
+            DataTable dt = new DataTable();
+            dt.Columns.Add("时间");
+            dt.Columns.Add("收支类型");
+            dt.Columns.Add("金额");
+            dt.Columns.Add("资产名称");
+            dt.Columns.Add("交易类型");
+            foreach (var item in records)
+            {
+                DataRow dr = dt.NewRow();
+                dr["时间"] = item.Time.ToString("yyyy-MM-dd HH:mm");
+                dr["收支类型"] = item.isIncome ? "收入" : "支出";
+                dr["金额"] = item.Amount;
+                dr["资产名称"] = item.AssetName;
+                dr["交易类型"] = item.TransactionType;
+                dt.Rows.Add(dr);
+            }
+            dgvDetail.DataSource = dt;
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
             TransactionRecord tr = new TransactionRecord();
             tr.Time = DateTime.Now;
-            tr.isIncome = (string)comboBoxInOut.SelectedValue == "收" ? true : false;
-            int amount;
-            if (!int.TryParse(txtAmount.Text.Trim(),out amount))
+            tr.isIncome = (string)comboBoxInOut.SelectedValue == "收入" ? true : false;
+            decimal amount;
+            if (!decimal.TryParse(txtAmount.Text.Trim(), out amount))
             {
                 MessageBox.Show("新增失败：金额不能填入非数字。");
                 return;
@@ -42,6 +64,7 @@ namespace BookkeepingAssistant
 
             Data.SingletonInstance.TransactionRecords.Add(tr);
             Data.SingletonInstance.AppendToTransactionRecordsDataFile(tr);
+            RefreshDetailView(Data.SingletonInstance.TransactionRecords);
         }
 
         private void linkLabelModifyAssets_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

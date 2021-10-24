@@ -17,7 +17,7 @@ namespace BookkeepingAssistant
         private string _transactionRecordDataFile;
         private Repository _repo;
 
-        public Dictionary<string, int> DicAssets { get; } = new Dictionary<string, int>();
+        public Dictionary<string, decimal> DicAssets { get; } = new Dictionary<string, decimal>();
         private Dictionary<string, string> _dicDisplayAssets = new Dictionary<string, string>();
         public Dictionary<string, string> DicDisplayAssets
         {
@@ -79,8 +79,8 @@ namespace BookkeepingAssistant
                     {
                         continue;
                     }
-                    int assetValue;
-                    if (!int.TryParse(arr[1].Trim(), out assetValue))
+                    decimal assetValue;
+                    if (!decimal.TryParse(arr[1].Trim(), out assetValue))
                     {
                         continue;
                     }
@@ -123,8 +123,8 @@ namespace BookkeepingAssistant
                     }
                     record.isIncome = arr[1].Trim() == "收" ? true : false;
 
-                    int amount;
-                    if (!int.TryParse(arr[2], out amount))
+                    decimal amount;
+                    if (!decimal.TryParse(arr[2], out amount))
                     {
                         continue;
                     }
