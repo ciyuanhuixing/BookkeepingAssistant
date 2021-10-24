@@ -52,7 +52,8 @@ namespace BookkeepingAssistant
             this.dgvDetail.AllowUserToResizeColumns = false;
             this.dgvDetail.AllowUserToResizeRows = false;
             this.dgvDetail.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dgvDetail.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvDetail.ColumnHeadersHeight = 34;
+            this.dgvDetail.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvDetail.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvDetail.Location = new System.Drawing.Point(0, 58);
             this.dgvDetail.MultiSelect = false;

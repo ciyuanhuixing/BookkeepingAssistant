@@ -104,7 +104,7 @@ namespace BookkeepingAssistant
                 foreach (var line in lines)
                 {
                     string[] arr = line.Trim().Split('|');
-                    if (arr.Length != 5)
+                    if (arr.Length != 6)
                     {
                         continue;
                     }
@@ -187,7 +187,7 @@ namespace BookkeepingAssistant
         public void AppendToTransactionRecordsDataFile(TransactionRecord tr)
         {
             List<string> lines = new List<string>();
-            lines.Add(string.Join('|', tr.Time, tr.isIncome ? "收" : "支", tr.Amount, tr.AssetName, tr.TransactionType));
+            lines.Add(string.Join('|', tr.Time, tr.isIncome ? "收" : "支", tr.Amount, tr.AssetName, tr.AssetValue, tr.TransactionType));
             File.AppendAllLines(_transactionRecordDataFile, lines);
             Commands.Stage(_repo, Path.GetRelativePath(_repositoryDir, _transactionRecordDataFile));
             Signature signature = new Signature(_gitName, _gitEmail, DateTimeOffset.Now);
