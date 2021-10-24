@@ -61,12 +61,21 @@ namespace BookkeepingAssistant
                 return;
             }
             tr.Amount = amount;
+
             tr.AssetName = (string)comboBoxAssets.SelectedValue;
+            decimal assetValue = Data.SingletonInstance.DicAssets[tr.AssetName];
+            assetValue -= tr.Amount;
+            Data.SingletonInstance.DicAssets[tr.AssetName] = assetValue;
+            tr.AssetValue = assetValue;
+            
             tr.TransactionType = (string)comboBoxTransactionTypes.SelectedValue;
 
             Data.SingletonInstance.TransactionRecords.Add(tr);
             Data.SingletonInstance.AppendToTransactionRecordsDataFile(tr);
+            Data.SingletonInstance.WriteAssetsDataFile();
+
             RefreshDetailView(Data.SingletonInstance.TransactionRecords);
+            RefreshComboBox();
         }
 
         private void linkLabelModifyAssets_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
