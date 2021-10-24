@@ -51,6 +51,14 @@ namespace BookkeepingAssistant
             _transactionTypeDataFile = Path.Combine(_repositoryDir, "交易类型.txt");
             _transactionRecordDataFile = Path.Combine(_repositoryDir, "交易记录.txt");
 
+            CheckoutOptions options = new CheckoutOptions();
+            options.CheckoutModifiers = CheckoutModifiers.Force;
+            _repo.CheckoutPaths(_repo.Head.TrackedBranch.Tip.Sha, new List<string>() {
+                GetGitRelativePath(_assetsDataFile),
+                GetGitRelativePath(_transactionTypeDataFile),
+                GetGitRelativePath(_transactionRecordDataFile)
+            }, options);
+
             ReadData();
         }
 
@@ -195,7 +203,15 @@ namespace BookkeepingAssistant
         public void AddAsset(string assetName, decimal assetValue)
         {
             _dicAssets.Add(assetName, assetValue);
-            SaveAssets();
+            try
+            {
+                SaveAssets();
+            }
+            catch (Exception)
+            {
+                _dicAssets.Remove(assetName);
+                throw;
+            }
         }
 
         public void RemoveAsset(string assetName)
@@ -240,7 +256,7 @@ namespace BookkeepingAssistant
             _transactionRecords.Add(tr);
 
             WriteAssetsDataFile();
-            File.AppendAllLines(_transactionRecordDataFile, 
+            File.AppendAllLines(_transactionRecordDataFile,
                 new List<string>() { string.Join('|', tr.Time, tr.isIncome ? "收" : "支", tr.Amount, tr.AssetName, tr.AssetValue, tr.TransactionType) });
 
             StageFile(_transactionRecordDataFile);
@@ -250,7 +266,12 @@ namespace BookkeepingAssistant
 
         private void StageFile(string filePath)
         {
-            Commands.Stage(_repo, Path.GetRelativePath(_repositoryDir, filePath));
+            Commands.Stage(_repo, GetGitRelativePath(filePath));
+        }
+
+        private string GetGitRelativePath(string filePath)
+        {
+            return Path.GetRelativePath(_repositoryDir, filePath);
         }
 
         private void PushGitCommit(string commitMsg)
