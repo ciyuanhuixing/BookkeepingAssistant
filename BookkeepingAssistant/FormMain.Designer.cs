@@ -175,6 +175,7 @@ namespace BookkeepingAssistant
             this.txtAmount.Name = "txtAmount";
             this.txtAmount.Size = new System.Drawing.Size(132, 30);
             this.txtAmount.TabIndex = 16;
+            this.txtAmount.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtAmount_KeyUp);
             // 
             // FormMain
             // 

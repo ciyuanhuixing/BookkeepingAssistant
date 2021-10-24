@@ -154,7 +154,7 @@ namespace BookkeepingAssistant
             }
         }
 
-        public void WriteAssetsDataFile()
+        private void WriteAssetsDataFile()
         {
             StringBuilder sbAssets = new StringBuilder();
             foreach (var kvp in DicAssets)
@@ -162,14 +162,16 @@ namespace BookkeepingAssistant
                 sbAssets.AppendLine(string.Join('：', kvp.Key, kvp.Value));
             }
             File.WriteAllText(_assetsDataFile, sbAssets.ToString());
-
-            _repo.Index.Add(Path.GetRelativePath(_repositoryDir, _assetsDataFile));
-            Signature signature = new Signature(_gitName, _gitEmail, DateTimeOffset.Now);
-            _repo.Commit("新增或删除资产", signature, signature);
-            _repo.Network.Push(_repo.Head);
         }
 
-        public void WriteTransactionTypesData()
+        public void SaveAssets()
+        {
+            WriteAssetsDataFile();
+            StageFile(_assetsDataFile);
+            PushGitCommit("新增或删除资产");
+        }
+
+        public void SaveTransactionTypes()
         {
             StringBuilder sb = new StringBuilder();
             foreach (var asset in TransactionTypes)
@@ -178,21 +180,34 @@ namespace BookkeepingAssistant
             }
             File.WriteAllText(_transactionTypeDataFile, sb.ToString());
 
-            _repo.Index.Add(Path.GetRelativePath(_repositoryDir, _transactionTypeDataFile));
-            Signature signature = new Signature(_gitName, _gitEmail, DateTimeOffset.Now);
-            _repo.Commit("新增或删除交易类型", signature, signature);
-            _repo.Network.Push(_repo.Head);
+            StageFile(_transactionTypeDataFile);
+            PushGitCommit("新增或删除交易类型");
         }
 
-        public void AppendToTransactionRecordsDataFile(TransactionRecord tr)
+        public void AppendTransactionRecord(TransactionRecord tr)
         {
+            TransactionRecords.Add(tr);
+
             List<string> lines = new List<string>();
             lines.Add(string.Join('|', tr.Time, tr.isIncome ? "收" : "支", tr.Amount, tr.AssetName, tr.AssetValue, tr.TransactionType));
             File.AppendAllLines(_transactionRecordDataFile, lines);
-            Commands.Stage(_repo, Path.GetRelativePath(_repositoryDir, _transactionRecordDataFile));
-            Signature signature = new Signature(_gitName, _gitEmail, DateTimeOffset.Now);
-            _repo.Commit("新增收支记录", signature, signature);
-            _repo.Network.Push(_repo.Head);
+            WriteAssetsDataFile();
+
+            StageFile(_transactionRecordDataFile);
+            StageFile(_assetsDataFile);
+            PushGitCommit("新增收支记录");
         }
+
+        private void StageFile(string filePath)
+        {
+            Commands.Stage(_repo, Path.GetRelativePath(_repositoryDir, filePath));
+        }
+
+        private void PushGitCommit(string commitMsg)
+        {
+            Signature signature = new Signature(_gitName, _gitEmail, DateTimeOffset.Now);
+            _repo.Commit(commitMsg, signature, signature);
+            _repo.Network.Push(_repo.Head);
+        } 
     }
 }

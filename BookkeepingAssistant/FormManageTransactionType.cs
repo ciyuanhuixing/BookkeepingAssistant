@@ -38,7 +38,7 @@ namespace BookkeepingAssistant
             }
 
             _transactionTypes.Add(type);
-            Data.SingletonInstance.WriteTransactionTypesData();
+            Data.SingletonInstance.SaveTransactionTypes();
             DisplayTransactionTypes();
             MessageBox.Show($"已新增「{type}」");
         }
@@ -58,7 +58,7 @@ namespace BookkeepingAssistant
             }
 
             _transactionTypes.Remove(type);
-            Data.SingletonInstance.WriteTransactionTypesData();
+            Data.SingletonInstance.SaveTransactionTypes();
             DisplayTransactionTypes();
         }
     }

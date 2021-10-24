@@ -67,15 +67,14 @@ namespace BookkeepingAssistant
             assetValue -= tr.Amount;
             Data.SingletonInstance.DicAssets[tr.AssetName] = assetValue;
             tr.AssetValue = assetValue;
-            
+
             tr.TransactionType = (string)comboBoxTransactionTypes.SelectedValue;
 
-            Data.SingletonInstance.TransactionRecords.Add(tr);
-            Data.SingletonInstance.AppendToTransactionRecordsDataFile(tr);
-            Data.SingletonInstance.WriteAssetsDataFile();
+            Data.SingletonInstance.AppendTransactionRecord(tr);
 
             RefreshDetailView(Data.SingletonInstance.TransactionRecords);
             RefreshComboBox();
+            txtAmount.Clear();
         }
 
         private void linkLabelModifyAssets_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -102,6 +101,14 @@ namespace BookkeepingAssistant
 
             comboBoxTransactionTypes.DataSource = null;
             comboBoxTransactionTypes.DataSource = Data.SingletonInstance.TransactionTypes;
+        }
+
+        private void txtAmount_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnAdd_Click(null, null);
+            }
         }
     }
 }

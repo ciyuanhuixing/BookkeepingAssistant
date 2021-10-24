@@ -45,7 +45,7 @@ namespace BookkeepingAssistant
             }
 
             _dicAssets.Add(assetName, assetValue);
-            Data.SingletonInstance.WriteAssetsDataFile();
+            Data.SingletonInstance.SaveAssets();
             DisplayAssets();
             MessageBox.Show($"已新增「{assetName}」");
         }
@@ -74,7 +74,7 @@ namespace BookkeepingAssistant
             }
 
             _dicAssets.Remove(assetName);
-            Data.SingletonInstance.WriteAssetsDataFile();
+            Data.SingletonInstance.SaveAssets();
             DisplayAssets();
         }
     }
