@@ -23,12 +23,24 @@ namespace BookkeepingAssistant
             comboBoxInOut.DataSource = new string[] { "支出", "收入" };
             RefreshAssetsControl();
             comboBoxTransactionTypes.DataSource = DAL.Singleton.GetTransactionTypes();
-            RefreshDetailView();
+
+            var records = DAL.Singleton.GetTransactionRecords();
+            if (records.Any())
+            {
+                var r = records.Last();
+                comboBoxInOut.SelectedItem = r.isIncome ? "收入" : "支出";
+                comboBoxAssets.SelectedValue = r.AssetName;
+                comboBoxTransactionTypes.SelectedItem = r.TransactionType;
+            }
+            RefreshDetailView(records);
         }
 
-        private void RefreshDetailView()
+        private void RefreshDetailView(List<TransactionRecordModel> records)
         {
-            var records = DAL.Singleton.GetTransactionRecords();
+            if (records == null)
+            {
+                records = DAL.Singleton.GetTransactionRecords();
+            }
             records.Reverse();
             DataTable dt = new DataTable();
             dt.Columns.Add("时间");
@@ -68,7 +80,7 @@ namespace BookkeepingAssistant
 
             DAL.Singleton.AppendTransactionRecord(tr);
 
-            RefreshDetailView();
+            RefreshDetailView(null);
             RefreshAssetsControl();
             txtAmount.Clear();
         }
@@ -91,7 +103,7 @@ namespace BookkeepingAssistant
         {
             BindingSource bs = new BindingSource();
             var assets = DAL.Singleton.GetDisplayAssets();
-            bs.DataSource = assets; 
+            bs.DataSource = assets;
             comboBoxAssets.DisplayMember = "Value";
             comboBoxAssets.ValueMember = "Key";
             comboBoxAssets.DataSource = bs;
