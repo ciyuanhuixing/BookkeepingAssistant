@@ -11,8 +11,6 @@ namespace BookkeepingAssistant
 {
     public partial class FormManageAssets : Form
     {
-        public Dictionary<string, decimal> _dicAssets = Data.SingletonInstance.DicAssets;
-
         public FormManageAssets()
         {
             InitializeComponent();
@@ -31,7 +29,7 @@ namespace BookkeepingAssistant
                 MessageBox.Show("新增失败：名称不能为空。");
                 return;
             }
-            if (_dicAssets.ContainsKey(assetName))
+            if (DAL.Singleton.GetAssets().ContainsKey(assetName))
             {
                 MessageBox.Show("新增失败：已存在该名称的资产。");
                 return;
@@ -44,8 +42,7 @@ namespace BookkeepingAssistant
                 return;
             }
 
-            _dicAssets.Add(assetName, assetValue);
-            Data.SingletonInstance.SaveAssets();
+            DAL.Singleton.AddAsset(assetName, assetValue);
             DisplayAssets();
             MessageBox.Show($"已新增「{assetName}」");
         }
@@ -53,7 +50,7 @@ namespace BookkeepingAssistant
         private void DisplayAssets()
         {
             BindingSource bs = new BindingSource();
-            bs.DataSource = Data.SingletonInstance.DicDisplayAssets;
+            bs.DataSource = DAL.Singleton.GetDisplayAssets();
             comboBoxAssets.DisplayMember = "Value";
             comboBoxAssets.ValueMember = "Key";
             comboBoxAssets.DataSource = bs;
@@ -62,19 +59,19 @@ namespace BookkeepingAssistant
         private void btnRemove_Click(object sender, EventArgs e)
         {
             string assetName = (string)comboBoxAssets.SelectedValue;
-            if (_dicAssets[assetName] != 0)
-            {
-                MessageBox.Show("删除失败：该资产余额不为零，不可删除。");
-                return;
-            }
-
             if (MessageBox.Show($"确认删除{assetName}？", "确认删除？", MessageBoxButtons.OKCancel) != DialogResult.OK)
             {
                 return;
             }
 
-            _dicAssets.Remove(assetName);
-            Data.SingletonInstance.SaveAssets();
+            try
+            {
+                DAL.Singleton.RemoveAsset(assetName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("删除失败：" + ex.Message);
+            }
             DisplayAssets();
         }
     }

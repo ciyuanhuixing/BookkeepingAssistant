@@ -6,7 +6,7 @@ using System.Text;
 
 namespace BookkeepingAssistant
 {
-    public class Data
+    public class DAL
     {
         private const string _gitName = "ciyuanhuixing";
         private const string _gitEmail = "ciyuanhuixing@qq.com";
@@ -17,25 +17,12 @@ namespace BookkeepingAssistant
         private string _transactionRecordDataFile;
         private Repository _repo;
 
-        public Dictionary<string, decimal> DicAssets { get; } = new Dictionary<string, decimal>();
-        private Dictionary<string, string> _dicDisplayAssets = new Dictionary<string, string>();
-        public Dictionary<string, string> DicDisplayAssets
-        {
-            get
-            {
-                _dicDisplayAssets.Clear();
-                foreach (var kvp in DicAssets)
-                {
-                    _dicDisplayAssets.Add(kvp.Key, string.Join('：', kvp.Key, kvp.Value));
-                }
-                return _dicDisplayAssets;
-            }
-        }
-        public List<string> TransactionTypes { get; } = new List<string>();
-        public List<TransactionRecord> TransactionRecords { get; } = new List<TransactionRecord>();
+        private Dictionary<string, decimal> _dicAssets = new Dictionary<string, decimal>();
+        private List<string> _transactionTypes = new List<string>();
+        private List<TransactionRecordModel> _transactionRecords = new List<TransactionRecordModel>();
 
-        private static readonly Data _singletonInstance = new Data();
-        public static Data SingletonInstance
+        private static readonly DAL _singletonInstance = new DAL();
+        public static DAL Singleton
         {
             get
             {
@@ -43,7 +30,7 @@ namespace BookkeepingAssistant
             }
         }
 
-        private Data()
+        private DAL()
         {
             _repositoryDir = ConfigHelper.GetValue("GitRepositoryDir");
             if (string.IsNullOrWhiteSpace(_repositoryDir))
@@ -85,7 +72,7 @@ namespace BookkeepingAssistant
                         continue;
                     }
 
-                    DicAssets.Add(arr[0].Trim(), assetValue);
+                    _dicAssets.Add(arr[0].Trim(), assetValue);
                 }
             }
 
@@ -94,7 +81,7 @@ namespace BookkeepingAssistant
                 string[] lines = File.ReadAllLines(_transactionTypeDataFile);
                 foreach (var line in lines)
                 {
-                    TransactionTypes.Add(line.Trim());
+                    _transactionTypes.Add(line.Trim());
                 }
             }
 
@@ -109,7 +96,7 @@ namespace BookkeepingAssistant
                         continue;
                     }
 
-                    TransactionRecord record = new TransactionRecord();
+                    TransactionRecordModel record = new TransactionRecordModel();
                     DateTime time;
                     if (!DateTime.TryParse(arr[0].Trim(), out time))
                     {
@@ -149,32 +136,82 @@ namespace BookkeepingAssistant
                         continue;
                     }
 
-                    TransactionRecords.Add(record);
+                    _transactionRecords.Add(record);
                 }
             }
+        }
+
+        public Dictionary<string, decimal> GetAssets()
+        {
+            Dictionary<string, decimal> assets = new Dictionary<string, decimal>();
+            foreach (var item in _dicAssets)
+            {
+                assets.Add(item.Key, item.Value);
+            }
+            return assets;
+        }
+
+        public Dictionary<string, string> GetDisplayAssets()
+        {
+            Dictionary<string, string> dicDisplayAssets = new Dictionary<string, string>();
+            foreach (var kvp in _dicAssets)
+            {
+                dicDisplayAssets.Add(kvp.Key, string.Join('：', kvp.Key, kvp.Value));
+            }
+            return dicDisplayAssets;
+        }
+
+        public List<string> GetTransactionTypes()
+        {
+            List<string> types = new List<string>();
+            types.AddRange(_transactionTypes);
+            return types;
+        }
+
+        public List<TransactionRecordModel> GetTransactionRecords()
+        {
+            List<TransactionRecordModel> records = new List<TransactionRecordModel>();
+            records.AddRange(_transactionRecords);
+            return records;
         }
 
         private void WriteAssetsDataFile()
         {
             StringBuilder sbAssets = new StringBuilder();
-            foreach (var kvp in DicAssets)
+            foreach (var kvp in _dicAssets)
             {
                 sbAssets.AppendLine(string.Join('：', kvp.Key, kvp.Value));
             }
             File.WriteAllText(_assetsDataFile, sbAssets.ToString());
         }
 
-        public void SaveAssets()
+        private void SaveAssets()
         {
             WriteAssetsDataFile();
             StageFile(_assetsDataFile);
             PushGitCommit("新增或删除资产");
         }
 
-        public void SaveTransactionTypes()
+        public void AddAsset(string assetName, decimal assetValue)
+        {
+            _dicAssets.Add(assetName, assetValue);
+            SaveAssets();
+        }
+
+        public void RemoveAsset(string assetName)
+        {
+            if (_dicAssets[assetName] != 0)
+            {
+                throw new Exception("该资产余额不为零，不可删除。");
+            }
+            _dicAssets.Remove(assetName);
+            SaveAssets();
+        }
+
+        private void SaveTransactionTypes()
         {
             StringBuilder sb = new StringBuilder();
-            foreach (var asset in TransactionTypes)
+            foreach (var asset in _transactionTypes)
             {
                 sb.AppendLine(asset);
             }
@@ -184,14 +221,27 @@ namespace BookkeepingAssistant
             PushGitCommit("新增或删除交易类型");
         }
 
-        public void AppendTransactionRecord(TransactionRecord tr)
+        public void AddTransactionType(string name)
         {
-            TransactionRecords.Add(tr);
+            _transactionTypes.Add(name);
+            SaveTransactionTypes();
+        }
 
-            List<string> lines = new List<string>();
-            lines.Add(string.Join('|', tr.Time, tr.isIncome ? "收" : "支", tr.Amount, tr.AssetName, tr.AssetValue, tr.TransactionType));
-            File.AppendAllLines(_transactionRecordDataFile, lines);
+        public void RemoveTransactionType(string name)
+        {
+            _transactionTypes.Remove(name);
+            SaveTransactionTypes();
+        }
+
+        public void AppendTransactionRecord(TransactionRecordModel tr)
+        {
+            _dicAssets[tr.AssetName] -= tr.Amount;
+            tr.AssetValue = _dicAssets[tr.AssetName];
+            _transactionRecords.Add(tr);
+
             WriteAssetsDataFile();
+            File.AppendAllLines(_transactionRecordDataFile, 
+                new List<string>() { string.Join('|', tr.Time, tr.isIncome ? "收" : "支", tr.Amount, tr.AssetName, tr.AssetValue, tr.TransactionType) });
 
             StageFile(_transactionRecordDataFile);
             StageFile(_assetsDataFile);
@@ -208,6 +258,6 @@ namespace BookkeepingAssistant
             Signature signature = new Signature(_gitName, _gitEmail, DateTimeOffset.Now);
             _repo.Commit(commitMsg, signature, signature);
             _repo.Network.Push(_repo.Head);
-        } 
+        }
     }
 }

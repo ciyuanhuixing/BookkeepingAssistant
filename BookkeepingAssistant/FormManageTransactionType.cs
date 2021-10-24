@@ -11,8 +11,6 @@ namespace BookkeepingAssistant
 {
     public partial class FormManageTransactionType : Form
     {
-        public List<string> _transactionTypes = Data.SingletonInstance.TransactionTypes;
-
         public FormManageTransactionType()
         {
             InitializeComponent();
@@ -20,7 +18,7 @@ namespace BookkeepingAssistant
 
         private void FormManageTransactionType_Load(object sender, EventArgs e)
         {
-            DisplayTransactionTypes();
+            RefreshTransactionTypes();
         }
 
         private void btnAddType_Click(object sender, EventArgs e)
@@ -31,22 +29,21 @@ namespace BookkeepingAssistant
                 MessageBox.Show("新增失败：名称不能为空。");
                 return;
             }
-            if (_transactionTypes.Contains(type))
+            if (DAL.Singleton.GetTransactionTypes().Contains(type))
             {
                 MessageBox.Show("新增失败：已存在该名称的交易类型。");
                 return;
             }
 
-            _transactionTypes.Add(type);
-            Data.SingletonInstance.SaveTransactionTypes();
-            DisplayTransactionTypes();
+            DAL.Singleton.AddTransactionType(type);
+            RefreshTransactionTypes();
             MessageBox.Show($"已新增「{type}」");
         }
 
-        private void DisplayTransactionTypes()
+        private void RefreshTransactionTypes()
         {
             comboBoxTypes.DataSource = null;
-            comboBoxTypes.DataSource = _transactionTypes;
+            comboBoxTypes.DataSource = DAL.Singleton.GetTransactionTypes();
         }
 
         private void btnRemove_Click(object sender, EventArgs e)
@@ -57,9 +54,8 @@ namespace BookkeepingAssistant
                 return;
             }
 
-            _transactionTypes.Remove(type);
-            Data.SingletonInstance.SaveTransactionTypes();
-            DisplayTransactionTypes();
+            DAL.Singleton.RemoveTransactionType(type);
+            RefreshTransactionTypes();
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BookkeepingAssistant
 {
-    public class TransactionRecord
+    public class TransactionRecordModel
     {
         public DateTime Time { get; set; }
         public bool isIncome { get; set; }

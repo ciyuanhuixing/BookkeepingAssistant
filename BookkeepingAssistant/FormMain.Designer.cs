@@ -90,12 +90,12 @@ namespace BookkeepingAssistant
             this.comboBoxInOut.Location = new System.Drawing.Point(12, 12);
             this.comboBoxInOut.Name = "comboBoxInOut";
             this.comboBoxInOut.Size = new System.Drawing.Size(110, 32);
-            this.comboBoxInOut.TabIndex = 15;
+            this.comboBoxInOut.TabIndex = 0;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(128, 16);
+            this.label1.Location = new System.Drawing.Point(817, 16);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(46, 24);
             this.label1.TabIndex = 24;
@@ -104,7 +104,7 @@ namespace BookkeepingAssistant
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(717, 16);
+            this.label2.Location = new System.Drawing.Point(520, 16);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(82, 24);
             this.label2.TabIndex = 23;
@@ -114,15 +114,15 @@ namespace BookkeepingAssistant
             // 
             this.comboBoxTransactionTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxTransactionTypes.FormattingEnabled = true;
-            this.comboBoxTransactionTypes.Location = new System.Drawing.Point(805, 12);
+            this.comboBoxTransactionTypes.Location = new System.Drawing.Point(608, 12);
             this.comboBoxTransactionTypes.Name = "comboBoxTransactionTypes";
             this.comboBoxTransactionTypes.Size = new System.Drawing.Size(182, 32);
-            this.comboBoxTransactionTypes.TabIndex = 18;
+            this.comboBoxTransactionTypes.TabIndex = 2;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(336, 16);
+            this.label3.Location = new System.Drawing.Point(139, 16);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(82, 24);
             this.label3.TabIndex = 22;
@@ -132,10 +132,10 @@ namespace BookkeepingAssistant
             // 
             this.comboBoxAssets.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxAssets.FormattingEnabled = true;
-            this.comboBoxAssets.Location = new System.Drawing.Point(422, 12);
+            this.comboBoxAssets.Location = new System.Drawing.Point(225, 12);
             this.comboBoxAssets.Name = "comboBoxAssets";
             this.comboBoxAssets.Size = new System.Drawing.Size(273, 32);
-            this.comboBoxAssets.TabIndex = 17;
+            this.comboBoxAssets.TabIndex = 1;
             // 
             // linkLabelManageTransactionType
             // 
@@ -164,17 +164,17 @@ namespace BookkeepingAssistant
             this.btnAdd.Location = new System.Drawing.Point(1030, 11);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(112, 34);
-            this.btnAdd.TabIndex = 19;
+            this.btnAdd.TabIndex = 4;
             this.btnAdd.Text = "新增";
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // txtAmount
             // 
-            this.txtAmount.Location = new System.Drawing.Point(187, 13);
+            this.txtAmount.Location = new System.Drawing.Point(869, 13);
             this.txtAmount.Name = "txtAmount";
             this.txtAmount.Size = new System.Drawing.Size(132, 30);
-            this.txtAmount.TabIndex = 16;
+            this.txtAmount.TabIndex = 3;
             this.txtAmount.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtAmount_KeyUp);
             // 
             // FormMain

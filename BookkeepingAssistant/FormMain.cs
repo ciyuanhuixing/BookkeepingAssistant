@@ -22,11 +22,12 @@ namespace BookkeepingAssistant
         private void Form1_Load(object sender, EventArgs e)
         {
             RefreshComboBox();
-            RefreshDetailView(Data.SingletonInstance.TransactionRecords);
+            RefreshDetailView();
         }
 
-        private void RefreshDetailView(List<TransactionRecord> records)
+        private void RefreshDetailView()
         {
+            var records = DAL.Singleton.GetTransactionRecords();
             records.Reverse();
             DataTable dt = new DataTable();
             dt.Columns.Add("时间");
@@ -51,7 +52,7 @@ namespace BookkeepingAssistant
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            TransactionRecord tr = new TransactionRecord();
+            TransactionRecordModel tr = new TransactionRecordModel();
             tr.Time = DateTime.Now;
             tr.isIncome = (string)comboBoxInOut.SelectedValue == "收入" ? true : false;
             decimal amount;
@@ -61,18 +62,12 @@ namespace BookkeepingAssistant
                 return;
             }
             tr.Amount = amount;
-
             tr.AssetName = (string)comboBoxAssets.SelectedValue;
-            decimal assetValue = Data.SingletonInstance.DicAssets[tr.AssetName];
-            assetValue -= tr.Amount;
-            Data.SingletonInstance.DicAssets[tr.AssetName] = assetValue;
-            tr.AssetValue = assetValue;
-
             tr.TransactionType = (string)comboBoxTransactionTypes.SelectedValue;
 
-            Data.SingletonInstance.AppendTransactionRecord(tr);
+            DAL.Singleton.AppendTransactionRecord(tr);
 
-            RefreshDetailView(Data.SingletonInstance.TransactionRecords);
+            RefreshDetailView();
             RefreshComboBox();
             txtAmount.Clear();
         }
@@ -94,13 +89,12 @@ namespace BookkeepingAssistant
         private void RefreshComboBox()
         {
             BindingSource bs = new BindingSource();
-            bs.DataSource = Data.SingletonInstance.DicDisplayAssets;
+            bs.DataSource = DAL.Singleton.GetDisplayAssets();
             comboBoxAssets.DisplayMember = "Value";
             comboBoxAssets.ValueMember = "Key";
             comboBoxAssets.DataSource = bs;
 
-            comboBoxTransactionTypes.DataSource = null;
-            comboBoxTransactionTypes.DataSource = Data.SingletonInstance.TransactionTypes;
+            comboBoxTransactionTypes.DataSource = DAL.Singleton.GetTransactionTypes();
         }
 
         private void txtAmount_KeyUp(object sender, KeyEventArgs e)
