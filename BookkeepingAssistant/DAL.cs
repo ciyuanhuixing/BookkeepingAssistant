@@ -51,6 +51,12 @@ namespace BookkeepingAssistant
             _transactionTypeDataFile = Path.Combine(_repositoryDir, "交易类型.txt");
             _transactionRecordDataFile = Path.Combine(_repositoryDir, "交易记录.txt");
 
+            CheckoutGitFile();
+            ReadData();
+        }
+
+        private void CheckoutGitFile()
+        {
             CheckoutOptions options = new CheckoutOptions();
             options.CheckoutModifiers = CheckoutModifiers.Force;
             _repo.CheckoutPaths(_repo.Head.TrackedBranch.Tip.Sha, new List<string>() {
@@ -58,14 +64,13 @@ namespace BookkeepingAssistant
                 GetGitRelativePath(_transactionTypeDataFile),
                 GetGitRelativePath(_transactionRecordDataFile)
             }, options);
-
-            ReadData();
         }
 
         private void ReadData()
         {
             if (File.Exists(_assetsDataFile))
             {
+                _dicAssets.Clear();
                 string[] assetLines = File.ReadAllLines(_assetsDataFile);
                 foreach (var line in assetLines)
                 {
@@ -86,6 +91,7 @@ namespace BookkeepingAssistant
 
             if (File.Exists(_transactionTypeDataFile))
             {
+                _transactionTypes.Clear();
                 string[] lines = File.ReadAllLines(_transactionTypeDataFile);
                 foreach (var line in lines)
                 {
@@ -95,6 +101,7 @@ namespace BookkeepingAssistant
 
             if (File.Exists(_transactionRecordDataFile))
             {
+                _transactionRecords.Clear();
                 string[] lines = File.ReadAllLines(_transactionRecordDataFile);
                 foreach (var line in lines)
                 {
@@ -200,18 +207,38 @@ namespace BookkeepingAssistant
             PushGitCommit("新增或删除资产");
         }
 
-        public void AddAsset(string assetName, decimal assetValue)
+        private void PossibleRollback(Action work)
         {
-            _dicAssets.Add(assetName, assetValue);
             try
             {
-                SaveAssets();
+                work();
             }
             catch (Exception)
             {
-                _dicAssets.Remove(assetName);
+                CheckoutGitFile();
+                ReadData();
                 throw;
             }
+        }
+
+        private void PossibleRollback<T>(Action<T> work, T obj)
+        {
+            try
+            {
+                work.Invoke(obj);
+            }
+            catch (Exception)
+            {
+                CheckoutGitFile();
+                ReadData();
+                throw;
+            }
+        }
+
+        public void AddAsset(string assetName, decimal assetValue)
+        {
+            _dicAssets.Add(assetName, assetValue);
+            PossibleRollback(SaveAssets);
         }
 
         public void RemoveAsset(string assetName)
@@ -221,7 +248,7 @@ namespace BookkeepingAssistant
                 throw new Exception("该资产余额不为零，不可删除。");
             }
             _dicAssets.Remove(assetName);
-            SaveAssets();
+            PossibleRollback(SaveAssets);
         }
 
         private void SaveTransactionTypes()
@@ -240,13 +267,13 @@ namespace BookkeepingAssistant
         public void AddTransactionType(string name)
         {
             _transactionTypes.Add(name);
-            SaveTransactionTypes();
+            PossibleRollback(SaveTransactionTypes);
         }
 
         public void RemoveTransactionType(string name)
         {
             _transactionTypes.Remove(name);
-            SaveTransactionTypes();
+            PossibleRollback(SaveTransactionTypes);
         }
 
         public void AppendTransactionRecord(TransactionRecordModel tr)
@@ -255,6 +282,11 @@ namespace BookkeepingAssistant
             tr.AssetValue = _dicAssets[tr.AssetName];
             _transactionRecords.Add(tr);
 
+            PossibleRollback(SaveTransactionRecord, tr);
+        }
+
+        private void SaveTransactionRecord(TransactionRecordModel tr)
+        {
             WriteAssetsDataFile();
             File.AppendAllLines(_transactionRecordDataFile,
                 new List<string>() { string.Join('|', tr.Time, tr.isIncome ? "收" : "支", tr.Amount, tr.AssetName, tr.AssetValue, tr.TransactionType) });
