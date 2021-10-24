@@ -51,19 +51,21 @@ namespace BookkeepingAssistant
             _transactionTypeDataFile = Path.Combine(_repositoryDir, "交易类型.txt");
             _transactionRecordDataFile = Path.Combine(_repositoryDir, "交易记录.txt");
 
-            CheckoutGitFile();
+            CheckoutLastPushFile();
             ReadData();
         }
 
-        private void CheckoutGitFile()
+        private void CheckoutLastPushFile()
         {
-            CheckoutOptions options = new CheckoutOptions();
-            options.CheckoutModifiers = CheckoutModifiers.Force;
-            _repo.CheckoutPaths(_repo.Head.TrackedBranch.Tip.Sha, new List<string>() {
+            List<string> paths = new List<string>() {
                 GetGitRelativePath(_assetsDataFile),
                 GetGitRelativePath(_transactionTypeDataFile),
                 GetGitRelativePath(_transactionRecordDataFile)
-            }, options);
+            };
+            CheckoutOptions options = new CheckoutOptions();
+            options.CheckoutModifiers = CheckoutModifiers.Force;
+            //_repo.Checkout(_repo.Head.TrackedBranch.Tip.Tree, paths, options);
+            _repo.CheckoutPaths(_repo.Head.TrackedBranch.Tip.Sha, paths, options);
         }
 
         private void ReadData()
@@ -215,7 +217,7 @@ namespace BookkeepingAssistant
             }
             catch (Exception)
             {
-                CheckoutGitFile();
+                CheckoutLastPushFile();
                 ReadData();
                 throw;
             }
@@ -229,7 +231,7 @@ namespace BookkeepingAssistant
             }
             catch (Exception)
             {
-                CheckoutGitFile();
+                CheckoutLastPushFile();
                 ReadData();
                 throw;
             }
@@ -308,6 +310,15 @@ namespace BookkeepingAssistant
 
         private void PushGitCommit(string commitMsg)
         {
+            if (_repo.Head.TrackingDetails.AheadBy > 0)
+            {
+                commitMsg = "[上次提交未实时推送，所以上次提交无效]" + commitMsg;
+                //_repo.Refs.RewriteHistory(new RewriteHistoryOptions()
+                //{
+                //    CommitHeaderRewriter = c => CommitRewriteInfo.From(c, "[未实时推送，故提交无效]" + c.Message)
+                //}, _repo.Head.Tip);
+            }
+
             Signature signature = new Signature(_gitName, _gitEmail, DateTimeOffset.Now);
             _repo.Commit(commitMsg, signature, signature);
             _repo.Network.Push(_repo.Head);
