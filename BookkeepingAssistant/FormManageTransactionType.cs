@@ -26,6 +26,11 @@ namespace BookkeepingAssistant
         private void btnAddType_Click(object sender, EventArgs e)
         {
             string type = txtType.Text.Trim();
+            if (string.IsNullOrEmpty(type))
+            {
+                MessageBox.Show("新增失败：名称不能为空。");
+                return;
+            }
             if (_transactionTypes.Contains(type))
             {
                 MessageBox.Show("新增失败：已存在该名称的交易类型。");

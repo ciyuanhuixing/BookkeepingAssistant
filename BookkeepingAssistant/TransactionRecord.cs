@@ -10,6 +10,7 @@ namespace BookkeepingAssistant
         public bool isIncome { get; set; }
         public decimal Amount { get; set; }
         public string AssetName { get; set; }
+        public decimal AssetValue { get; set; }
         public string TransactionType { get; set; }
     }
 }

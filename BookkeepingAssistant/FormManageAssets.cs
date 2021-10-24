@@ -26,6 +26,11 @@ namespace BookkeepingAssistant
         private void btnAddAsset_Click(object sender, EventArgs e)
         {
             string assetName = txtAssetName.Text.Trim();
+            if (string.IsNullOrEmpty(assetName))
+            {
+                MessageBox.Show("新增失败：名称不能为空。");
+                return;
+            }
             if (_dicAssets.ContainsKey(assetName))
             {
                 MessageBox.Show("新增失败：已存在该名称的资产。");

@@ -33,6 +33,7 @@ namespace BookkeepingAssistant
             dt.Columns.Add("收支类型");
             dt.Columns.Add("金额");
             dt.Columns.Add("资产名称");
+            dt.Columns.Add("交易后该资产余额");
             dt.Columns.Add("交易类型");
             foreach (var item in records)
             {
@@ -41,6 +42,7 @@ namespace BookkeepingAssistant
                 dr["收支类型"] = item.isIncome ? "收入" : "支出";
                 dr["金额"] = item.Amount;
                 dr["资产名称"] = item.AssetName;
+                dr["交易后该资产余额"] = item.AssetValue;
                 dr["交易类型"] = item.TransactionType;
                 dt.Rows.Add(dr);
             }

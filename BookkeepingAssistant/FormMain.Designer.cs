@@ -145,6 +145,7 @@ namespace BookkeepingAssistant
             this.linkLabelManageTransactionType.TabIndex = 21;
             this.linkLabelManageTransactionType.TabStop = true;
             this.linkLabelManageTransactionType.Text = "管理交易类型";
+            this.linkLabelManageTransactionType.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelModifyTransactionType_LinkClicked);
             // 
             // linkLabelManageAssets
             // 
@@ -155,6 +156,7 @@ namespace BookkeepingAssistant
             this.linkLabelManageAssets.TabIndex = 20;
             this.linkLabelManageAssets.TabStop = true;
             this.linkLabelManageAssets.Text = "管理资产";
+            this.linkLabelManageAssets.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelModifyAssets_LinkClicked);
             // 
             // btnAdd
             // 
@@ -164,6 +166,7 @@ namespace BookkeepingAssistant
             this.btnAdd.TabIndex = 19;
             this.btnAdd.Text = "新增";
             this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // txtAmount
             // 

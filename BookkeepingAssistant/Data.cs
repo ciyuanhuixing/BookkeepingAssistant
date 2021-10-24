@@ -136,7 +136,14 @@ namespace BookkeepingAssistant
                         continue;
                     }
 
-                    record.TransactionType = arr[4].Trim();
+                    decimal assetValue;
+                    if (!decimal.TryParse(arr[4], out assetValue))
+                    {
+                        continue;
+                    }
+                    record.AssetValue = assetValue;
+
+                    record.TransactionType = arr[5].Trim();
                     if (string.IsNullOrEmpty(record.TransactionType))
                     {
                         continue;
