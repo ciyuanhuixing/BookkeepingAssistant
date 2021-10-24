@@ -41,6 +41,7 @@ namespace BookkeepingAssistant
             this.linkLabelManageAssets = new System.Windows.Forms.LinkLabel();
             this.btnAdd = new System.Windows.Forms.Button();
             this.txtAmount = new System.Windows.Forms.TextBox();
+            this.txtAssets = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetail)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -62,7 +63,7 @@ namespace BookkeepingAssistant
             this.dgvDetail.RowHeadersWidth = 62;
             this.dgvDetail.RowTemplate.Height = 32;
             this.dgvDetail.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDetail.Size = new System.Drawing.Size(1421, 750);
+            this.dgvDetail.Size = new System.Drawing.Size(950, 750);
             this.dgvDetail.TabIndex = 13;
             // 
             // panel1
@@ -177,12 +178,24 @@ namespace BookkeepingAssistant
             this.txtAmount.TabIndex = 3;
             this.txtAmount.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtAmount_KeyUp);
             // 
+            // txtAssets
+            // 
+            this.txtAssets.Dock = System.Windows.Forms.DockStyle.Right;
+            this.txtAssets.Location = new System.Drawing.Point(950, 58);
+            this.txtAssets.Multiline = true;
+            this.txtAssets.Name = "txtAssets";
+            this.txtAssets.ReadOnly = true;
+            this.txtAssets.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtAssets.Size = new System.Drawing.Size(471, 750);
+            this.txtAssets.TabIndex = 14;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1421, 808);
             this.Controls.Add(this.dgvDetail);
+            this.Controls.Add(this.txtAssets);
             this.Controls.Add(this.panel1);
             this.Name = "FormMain";
             this.Text = "记账助手";
@@ -192,6 +205,7 @@ namespace BookkeepingAssistant
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -208,6 +222,7 @@ namespace BookkeepingAssistant
         private System.Windows.Forms.LinkLabel linkLabelManageAssets;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.TextBox txtAmount;
+        private System.Windows.Forms.TextBox txtAssets;
     }
 }
 

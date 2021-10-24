@@ -16,12 +16,13 @@ namespace BookkeepingAssistant
         public FormMain()
         {
             InitializeComponent();
-            comboBoxInOut.DataSource = new string[] { "支出", "收入" };
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            RefreshComboBox();
+            comboBoxInOut.DataSource = new string[] { "支出", "收入" };
+            RefreshAssetsControl();
+            comboBoxTransactionTypes.DataSource = DAL.Singleton.GetTransactionTypes();
             RefreshDetailView();
         }
 
@@ -68,7 +69,7 @@ namespace BookkeepingAssistant
             DAL.Singleton.AppendTransactionRecord(tr);
 
             RefreshDetailView();
-            RefreshComboBox();
+            RefreshAssetsControl();
             txtAmount.Clear();
         }
 
@@ -76,25 +77,32 @@ namespace BookkeepingAssistant
         {
             FormManageAssets formManageAssets = new FormManageAssets();
             formManageAssets.ShowDialog();
-            RefreshComboBox();
+            RefreshAssetsControl();
         }
 
         private void linkLabelModifyTransactionType_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             FormManageTransactionType formManageTransactionType = new FormManageTransactionType();
             formManageTransactionType.ShowDialog();
-            RefreshComboBox();
+            comboBoxTransactionTypes.DataSource = DAL.Singleton.GetTransactionTypes();
         }
 
-        private void RefreshComboBox()
+        private void RefreshAssetsControl()
         {
             BindingSource bs = new BindingSource();
-            bs.DataSource = DAL.Singleton.GetDisplayAssets();
+            var assets = DAL.Singleton.GetDisplayAssets();
+            bs.DataSource = assets; 
             comboBoxAssets.DisplayMember = "Value";
             comboBoxAssets.ValueMember = "Key";
             comboBoxAssets.DataSource = bs;
 
-            comboBoxTransactionTypes.DataSource = DAL.Singleton.GetTransactionTypes();
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("【所有资产】");
+            foreach (var item in assets)
+            {
+                sb.AppendLine(item.Value);
+            }
+            txtAssets.Text = sb.ToString();
         }
 
         private void txtAmount_KeyUp(object sender, KeyEventArgs e)
