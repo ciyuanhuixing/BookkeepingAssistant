@@ -17,7 +17,7 @@ namespace BookkeepingAssistant
         private string _transactionTypeDataFile;
         private string _transactionRecordDataFile;
         private Repository _repo;
-        private bool _haveCommits = true;
+        private bool _haveCommits = false;
 
         private Dictionary<string, decimal> _dicAssets = new Dictionary<string, decimal>();
         private List<string> _transactionTypes = new List<string>();
@@ -43,13 +43,22 @@ namespace BookkeepingAssistant
             {
                 Directory.CreateDirectory(_repositoryDir);
             }
+            bool doInit = false;
             if (!Repository.IsValid(_repositoryDir))
             {
                 Repository.Init(_repositoryDir);
-                _haveCommits = false;
+                doInit = true;
             }
 
             _repo = new Repository(_repositoryDir);
+            if (!doInit)
+            {
+                if (_repo.Head.TrackedBranch?.Tip != null)
+                {
+                    _haveCommits = true;
+                }
+            }
+
             _assetsDataFile = Path.Combine(_repositoryDir, "资产.txt");
             _transactionTypeDataFile = Path.Combine(_repositoryDir, "交易类型.txt");
             _transactionRecordDataFile = Path.Combine(_repositoryDir, "交易记录.txt");
