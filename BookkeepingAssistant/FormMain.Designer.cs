@@ -104,6 +104,7 @@ namespace BookkeepingAssistant
             this.comboBoxInOut.Name = "comboBoxInOut";
             this.comboBoxInOut.Size = new System.Drawing.Size(110, 32);
             this.comboBoxInOut.TabIndex = 0;
+            this.comboBoxInOut.SelectedIndexChanged += new System.EventHandler(this.comboBoxInOut_SelectedIndexChanged);
             // 
             // label1
             // 

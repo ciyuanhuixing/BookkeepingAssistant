@@ -166,5 +166,17 @@ namespace BookkeepingAssistant
                 btnAdd_Click(null, null);
             }
         }
+
+        private void comboBoxInOut_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxInOut.Text=="收入")
+            {
+                txtAmount.BackColor = Color.LightGreen;
+            }
+            else
+            {
+                txtAmount.BackColor = Color.White;
+            }
+        }
     }
 }
