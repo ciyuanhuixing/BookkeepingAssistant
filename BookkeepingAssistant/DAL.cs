@@ -86,9 +86,12 @@ namespace BookkeepingAssistant
 
         private void ReadData()
         {
+            _dicAssets.Clear();
+            _transactionTypes.Clear();
+            _transactionRecords.Clear();
+
             if (File.Exists(_assetsDataFile))
             {
-                _dicAssets.Clear();
                 string[] assetLines = File.ReadAllLines(_assetsDataFile);
                 foreach (var line in assetLines)
                 {
@@ -109,7 +112,6 @@ namespace BookkeepingAssistant
 
             if (File.Exists(_transactionTypeDataFile))
             {
-                _transactionTypes.Clear();
                 string[] lines = File.ReadAllLines(_transactionTypeDataFile);
                 foreach (var line in lines)
                 {
@@ -119,7 +121,6 @@ namespace BookkeepingAssistant
 
             if (File.Exists(_transactionRecordDataFile))
             {
-                _transactionRecords.Clear();
                 string[] lines = File.ReadAllLines(_transactionRecordDataFile);
                 foreach (var line in lines)
                 {
