@@ -49,21 +49,25 @@ namespace BookkeepingAssistant
         private void RefreshDetailView(List<TransactionRecordModel> records)
         {
             DataTable dt = new DataTable();
+            dt.Columns.Add("Id");
             dt.Columns.Add("时间");
             dt.Columns.Add("收支类型");
             dt.Columns.Add("金额");
             dt.Columns.Add("资产名称");
             dt.Columns.Add("交易后该资产余额");
             dt.Columns.Add("交易类型");
+            dt.Columns.Add("退款关联Id");
             foreach (var item in records)
             {
                 DataRow dr = dt.NewRow();
+                dr["Id"] = item.Id;
                 dr["时间"] = item.Time.ToString("yyyy-MM-dd HH:mm");
                 dr["收支类型"] = item.isIncome ? "收入" : "支出";
                 dr["金额"] = item.Amount;
                 dr["资产名称"] = item.AssetName;
                 dr["交易后该资产余额"] = item.AssetValue;
                 dr["交易类型"] = item.TransactionType;
+                dr["退款关联Id"] = item.RefundLinkId;
                 dt.Rows.Add(dr);
             }
             dgvDetail.DataSource = dt;
@@ -170,7 +174,7 @@ namespace BookkeepingAssistant
 
         private void comboBoxInOut_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (comboBoxInOut.Text=="收入")
+            if (comboBoxInOut.Text == "收入")
             {
                 txtAmount.BackColor = Color.LightGreen;
             }
@@ -183,7 +187,7 @@ namespace BookkeepingAssistant
         private void dgvDetail_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
         {
             var row = dgvDetail.Rows[e.RowIndex];
-            if( row.Cells[1].Value.ToString()=="收入")
+            if (row.Cells[1].Value.ToString() == "收入")
             {
                 row.DefaultCellStyle.BackColor = Color.LightGreen;
             }
