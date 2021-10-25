@@ -67,6 +67,7 @@ namespace BookkeepingAssistant
                 dt.Rows.Add(dr);
             }
             dgvDetail.DataSource = dt;
+            dgvDetail.ClearSelection();
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -176,6 +177,15 @@ namespace BookkeepingAssistant
             else
             {
                 txtAmount.BackColor = Color.White;
+            }
+        }
+
+        private void dgvDetail_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
+        {
+            var row = dgvDetail.Rows[e.RowIndex];
+            if( row.Cells[1].Value.ToString()=="收入")
+            {
+                row.DefaultCellStyle.BackColor = Color.LightGreen;
             }
         }
     }
