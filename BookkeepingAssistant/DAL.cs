@@ -17,6 +17,7 @@ namespace BookkeepingAssistant
         private string _transactionTypeDataFile;
         private string _transactionRecordDataFile;
         private Repository _repo;
+        private bool _haveCommits = true;
 
         private Dictionary<string, decimal> _dicAssets = new Dictionary<string, decimal>();
         private List<string> _transactionTypes = new List<string>();
@@ -45,9 +46,10 @@ namespace BookkeepingAssistant
             if (!Repository.IsValid(_repositoryDir))
             {
                 Repository.Init(_repositoryDir);
+                _haveCommits = false;
             }
-            _repo = new Repository(_repositoryDir);
 
+            _repo = new Repository(_repositoryDir);
             _assetsDataFile = Path.Combine(_repositoryDir, "资产.txt");
             _transactionTypeDataFile = Path.Combine(_repositoryDir, "交易类型.txt");
             _transactionRecordDataFile = Path.Combine(_repositoryDir, "交易记录.txt");
@@ -58,6 +60,11 @@ namespace BookkeepingAssistant
 
         private void CheckoutLastPushFile()
         {
+            if (!_haveCommits)
+            {
+                return;
+            }
+
             List<string> paths = new List<string>() {
                 GetGitRelativePath(_assetsDataFile),
                 GetGitRelativePath(_transactionTypeDataFile),
