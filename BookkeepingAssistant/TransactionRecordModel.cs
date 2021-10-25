@@ -6,6 +6,7 @@ namespace BookkeepingAssistant
 {
     public class TransactionRecordModel
     {
+        public int Id { get; set; }
         public DateTime Time { get; set; }
         public bool isIncome { get; set; }
         public decimal Amount { get; set; }

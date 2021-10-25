@@ -42,7 +42,6 @@ namespace BookkeepingAssistant
             _transactionTypeDataFile = Path.Combine(_config.GitRepoDir, "交易类型.txt");
             _transactionRecordDataFile = Path.Combine(_config.GitRepoDir, "交易记录.txt");
 
-            CheckoutLastPushFile();
             ReadData();
         }
 
@@ -65,6 +64,8 @@ namespace BookkeepingAssistant
 
         private void ReadData()
         {
+            CheckoutLastPushFile();
+
             _dicAssets.Clear();
             _transactionTypes.Clear();
             _transactionRecords.Clear();
@@ -103,47 +104,60 @@ namespace BookkeepingAssistant
                 string[] lines = File.ReadAllLines(_transactionRecordDataFile);
                 foreach (var line in lines)
                 {
-                    string[] arr = line.Trim().Split('|');
-                    if (arr.Length != 6)
+                    string[] arr = line.Split('|');
+                    if (arr.Length != 7)
                     {
                         continue;
                     }
+                    for (int i = 0; i < arr.Length; i++)
+                    {
+                        arr[i] = arr[i].Trim();
+                    }
 
                     TransactionRecordModel record = new TransactionRecordModel();
+                    int n = 0;
+                    int id;
+                    if (!int.TryParse(arr[n++], out id))
+                    {
+                        continue;
+                    }
+                    record.Id = id;
+
                     DateTime time;
-                    if (!DateTime.TryParse(arr[0].Trim(), out time))
+                    if (!DateTime.TryParse(arr[n++], out time))
                     {
                         continue;
                     }
                     record.Time = time;
 
-                    if (arr[1].Trim() != "收" && arr[1] != "支")
+                    string inOut = arr[n++];
+                    if (inOut != "收" && inOut != "支")
                     {
                         continue;
                     }
-                    record.isIncome = arr[1].Trim() == "收" ? true : false;
+                    record.isIncome = inOut == "收" ? true : false;
 
                     decimal amount;
-                    if (!decimal.TryParse(arr[2], out amount))
+                    if (!decimal.TryParse(arr[n++], out amount))
                     {
                         continue;
                     }
                     record.Amount = amount;
 
-                    record.AssetName = arr[3].Trim();
+                    record.AssetName = arr[n++];
                     if (string.IsNullOrEmpty(record.AssetName))
                     {
                         continue;
                     }
 
                     decimal assetValue;
-                    if (!decimal.TryParse(arr[4], out assetValue))
+                    if (!decimal.TryParse(arr[n++], out assetValue))
                     {
                         continue;
                     }
                     record.AssetValue = assetValue;
 
-                    record.TransactionType = arr[5].Trim();
+                    record.TransactionType = arr[n++];
                     if (string.IsNullOrEmpty(record.TransactionType))
                     {
                         continue;
@@ -232,7 +246,6 @@ namespace BookkeepingAssistant
             }
             catch (Exception)
             {
-                CheckoutLastPushFile();
                 ReadData();
                 throw;
             }
@@ -306,6 +319,10 @@ namespace BookkeepingAssistant
                 throw new Exception("交易类型不能为空");
             }
 
+            if (_transactionRecords.Any())
+            {
+                tr.Id = _transactionRecords.Last().Id + 1;
+            }
             decimal assetValue = _dicAssets[tr.AssetName];
             if (tr.isIncome)
             {
@@ -326,7 +343,9 @@ namespace BookkeepingAssistant
         {
             WriteAssetsDataFile();
             File.AppendAllLines(_transactionRecordDataFile,
-                new List<string>() { string.Join('|', tr.Time, tr.isIncome ? "收" : "支", tr.Amount, tr.AssetName, tr.AssetValue, tr.TransactionType) });
+                new List<string>() {
+                    string.Join('|',tr.Id, tr.Time, tr.isIncome ? "收" : "支", tr.Amount, tr.AssetName,
+                    tr.AssetValue, tr.TransactionType) });
 
             StageFile(_transactionRecordDataFile);
             StageFile(_assetsDataFile);
