@@ -22,6 +22,8 @@ namespace BookkeepingAssistant
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
+
             _records = DAL.Singleton.GetTransactionRecords();
             _records.Reverse();
 
