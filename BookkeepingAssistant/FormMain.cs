@@ -25,8 +25,10 @@ namespace BookkeepingAssistant
             var config = ConfigHelper.ReadConfig();
             if (!config.IsInit)
             {
+                this.Visible = false;
                 FormInit formInit = new FormInit();
                 formInit.ShowDialog();
+                this.Visible = true;
             }
 
             _records = DAL.Singleton.GetTransactionRecords();
