@@ -284,8 +284,17 @@ namespace BookkeepingAssistant
 
         public void AppendTransactionRecord(TransactionRecordModel tr)
         {
-            _dicAssets[tr.AssetName] -= tr.Amount;
-            tr.AssetValue = _dicAssets[tr.AssetName];
+            decimal assetValue = _dicAssets[tr.AssetName];
+            if (tr.isIncome)
+            {
+                assetValue += tr.Amount;
+            }
+            else
+            {
+                assetValue -= tr.Amount;
+            }
+            _dicAssets[tr.AssetName] = assetValue;
+            tr.AssetValue = assetValue;
             _transactionRecords.Add(tr);
 
             PossibleRollback(SaveTransactionRecord, tr);
