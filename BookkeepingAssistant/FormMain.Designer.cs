@@ -43,6 +43,7 @@ namespace BookkeepingAssistant
             this.btnAdd = new System.Windows.Forms.Button();
             this.txtAmount = new System.Windows.Forms.TextBox();
             this.txtAssets = new System.Windows.Forms.TextBox();
+            this.btnRefund = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetail)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -72,12 +73,13 @@ namespace BookkeepingAssistant
             this.dgvDetail.RowHeadersWidth = 62;
             this.dgvDetail.RowTemplate.Height = 32;
             this.dgvDetail.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDetail.Size = new System.Drawing.Size(950, 750);
+            this.dgvDetail.Size = new System.Drawing.Size(1145, 750);
             this.dgvDetail.TabIndex = 13;
             this.dgvDetail.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dgvDetail_RowPrePaint);
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnRefund);
             this.panel1.Controls.Add(this.comboBoxInOut);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.label2);
@@ -91,7 +93,7 @@ namespace BookkeepingAssistant
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1421, 58);
+            this.panel1.Size = new System.Drawing.Size(1616, 58);
             this.panel1.TabIndex = 0;
             // 
             // comboBoxInOut
@@ -152,7 +154,7 @@ namespace BookkeepingAssistant
             // linkLabelManageTransactionType
             // 
             this.linkLabelManageTransactionType.AutoSize = true;
-            this.linkLabelManageTransactionType.Location = new System.Drawing.Point(1288, 16);
+            this.linkLabelManageTransactionType.Location = new System.Drawing.Point(1477, 19);
             this.linkLabelManageTransactionType.Name = "linkLabelManageTransactionType";
             this.linkLabelManageTransactionType.Size = new System.Drawing.Size(118, 24);
             this.linkLabelManageTransactionType.TabIndex = 21;
@@ -163,7 +165,7 @@ namespace BookkeepingAssistant
             // linkLabelManageAssets
             // 
             this.linkLabelManageAssets.AutoSize = true;
-            this.linkLabelManageAssets.Location = new System.Drawing.Point(1185, 16);
+            this.linkLabelManageAssets.Location = new System.Drawing.Point(1374, 19);
             this.linkLabelManageAssets.Name = "linkLabelManageAssets";
             this.linkLabelManageAssets.Size = new System.Drawing.Size(82, 24);
             this.linkLabelManageAssets.TabIndex = 20;
@@ -192,7 +194,7 @@ namespace BookkeepingAssistant
             // txtAssets
             // 
             this.txtAssets.Dock = System.Windows.Forms.DockStyle.Right;
-            this.txtAssets.Location = new System.Drawing.Point(950, 58);
+            this.txtAssets.Location = new System.Drawing.Point(1145, 58);
             this.txtAssets.Multiline = true;
             this.txtAssets.Name = "txtAssets";
             this.txtAssets.ReadOnly = true;
@@ -200,11 +202,21 @@ namespace BookkeepingAssistant
             this.txtAssets.Size = new System.Drawing.Size(471, 750);
             this.txtAssets.TabIndex = 14;
             // 
+            // btnRefund
+            // 
+            this.btnRefund.Location = new System.Drawing.Point(1177, 12);
+            this.btnRefund.Name = "btnRefund";
+            this.btnRefund.Size = new System.Drawing.Size(156, 34);
+            this.btnRefund.TabIndex = 25;
+            this.btnRefund.Text = "对选中记录退款";
+            this.btnRefund.UseVisualStyleBackColor = true;
+            this.btnRefund.Click += new System.EventHandler(this.btnRefund_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1421, 808);
+            this.ClientSize = new System.Drawing.Size(1616, 808);
             this.Controls.Add(this.dgvDetail);
             this.Controls.Add(this.txtAssets);
             this.Controls.Add(this.panel1);
@@ -234,6 +246,7 @@ namespace BookkeepingAssistant
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.TextBox txtAmount;
         private System.Windows.Forms.TextBox txtAssets;
+        private System.Windows.Forms.Button btnRefund;
     }
 }
 

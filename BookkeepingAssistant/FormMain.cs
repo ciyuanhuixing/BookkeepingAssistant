@@ -106,6 +106,11 @@ namespace BookkeepingAssistant
             txtAmount.Clear();
         }
 
+        private void Add()
+        {
+
+        }
+
         private void linkLabelModifyAssets_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             FormManageAssets formManageAssets = new FormManageAssets();
@@ -187,10 +192,20 @@ namespace BookkeepingAssistant
         private void dgvDetail_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
         {
             var row = dgvDetail.Rows[e.RowIndex];
-            if (row.Cells[1].Value.ToString() == "收入")
+            if (row.Cells["收支类型"].Value.ToString() == "收入")
             {
                 row.DefaultCellStyle.BackColor = Color.LightGreen;
             }
+        }
+
+        private void btnRefund_Click(object sender, EventArgs e)
+        {
+            if (dgvDetail.SelectedRows[0].Cells["收支类型"].Value.ToString() != "支出")
+            {
+                MessageBox.Show("收入不可退款。");
+                return;
+            }
+
         }
     }
 }
