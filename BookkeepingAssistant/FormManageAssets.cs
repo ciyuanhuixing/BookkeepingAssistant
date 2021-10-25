@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using System.Linq;
 
 namespace BookkeepingAssistant
 {
@@ -49,8 +50,15 @@ namespace BookkeepingAssistant
 
         private void DisplayAssets()
         {
+            var assets = DAL.Singleton.GetDisplayAssets();
+            if (!assets.Any())
+            {
+                btnRemove.Enabled = false;
+                return;
+            }
+
             BindingSource bs = new BindingSource();
-            bs.DataSource = DAL.Singleton.GetDisplayAssets();
+            bs.DataSource = assets;
             comboBoxAssets.DisplayMember = "Value";
             comboBoxAssets.ValueMember = "Key";
             comboBoxAssets.DataSource = bs;

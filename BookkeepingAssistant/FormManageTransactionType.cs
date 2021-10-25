@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using System.Linq;
 
 namespace BookkeepingAssistant
 {
@@ -42,8 +43,14 @@ namespace BookkeepingAssistant
 
         private void RefreshTransactionTypes()
         {
+            var types = DAL.Singleton.GetTransactionTypes();
+            if (!types.Any())
+            {
+                btnRemove.Enabled = false;
+                return;
+            }
             comboBoxTypes.DataSource = null;
-            comboBoxTypes.DataSource = DAL.Singleton.GetTransactionTypes();
+            comboBoxTypes.DataSource = types;
         }
 
         private void btnRemove_Click(object sender, EventArgs e)

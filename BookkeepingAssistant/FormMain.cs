@@ -75,7 +75,15 @@ namespace BookkeepingAssistant
             tr.AssetName = (string)comboBoxAssets.SelectedValue;
             tr.TransactionType = (string)comboBoxTransactionTypes.SelectedValue;
 
-            DAL.Singleton.AppendTransactionRecord(tr);
+            try
+            {
+                DAL.Singleton.AppendTransactionRecord(tr);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"新增交易记录失败：{ ex.Message}。");
+                return;
+            }
 
             _records = DAL.Singleton.GetTransactionRecords();
             _records.Reverse();
@@ -100,8 +108,12 @@ namespace BookkeepingAssistant
 
         private void RefreshAssetsControl()
         {
-            BindingSource bs = new BindingSource();
             var assets = DAL.Singleton.GetDisplayAssets();
+            if (!assets.Any())
+            {
+                return;
+            }
+            BindingSource bs = new BindingSource();
             bs.DataSource = assets;
             comboBoxAssets.DisplayMember = "Value";
             comboBoxAssets.ValueMember = "Key";
@@ -123,7 +135,12 @@ namespace BookkeepingAssistant
 
         private void RefreshTransactionTypesControl()
         {
-            comboBoxTransactionTypes.DataSource = DAL.Singleton.GetTransactionTypes();
+            var types = DAL.Singleton.GetTransactionTypes();
+            if (!types.Any())
+            {
+                return;
+            }
+            comboBoxTransactionTypes.DataSource = types;
             if (_records.Any())
             {
                 var r = _records.First();

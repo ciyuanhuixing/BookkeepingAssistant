@@ -69,20 +69,19 @@ namespace BookkeepingAssistant
 
         private void CheckoutLastPushFile()
         {
+            List<string> paths = new List<string>() {
+                _assetsDataFile,
+                _transactionTypeDataFile,
+                _transactionRecordDataFile
+            };
             if (!_haveCommits)
             {
+                paths.ForEach(o => File.Delete(o));
                 return;
             }
-
-            List<string> paths = new List<string>() {
-                GetGitRelativePath(_assetsDataFile),
-                GetGitRelativePath(_transactionTypeDataFile),
-                GetGitRelativePath(_transactionRecordDataFile)
-            };
             CheckoutOptions options = new CheckoutOptions();
             options.CheckoutModifiers = CheckoutModifiers.Force;
-            //_repo.Checkout(_repo.Head.TrackedBranch.Tip.Tree, paths, options);
-            _repo.CheckoutPaths(_repo.Head.TrackedBranch.Tip.Sha, paths, options);
+            _repo.CheckoutPaths(_repo.Head.TrackedBranch.Tip.Sha, paths.Select(o => GetGitRelativePath(o)), options);
         }
 
         private void ReadData()
@@ -261,12 +260,20 @@ namespace BookkeepingAssistant
 
         public void AddAsset(string assetName, decimal assetValue)
         {
+            if (string.IsNullOrWhiteSpace(assetName))
+            {
+                throw new Exception("资产名称不能为空");
+            }
             _dicAssets.Add(assetName, assetValue);
             PossibleRollback(SaveAssets);
         }
 
         public void RemoveAsset(string assetName)
         {
+            if (string.IsNullOrWhiteSpace(assetName))
+            {
+                throw new Exception("资产名称不能为空");
+            }
             if (_dicAssets[assetName] != 0)
             {
                 throw new Exception("该资产余额不为零，不可删除。");
@@ -290,18 +297,35 @@ namespace BookkeepingAssistant
 
         public void AddTransactionType(string name)
         {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new Exception("交易类型不能为空");
+            }
             _transactionTypes.Add(name);
             PossibleRollback(SaveTransactionTypes);
         }
 
         public void RemoveTransactionType(string name)
         {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new Exception("交易类型不能为空");
+            }
             _transactionTypes.Remove(name);
             PossibleRollback(SaveTransactionTypes);
         }
 
         public void AppendTransactionRecord(TransactionRecordModel tr)
         {
+            if (string.IsNullOrWhiteSpace(tr.AssetName))
+            {
+                throw new Exception("资产名称不能为空");
+            }
+            if (string.IsNullOrWhiteSpace(tr.TransactionType))
+            {
+                throw new Exception("交易类型不能为空");
+            }
+
             decimal assetValue = _dicAssets[tr.AssetName];
             if (tr.isIncome)
             {
