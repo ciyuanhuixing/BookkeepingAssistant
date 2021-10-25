@@ -88,7 +88,12 @@ namespace BookkeepingAssistant
             tr.Amount = amount;
             tr.AssetName = (string)comboBoxAssets.SelectedValue;
             tr.TransactionType = (string)comboBoxTransactionTypes.SelectedValue;
+            AddTransactionRecord(tr);
+            txtAmount.Clear();
+        }
 
+        private void AddTransactionRecord(TransactionRecordModel tr)
+        {
             try
             {
                 DAL.Singleton.AppendTransactionRecord(tr);
@@ -103,12 +108,6 @@ namespace BookkeepingAssistant
             _records.Reverse();
             RefreshDetailView(_records);
             RefreshAssetsControl();
-            txtAmount.Clear();
-        }
-
-        private void Add()
-        {
-
         }
 
         private void linkLabelModifyAssets_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -200,12 +199,25 @@ namespace BookkeepingAssistant
 
         private void btnRefund_Click(object sender, EventArgs e)
         {
-            if (dgvDetail.SelectedRows[0].Cells["收支类型"].Value.ToString() != "支出")
+            if (dgvDetail.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("请先选中一行记录。");
+                return;
+            }
+            var row = dgvDetail.SelectedRows[0];
+            if (row.Cells["收支类型"].Value.ToString() != "支出")
             {
                 MessageBox.Show("收入不可退款。");
                 return;
             }
-
+            TransactionRecordModel model = new TransactionRecordModel();
+            model.Time = DateTime.Now;
+            model.isIncome = true;
+            model.AssetName = row.Cells["资产名称"].Value.ToString();
+            model.TransactionType = row.Cells["交易类型"].Value.ToString();
+            model.Amount = decimal.Parse(row.Cells["金额"].Value.ToString());
+            model.RefundLinkId = row.Cells["Id"].Value.ToString();
+            AddTransactionRecord(model);
         }
     }
 }
