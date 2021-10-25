@@ -12,7 +12,9 @@ namespace BookkeepingAssistant
 {
     public partial class FormInit : Form
     {
-        Repository _repo;
+        private Repository _repo;
+        private bool isInit = false;
+
         public FormInit()
         {
             InitializeComponent();
@@ -29,7 +31,7 @@ namespace BookkeepingAssistant
             dialog.Description = "请选择数据文件夹。";
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                txtGitDir.Text = dialog.SelectedPath;
+                txtGitRepoDir.Text = dialog.SelectedPath;
             }
             if (!Repository.IsValid(dialog.SelectedPath))
             {
@@ -37,7 +39,7 @@ namespace BookkeepingAssistant
             }
 
             _repo = new Repository(dialog.SelectedPath);
-            if (_repo.Head.IsRemote)
+            if (_repo.Head.IsTracking)
             {
                 txtRemoteUrl.Text = _repo.Network.Remotes[_repo.Head.RemoteName].PushUrl;
             }
@@ -50,8 +52,8 @@ namespace BookkeepingAssistant
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            string gitDir = txtGitDir.Text.Trim();
-            if (string.IsNullOrEmpty(gitDir))
+            string gitRepoDir = txtGitRepoDir.Text.Trim();
+            if (string.IsNullOrEmpty(gitRepoDir))
             {
                 MessageBox.Show("数据文件夹路径不能为空。");
                 return;
@@ -77,21 +79,32 @@ namespace BookkeepingAssistant
 
             if (_repo == null)
             {
-                if (!Directory.Exists(gitDir))
+                if (!Directory.Exists(gitRepoDir))
                 {
-                    Directory.CreateDirectory(gitDir);
+                    Directory.CreateDirectory(gitRepoDir);
                 }
-                if (!Repository.IsValid(gitDir))
+                if (!Repository.IsValid(gitRepoDir))
                 {
-                    Repository.Init(gitDir);
+                    Repository.Init(gitRepoDir);
                 }
-                _repo = new Repository(gitDir);
+                _repo = new Repository(gitRepoDir);
             }
 
             if (_repo.Head.TrackedBranch == null || _repo.Network.Remotes[_repo.Head.RemoteName].PushUrl != gitRemoteUrl)
             {
                 AddGitRemote(gitRemoteUrl);
             }
+
+            ConfigModel model = new ConfigModel();
+            model.IsInit = true;
+            model.GitRepoDir = gitRepoDir;
+            model.GitPushUrl = gitRemoteUrl;
+            model.GitUsername = gitUsername;
+            model.GitEmail = gitEmail;
+            ConfigHelper.SaveConfig(model);
+
+            isInit = true;
+            Close();
         }
 
         private void AddGitRemote(string url)
@@ -105,6 +118,14 @@ namespace BookkeepingAssistant
             _repo.Branches.Update(_repo.Head,
                b => b.Remote = remote.Name,
                b => b.UpstreamBranch = _repo.Head.CanonicalName);
+        }
+
+        private void FormInit_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!isInit)
+            {
+                Environment.Exit(0);
+            }
         }
     }
 }

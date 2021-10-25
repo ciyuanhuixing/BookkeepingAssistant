@@ -54,6 +54,7 @@ namespace BookkeepingAssistant
             if (!assets.Any())
             {
                 btnRemove.Enabled = false;
+                comboBoxAssets.DataSource = null;
                 return;
             }
 

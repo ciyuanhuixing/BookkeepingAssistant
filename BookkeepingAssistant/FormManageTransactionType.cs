@@ -47,9 +47,9 @@ namespace BookkeepingAssistant
             if (!types.Any())
             {
                 btnRemove.Enabled = false;
+                comboBoxTypes.DataSource = null;
                 return;
             }
-            comboBoxTypes.DataSource = null;
             comboBoxTypes.DataSource = types;
         }
 

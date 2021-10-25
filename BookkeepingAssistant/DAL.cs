@@ -9,11 +9,7 @@ namespace BookkeepingAssistant
 {
     public class DAL
     {
-        private Dictionary<string, string> _dicConfig;
-        private const string _gitName = "ciyuanhuixing";
-        private const string _gitEmail = "ciyuanhuixing@qq.com";
-
-        private string _gitRepositoryDir;
+        private ConfigModel _config;
         private string _assetsDataFile;
         private string _transactionTypeDataFile;
         private string _transactionRecordDataFile;
@@ -35,36 +31,16 @@ namespace BookkeepingAssistant
 
         private DAL()
         {
-            _dicConfig = ConfigHelper.ReadConfig();
-            _gitRepositoryDir = _dicConfig["GitRepositoryDir"];
-
-            if (string.IsNullOrWhiteSpace(_gitRepositoryDir))
+            _config = ConfigHelper.ReadConfig();
+            _repo = new Repository(_config.GitRepoDir);
+            if (_repo.Head.TrackedBranch?.Tip != null)
             {
-                throw new Exception("Git仓库路径为空");
-            }
-            if (!Directory.Exists(_gitRepositoryDir))
-            {
-                Directory.CreateDirectory(_gitRepositoryDir);
-            }
-            bool doInit = false;
-            if (!Repository.IsValid(_gitRepositoryDir))
-            {
-                Repository.Init(_gitRepositoryDir);
-                doInit = true;
+                _haveCommits = true;
             }
 
-            _repo = new Repository(_gitRepositoryDir);
-            if (!doInit)
-            {
-                if (_repo.Head.TrackedBranch?.Tip != null)
-                {
-                    _haveCommits = true;
-                }
-            }
-
-            _assetsDataFile = Path.Combine(_gitRepositoryDir, "资产.txt");
-            _transactionTypeDataFile = Path.Combine(_gitRepositoryDir, "交易类型.txt");
-            _transactionRecordDataFile = Path.Combine(_gitRepositoryDir, "交易记录.txt");
+            _assetsDataFile = Path.Combine(_config.GitRepoDir, "资产.txt");
+            _transactionTypeDataFile = Path.Combine(_config.GitRepoDir, "交易类型.txt");
+            _transactionRecordDataFile = Path.Combine(_config.GitRepoDir, "交易记录.txt");
 
             CheckoutLastPushFile();
             ReadData();
@@ -364,7 +340,7 @@ namespace BookkeepingAssistant
 
         private string GetGitRelativePath(string filePath)
         {
-            return Path.GetRelativePath(_gitRepositoryDir, filePath);
+            return Path.GetRelativePath(_config.GitRepoDir, filePath);
         }
 
         private void PushGitCommit(string commitMsg)
@@ -378,7 +354,7 @@ namespace BookkeepingAssistant
                 //}, _repo.Head.Tip);
             }
 
-            Signature signature = new Signature(_gitName, _gitEmail, DateTimeOffset.Now);
+            Signature signature = new Signature(_config.GitUsername, _config.GitEmail, DateTimeOffset.Now);
             _repo.Commit(commitMsg, signature, signature);
             _repo.Network.Push(_repo.Head);
         }

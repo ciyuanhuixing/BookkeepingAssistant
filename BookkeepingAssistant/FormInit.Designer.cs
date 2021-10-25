@@ -30,7 +30,7 @@ namespace BookkeepingAssistant
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.txtGitDir = new System.Windows.Forms.TextBox();
+            this.txtGitRepoDir = new System.Windows.Forms.TextBox();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnSelectGitDir = new System.Windows.Forms.Button();
             this.txtRemoteUrl = new System.Windows.Forms.TextBox();
@@ -44,7 +44,7 @@ namespace BookkeepingAssistant
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(18, 38);
+            this.label1.Location = new System.Drawing.Point(74, 38);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(202, 24);
             this.label1.TabIndex = 0;
@@ -52,17 +52,17 @@ namespace BookkeepingAssistant
             // 
             // txtGitDir
             // 
-            this.txtGitDir.Location = new System.Drawing.Point(282, 35);
-            this.txtGitDir.Name = "txtGitDir";
-            this.txtGitDir.ReadOnly = true;
-            this.txtGitDir.Size = new System.Drawing.Size(540, 30);
-            this.txtGitDir.TabIndex = 1;
+            this.txtGitRepoDir.Location = new System.Drawing.Point(282, 35);
+            this.txtGitRepoDir.Name = "txtGitDir";
+            this.txtGitRepoDir.ReadOnly = true;
+            this.txtGitRepoDir.Size = new System.Drawing.Size(596, 30);
+            this.txtGitRepoDir.TabIndex = 1;
             // 
             // btnOK
             // 
             this.btnOK.Location = new System.Drawing.Point(379, 345);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(112, 34);
+            this.btnOK.Size = new System.Drawing.Size(342, 34);
             this.btnOK.TabIndex = 2;
             this.btnOK.Text = "确定";
             this.btnOK.UseVisualStyleBackColor = true;
@@ -70,7 +70,7 @@ namespace BookkeepingAssistant
             // 
             // btnSelectGitDir
             // 
-            this.btnSelectGitDir.Location = new System.Drawing.Point(833, 33);
+            this.btnSelectGitDir.Location = new System.Drawing.Point(1009, 33);
             this.btnSelectGitDir.Name = "btnSelectGitDir";
             this.btnSelectGitDir.Size = new System.Drawing.Size(112, 34);
             this.btnSelectGitDir.TabIndex = 3;
@@ -80,9 +80,9 @@ namespace BookkeepingAssistant
             // 
             // txtRemoteUrl
             // 
-            this.txtRemoteUrl.Location = new System.Drawing.Point(282, 85);
+            this.txtRemoteUrl.Location = new System.Drawing.Point(284, 85);
             this.txtRemoteUrl.Name = "txtRemoteUrl";
-            this.txtRemoteUrl.Size = new System.Drawing.Size(540, 30);
+            this.txtRemoteUrl.Size = new System.Drawing.Size(837, 30);
             this.txtRemoteUrl.TabIndex = 5;
             // 
             // label2
@@ -98,13 +98,13 @@ namespace BookkeepingAssistant
             // 
             this.txtGitUsername.Location = new System.Drawing.Point(282, 133);
             this.txtGitUsername.Name = "txtGitUsername";
-            this.txtGitUsername.Size = new System.Drawing.Size(194, 30);
+            this.txtGitUsername.Size = new System.Drawing.Size(335, 30);
             this.txtGitUsername.TabIndex = 7;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(126, 133);
+            this.label3.Location = new System.Drawing.Point(182, 133);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(94, 24);
             this.label3.TabIndex = 6;
@@ -112,15 +112,15 @@ namespace BookkeepingAssistant
             // 
             // txtGitEmail
             // 
-            this.txtGitEmail.Location = new System.Drawing.Point(628, 136);
+            this.txtGitEmail.Location = new System.Drawing.Point(727, 136);
             this.txtGitEmail.Name = "txtGitEmail";
-            this.txtGitEmail.Size = new System.Drawing.Size(194, 30);
+            this.txtGitEmail.Size = new System.Drawing.Size(394, 30);
             this.txtGitEmail.TabIndex = 9;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(546, 139);
+            this.label4.Location = new System.Drawing.Point(645, 139);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(76, 24);
             this.label4.TabIndex = 8;
@@ -130,7 +130,7 @@ namespace BookkeepingAssistant
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(964, 450);
+            this.ClientSize = new System.Drawing.Size(1143, 450);
             this.Controls.Add(this.txtGitEmail);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.txtGitUsername);
@@ -139,10 +139,11 @@ namespace BookkeepingAssistant
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnSelectGitDir);
             this.Controls.Add(this.btnOK);
-            this.Controls.Add(this.txtGitDir);
+            this.Controls.Add(this.txtGitRepoDir);
             this.Controls.Add(this.label1);
             this.Name = "FormInit";
             this.Text = "记账助手 - 初始化";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormInit_FormClosing);
             this.Load += new System.EventHandler(this.FormInit_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -152,7 +153,7 @@ namespace BookkeepingAssistant
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtGitDir;
+        private System.Windows.Forms.TextBox txtGitRepoDir;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnSelectGitDir;
         private System.Windows.Forms.TextBox txtRemoteUrl;

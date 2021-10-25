@@ -3,44 +3,61 @@ using System.Collections.Generic;
 //using System.Configuration;
 using System.Text;
 using System.IO;
+using System.Reflection;
 
 namespace BookkeepingAssistant
 {
     public class ConfigHelper
     {
         private static string _configFile = Path.Combine(Directory.GetCurrentDirectory(), "BA.config");
-        public static void SaveConfig(Dictionary<string, string> dicConfig)
+
+        public static void SaveConfig(ConfigModel model)
+        {
+            File.WriteAllText(_configFile, ToConfigText(model));
+        }
+
+        private static string ToConfigText<T>(T obj)
         {
             StringBuilder sb = new StringBuilder();
-            foreach (var item in dicConfig)
+            var type = obj.GetType();
+            var pros = type.GetProperties();
+            foreach (var p in pros)
             {
-                sb.AppendLine(string.Join(':', item.Key, item.Value));
+                sb.AppendLine(string.Join(':', p.Name, p.GetValue(obj)));
             }
-            File.WriteAllText(_configFile, sb.ToString());
+            return sb.ToString();
         }
-        public static Dictionary<string, string> ReadConfig()
+
+        public static ConfigModel ReadConfig()
         {
-            Dictionary<string, string> dicConfig = new Dictionary<string, string>();
-            if (File.Exists(_configFile))
+            ConfigModel model = new ConfigModel();
+            if (!File.Exists(_configFile))
             {
-                string[] lines = File.ReadAllLines(_configFile);
-                foreach (var line in lines)
+                return model;
+            }
+
+            string[] lines = File.ReadAllLines(_configFile);
+            foreach (var line in lines)
+            {
+                int sepIndex = line.IndexOf(':');
+                if (sepIndex < 1)
                 {
-                    string[] txts = line.Split(':');
-                    if (txts.Length != 2)
-                    {
-                        continue;
-                    }
-                    string key = txts[0].Trim();
-                    string value = txts[1].Trim();
-                    if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(value))
-                    {
-                        continue;
-                    }
-                    dicConfig.Add(key, value);
+                    continue;
+                }
+                string key = line.Substring(0, sepIndex).Trim();
+                string value = line.Substring(sepIndex + 1).Trim();
+                if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(value))
+                {
+                    continue;
+                }
+                var type = model.GetType();
+                var pro = type.GetProperty(key);
+                if (pro != null)
+                {
+                    pro.SetValue(model, Convert.ChangeType(value, pro.PropertyType));
                 }
             }
-            return dicConfig;
+            return model;
         }
 
         ///// <summary>  

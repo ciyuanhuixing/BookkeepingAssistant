@@ -22,7 +22,12 @@ namespace BookkeepingAssistant
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            var config = ConfigHelper.ReadConfig();
+            if (!config.IsInit)
+            {
+                FormInit formInit = new FormInit();
+                formInit.ShowDialog();
+            }
 
             _records = DAL.Singleton.GetTransactionRecords();
             _records.Reverse();
@@ -113,6 +118,7 @@ namespace BookkeepingAssistant
             var assets = DAL.Singleton.GetDisplayAssets();
             if (!assets.Any())
             {
+                comboBoxAssets.DataSource = null;
                 return;
             }
             BindingSource bs = new BindingSource();
@@ -140,6 +146,7 @@ namespace BookkeepingAssistant
             var types = DAL.Singleton.GetTransactionTypes();
             if (!types.Any())
             {
+                comboBoxTransactionTypes.DataSource = null;
                 return;
             }
             comboBoxTransactionTypes.DataSource = types;
