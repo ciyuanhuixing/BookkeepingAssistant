@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Linq;
 
 namespace BookkeepingAssistant
 {
@@ -170,6 +171,7 @@ namespace BookkeepingAssistant
 
         public Dictionary<string, string> GetDisplayAssets()
         {
+            _dicAssets = _dicAssets.OrderByDescending(o => o.Value).ToDictionary(o => o.Key, o => o.Value);
             Dictionary<string, string> dicDisplayAssets = new Dictionary<string, string>();
             foreach (var kvp in _dicAssets)
             {
