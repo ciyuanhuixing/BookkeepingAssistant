@@ -13,6 +13,8 @@ namespace BookkeepingAssistant
 {
     public partial class FormMain : Form
     {
+        private List<TransactionRecordModel> _records;
+
         public FormMain()
         {
             InitializeComponent();
@@ -20,28 +22,23 @@ namespace BookkeepingAssistant
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            comboBoxInOut.DataSource = new string[] { "支出", "收入" };
-            RefreshAssetsControl();
-            comboBoxTransactionTypes.DataSource = DAL.Singleton.GetTransactionTypes();
+            _records = DAL.Singleton.GetTransactionRecords();
+            _records.Reverse();
 
-            var records = DAL.Singleton.GetTransactionRecords();
-            if (records.Any())
+            comboBoxInOut.DataSource = new string[] { "支出", "收入" };
+            if (_records.Any())
             {
-                var r = records.Last();
+                var r = _records.First();
                 comboBoxInOut.SelectedItem = r.isIncome ? "收入" : "支出";
-                comboBoxAssets.SelectedValue = r.AssetName;
-                comboBoxTransactionTypes.SelectedItem = r.TransactionType;
             }
-            RefreshDetailView(records);
+
+            RefreshAssetsControl();
+            RefreshTransactionTypesControl();
+            RefreshDetailView(_records);
         }
 
         private void RefreshDetailView(List<TransactionRecordModel> records)
         {
-            if (records == null)
-            {
-                records = DAL.Singleton.GetTransactionRecords();
-            }
-            records.Reverse();
             DataTable dt = new DataTable();
             dt.Columns.Add("时间");
             dt.Columns.Add("收支类型");
@@ -80,7 +77,9 @@ namespace BookkeepingAssistant
 
             DAL.Singleton.AppendTransactionRecord(tr);
 
-            RefreshDetailView(null);
+            _records = DAL.Singleton.GetTransactionRecords();
+            _records.Reverse();
+            RefreshDetailView(_records);
             RefreshAssetsControl();
             txtAmount.Clear();
         }
@@ -96,7 +95,7 @@ namespace BookkeepingAssistant
         {
             FormManageTransactionType formManageTransactionType = new FormManageTransactionType();
             formManageTransactionType.ShowDialog();
-            comboBoxTransactionTypes.DataSource = DAL.Singleton.GetTransactionTypes();
+            RefreshTransactionTypesControl();
         }
 
         private void RefreshAssetsControl()
@@ -107,6 +106,11 @@ namespace BookkeepingAssistant
             comboBoxAssets.DisplayMember = "Value";
             comboBoxAssets.ValueMember = "Key";
             comboBoxAssets.DataSource = bs;
+            if (_records.Any())
+            {
+                var r = _records.First();
+                comboBoxAssets.SelectedValue = r.AssetName;
+            }
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("【所有资产】");
@@ -115,6 +119,16 @@ namespace BookkeepingAssistant
                 sb.AppendLine(item.Value);
             }
             txtAssets.Text = sb.ToString();
+        }
+
+        private void RefreshTransactionTypesControl()
+        {
+            comboBoxTransactionTypes.DataSource = DAL.Singleton.GetTransactionTypes();
+            if (_records.Any())
+            {
+                var r = _records.First();
+                comboBoxTransactionTypes.SelectedItem = r.TransactionType;
+            }
         }
 
         private void txtAmount_KeyUp(object sender, KeyEventArgs e)
