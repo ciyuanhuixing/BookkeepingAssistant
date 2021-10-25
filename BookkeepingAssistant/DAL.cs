@@ -60,7 +60,7 @@ namespace BookkeepingAssistant
             }
             CheckoutOptions options = new CheckoutOptions();
             options.CheckoutModifiers = CheckoutModifiers.Force;
-            _repo.CheckoutPaths(_repo.Head.TrackedBranch.Tip.Sha, paths.Select(o => GetGitRelativePath(o)), options);
+            _repo.Checkout(_repo.Head.TrackedBranch.Tip.Tree, paths.Select(o => GetGitRelativePath(o)), options);
         }
 
         private void ReadData()
