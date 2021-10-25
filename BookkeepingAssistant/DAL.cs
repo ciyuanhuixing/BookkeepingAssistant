@@ -211,23 +211,27 @@ namespace BookkeepingAssistant
 
         private void PossibleRollback(Action work)
         {
-            try
-            {
-                work();
-            }
-            catch (Exception)
-            {
-                CheckoutLastPushFile();
-                ReadData();
-                throw;
-            }
+            PossibleRollback<object>(work, null, null);
         }
 
         private void PossibleRollback<T>(Action<T> work, T obj)
         {
+            PossibleRollback(null, work, obj);
+        }
+
+        private void PossibleRollback<T>(Action work, Action<T> workWithArg, T obj)
+        {
             try
             {
-                work.Invoke(obj);
+                CheckoutLastPushFile();
+                if (work != null)
+                {
+                    work();
+                }
+                else if (workWithArg != null)
+                {
+                    workWithArg(obj);
+                }
             }
             catch (Exception)
             {
