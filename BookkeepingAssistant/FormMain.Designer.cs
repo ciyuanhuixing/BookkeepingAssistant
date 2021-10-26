@@ -32,6 +32,8 @@ namespace BookkeepingAssistant
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvDetail = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnStatistics = new System.Windows.Forms.Button();
+            this.btnDeleteSelect = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.txtRemake = new System.Windows.Forms.TextBox();
             this.btnRefund = new System.Windows.Forms.Button();
@@ -46,7 +48,6 @@ namespace BookkeepingAssistant
             this.btnAdd = new System.Windows.Forms.Button();
             this.txtAmount = new System.Windows.Forms.TextBox();
             this.txtAssets = new System.Windows.Forms.TextBox();
-            this.btnDeleteSelect = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetail)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -77,13 +78,14 @@ namespace BookkeepingAssistant
             this.dgvDetail.RowHeadersWidth = 62;
             this.dgvDetail.RowTemplate.Height = 32;
             this.dgvDetail.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDetail.Size = new System.Drawing.Size(1255, 696);
+            this.dgvDetail.Size = new System.Drawing.Size(1359, 696);
             this.dgvDetail.TabIndex = 13;
             this.dgvDetail.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dgvDetail_RowPrePaint);
             this.dgvDetail.SelectionChanged += new System.EventHandler(this.dgvDetail_SelectionChanged);
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnStatistics);
             this.panel1.Controls.Add(this.btnDeleteSelect);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.txtRemake);
@@ -101,8 +103,31 @@ namespace BookkeepingAssistant
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1616, 112);
+            this.panel1.Size = new System.Drawing.Size(1720, 112);
             this.panel1.TabIndex = 0;
+            // 
+            // btnStatistics
+            // 
+            this.btnStatistics.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnStatistics.Location = new System.Drawing.Point(1210, 14);
+            this.btnStatistics.Name = "btnStatistics";
+            this.btnStatistics.Size = new System.Drawing.Size(77, 86);
+            this.btnStatistics.TabIndex = 29;
+            this.btnStatistics.Text = "记账统计";
+            this.btnStatistics.UseVisualStyleBackColor = true;
+            this.btnStatistics.Click += new System.EventHandler(this.btnStatistics_Click);
+            // 
+            // btnDeleteSelect
+            // 
+            this.btnDeleteSelect.Enabled = false;
+            this.btnDeleteSelect.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnDeleteSelect.Location = new System.Drawing.Point(1647, 14);
+            this.btnDeleteSelect.Name = "btnDeleteSelect";
+            this.btnDeleteSelect.Size = new System.Drawing.Size(56, 86);
+            this.btnDeleteSelect.TabIndex = 28;
+            this.btnDeleteSelect.Text = "删除所选记录";
+            this.btnDeleteSelect.UseVisualStyleBackColor = true;
+            this.btnDeleteSelect.Click += new System.EventHandler(this.btnDeleteSelect_Click);
             // 
             // label4
             // 
@@ -117,9 +142,9 @@ namespace BookkeepingAssistant
             // txtRemake
             // 
             this.txtRemake.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.txtRemake.Location = new System.Drawing.Point(75, 61);
+            this.txtRemake.Location = new System.Drawing.Point(83, 61);
             this.txtRemake.Name = "txtRemake";
-            this.txtRemake.Size = new System.Drawing.Size(993, 39);
+            this.txtRemake.Size = new System.Drawing.Size(1005, 39);
             this.txtRemake.TabIndex = 4;
             this.txtRemake.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtAmount_KeyPress);
             // 
@@ -127,7 +152,7 @@ namespace BookkeepingAssistant
             // 
             this.btnRefund.Enabled = false;
             this.btnRefund.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnRefund.Location = new System.Drawing.Point(1197, 14);
+            this.btnRefund.Location = new System.Drawing.Point(1315, 14);
             this.btnRefund.Name = "btnRefund";
             this.btnRefund.Size = new System.Drawing.Size(78, 86);
             this.btnRefund.TabIndex = 6;
@@ -140,7 +165,7 @@ namespace BookkeepingAssistant
             this.comboBoxInOut.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxInOut.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.comboBoxInOut.FormattingEnabled = true;
-            this.comboBoxInOut.Location = new System.Drawing.Point(214, 14);
+            this.comboBoxInOut.Location = new System.Drawing.Point(222, 14);
             this.comboBoxInOut.Name = "comboBoxInOut";
             this.comboBoxInOut.Size = new System.Drawing.Size(110, 39);
             this.comboBoxInOut.TabIndex = 1;
@@ -160,7 +185,7 @@ namespace BookkeepingAssistant
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label2.Location = new System.Drawing.Point(771, 18);
+            this.label2.Location = new System.Drawing.Point(783, 18);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(110, 31);
             this.label2.TabIndex = 23;
@@ -171,7 +196,7 @@ namespace BookkeepingAssistant
             this.comboBoxTransactionTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxTransactionTypes.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.comboBoxTransactionTypes.FormattingEnabled = true;
-            this.comboBoxTransactionTypes.Location = new System.Drawing.Point(886, 14);
+            this.comboBoxTransactionTypes.Location = new System.Drawing.Point(906, 14);
             this.comboBoxTransactionTypes.Name = "comboBoxTransactionTypes";
             this.comboBoxTransactionTypes.Size = new System.Drawing.Size(182, 39);
             this.comboBoxTransactionTypes.TabIndex = 3;
@@ -180,7 +205,7 @@ namespace BookkeepingAssistant
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label3.Location = new System.Drawing.Point(339, 18);
+            this.label3.Location = new System.Drawing.Point(347, 18);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(110, 31);
             this.label3.TabIndex = 22;
@@ -191,7 +216,7 @@ namespace BookkeepingAssistant
             this.comboBoxAssets.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxAssets.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.comboBoxAssets.FormattingEnabled = true;
-            this.comboBoxAssets.Location = new System.Drawing.Point(455, 14);
+            this.comboBoxAssets.Location = new System.Drawing.Point(467, 14);
             this.comboBoxAssets.Name = "comboBoxAssets";
             this.comboBoxAssets.Size = new System.Drawing.Size(302, 39);
             this.comboBoxAssets.TabIndex = 2;
@@ -200,7 +225,7 @@ namespace BookkeepingAssistant
             // 
             this.linkLabelManageTransactionType.AutoSize = true;
             this.linkLabelManageTransactionType.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.linkLabelManageTransactionType.Location = new System.Drawing.Point(1453, 64);
+            this.linkLabelManageTransactionType.Location = new System.Drawing.Point(1423, 64);
             this.linkLabelManageTransactionType.Name = "linkLabelManageTransactionType";
             this.linkLabelManageTransactionType.Size = new System.Drawing.Size(158, 31);
             this.linkLabelManageTransactionType.TabIndex = 21;
@@ -212,7 +237,7 @@ namespace BookkeepingAssistant
             // 
             this.linkLabelManageAssets.AutoSize = true;
             this.linkLabelManageAssets.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.linkLabelManageAssets.Location = new System.Drawing.Point(1453, 18);
+            this.linkLabelManageAssets.Location = new System.Drawing.Point(1423, 18);
             this.linkLabelManageAssets.Name = "linkLabelManageAssets";
             this.linkLabelManageAssets.Size = new System.Drawing.Size(110, 31);
             this.linkLabelManageAssets.TabIndex = 20;
@@ -223,7 +248,7 @@ namespace BookkeepingAssistant
             // btnAdd
             // 
             this.btnAdd.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnAdd.Location = new System.Drawing.Point(1091, 14);
+            this.btnAdd.Location = new System.Drawing.Point(1111, 14);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(77, 86);
             this.btnAdd.TabIndex = 5;
@@ -234,7 +259,7 @@ namespace BookkeepingAssistant
             // txtAmount
             // 
             this.txtAmount.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.txtAmount.Location = new System.Drawing.Point(76, 14);
+            this.txtAmount.Location = new System.Drawing.Point(83, 14);
             this.txtAmount.Name = "txtAmount";
             this.txtAmount.Size = new System.Drawing.Size(132, 39);
             this.txtAmount.TabIndex = 0;
@@ -246,7 +271,7 @@ namespace BookkeepingAssistant
             // 
             this.txtAssets.Dock = System.Windows.Forms.DockStyle.Right;
             this.txtAssets.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.txtAssets.Location = new System.Drawing.Point(1255, 112);
+            this.txtAssets.Location = new System.Drawing.Point(1359, 112);
             this.txtAssets.Multiline = true;
             this.txtAssets.Name = "txtAssets";
             this.txtAssets.ReadOnly = true;
@@ -254,23 +279,11 @@ namespace BookkeepingAssistant
             this.txtAssets.Size = new System.Drawing.Size(361, 696);
             this.txtAssets.TabIndex = 14;
             // 
-            // btnDeleteSelect
-            // 
-            this.btnDeleteSelect.Enabled = false;
-            this.btnDeleteSelect.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnDeleteSelect.Location = new System.Drawing.Point(1310, 14);
-            this.btnDeleteSelect.Name = "btnDeleteSelect";
-            this.btnDeleteSelect.Size = new System.Drawing.Size(56, 86);
-            this.btnDeleteSelect.TabIndex = 28;
-            this.btnDeleteSelect.Text = "删除选中记录";
-            this.btnDeleteSelect.UseVisualStyleBackColor = true;
-            this.btnDeleteSelect.Click += new System.EventHandler(this.btnDeleteSelect_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1616, 808);
+            this.ClientSize = new System.Drawing.Size(1720, 808);
             this.Controls.Add(this.dgvDetail);
             this.Controls.Add(this.txtAssets);
             this.Controls.Add(this.panel1);
@@ -304,6 +317,7 @@ namespace BookkeepingAssistant
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtRemake;
         private System.Windows.Forms.Button btnDeleteSelect;
+        private System.Windows.Forms.Button btnStatistics;
     }
 }
 

@@ -323,5 +323,10 @@ namespace BookkeepingAssistant
             model.DeleteLinkId = record.Id;
             AddTransactionRecord(model);
         }
+
+        private void btnStatistics_Click(object sender, EventArgs e)
+        {
+            new FormStatistics(_records).ShowDialog();
+        }
     }
 }
