@@ -15,5 +15,6 @@ namespace BookkeepingAssistant
         public string TransactionType { get; set; }
         public string RefundLinkId { get; set; }
         public string Remark { get; set; }
+        public int? DeleteLinkId { get; set; }
     }
 }

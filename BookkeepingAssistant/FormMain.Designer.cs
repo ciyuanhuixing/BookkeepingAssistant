@@ -29,7 +29,7 @@ namespace BookkeepingAssistant
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvDetail = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
@@ -46,6 +46,7 @@ namespace BookkeepingAssistant
             this.btnAdd = new System.Windows.Forms.Button();
             this.txtAmount = new System.Windows.Forms.TextBox();
             this.txtAssets = new System.Windows.Forms.TextBox();
+            this.btnDeleteSelect = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetail)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -59,14 +60,14 @@ namespace BookkeepingAssistant
             this.dgvDetail.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvDetail.ColumnHeadersHeight = 34;
             this.dgvDetail.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDetail.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDetail.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvDetail.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvDetail.Location = new System.Drawing.Point(0, 112);
             this.dgvDetail.MultiSelect = false;
@@ -83,6 +84,7 @@ namespace BookkeepingAssistant
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnDeleteSelect);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.txtRemake);
             this.panel1.Controls.Add(this.btnRefund);
@@ -125,11 +127,11 @@ namespace BookkeepingAssistant
             // 
             this.btnRefund.Enabled = false;
             this.btnRefund.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnRefund.Location = new System.Drawing.Point(1238, 14);
+            this.btnRefund.Location = new System.Drawing.Point(1197, 14);
             this.btnRefund.Name = "btnRefund";
-            this.btnRefund.Size = new System.Drawing.Size(156, 86);
+            this.btnRefund.Size = new System.Drawing.Size(78, 86);
             this.btnRefund.TabIndex = 6;
-            this.btnRefund.Text = "对选中记录退款";
+            this.btnRefund.Text = "退款";
             this.btnRefund.UseVisualStyleBackColor = true;
             this.btnRefund.Click += new System.EventHandler(this.btnRefund_Click);
             // 
@@ -223,7 +225,7 @@ namespace BookkeepingAssistant
             this.btnAdd.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.btnAdd.Location = new System.Drawing.Point(1091, 14);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(112, 86);
+            this.btnAdd.Size = new System.Drawing.Size(77, 86);
             this.btnAdd.TabIndex = 5;
             this.btnAdd.Text = "新增";
             this.btnAdd.UseVisualStyleBackColor = true;
@@ -251,6 +253,18 @@ namespace BookkeepingAssistant
             this.txtAssets.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txtAssets.Size = new System.Drawing.Size(361, 696);
             this.txtAssets.TabIndex = 14;
+            // 
+            // btnDeleteSelect
+            // 
+            this.btnDeleteSelect.Enabled = false;
+            this.btnDeleteSelect.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnDeleteSelect.Location = new System.Drawing.Point(1310, 14);
+            this.btnDeleteSelect.Name = "btnDeleteSelect";
+            this.btnDeleteSelect.Size = new System.Drawing.Size(56, 86);
+            this.btnDeleteSelect.TabIndex = 28;
+            this.btnDeleteSelect.Text = "删除选中记录";
+            this.btnDeleteSelect.UseVisualStyleBackColor = true;
+            this.btnDeleteSelect.Click += new System.EventHandler(this.btnDeleteSelect_Click);
             // 
             // FormMain
             // 
@@ -289,6 +303,7 @@ namespace BookkeepingAssistant
         private System.Windows.Forms.Button btnRefund;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtRemake;
+        private System.Windows.Forms.Button btnDeleteSelect;
     }
 }
 

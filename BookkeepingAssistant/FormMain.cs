@@ -79,7 +79,6 @@ namespace BookkeepingAssistant
         private void btnAdd_Click(object sender, EventArgs e)
         {
             TransactionRecordModel tr = new TransactionRecordModel();
-            tr.Time = DateTime.Now;
             decimal amount;
             if (!decimal.TryParse(txtAmount.Text.Trim(), out amount))
             {
@@ -218,7 +217,6 @@ namespace BookkeepingAssistant
             }
 
             TransactionRecordModel model = new TransactionRecordModel();
-            model.Time = DateTime.Now;
             model.AssetName = record.AssetName;
             model.TransactionType = record.TransactionType;
             model.Amount = formRefund.RefundAmount;
@@ -231,8 +229,11 @@ namespace BookkeepingAssistant
         {
             if (dgvDetail.SelectedRows.Count == 0)
             {
+                btnDeleteSelect.Enabled = false;
                 return;
             }
+            btnDeleteSelect.Enabled = true;
+
             int id = int.Parse(dgvDetail.SelectedRows[0].Cells["Id"].Value.ToString());
             var record = _records.Single(o => o.Id == id);
             if (record.isIncome)
@@ -292,6 +293,30 @@ namespace BookkeepingAssistant
             {
                 btnAdd_Click(null, null);
             }
+        }
+
+        private void btnDeleteSelect_Click(object sender, EventArgs e)
+        {
+            if (dgvDetail.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("请先选中一行记录。");
+                return;
+            }
+            int id = int.Parse(dgvDetail.SelectedRows[0].Cells["Id"].Value.ToString());
+            var record = _records.Single(o => o.Id == id);
+            if (MessageBox.Show($"Id：{record.Id}，金额：{record.Amount}{Environment.NewLine}确认删除该记录？",
+                "确认删除？", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
+            {
+                return;
+            }
+
+            TransactionRecordModel model = new TransactionRecordModel();
+            model.Amount = -record.Amount;
+            model.AssetName = record.AssetName;
+            model.TransactionType = record.TransactionType;
+            model.Remark = "[为删除而抵消]";
+            model.DeleteLinkId = record.Id;
+            AddTransactionRecord(model);
         }
     }
 }

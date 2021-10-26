@@ -121,7 +121,7 @@ namespace BookkeepingAssistant
                 foreach (var line in lines)
                 {
                     string[] arr = line.Split('|');
-                    if (arr.Length != 9)
+                    if (arr.Length != 10)
                     {
                         continue;
                     }
@@ -181,19 +181,21 @@ namespace BookkeepingAssistant
 
                     record.RefundLinkId = arr[n++];
                     record.Remark = arr[n++];
+
+                    int deleteLinkId;
+                    if (int.TryParse(arr[n++], out deleteLinkId))
+                    {
+                        record.DeleteLinkId = deleteLinkId;
+                    }
+                    else
+                    {
+                        record.DeleteLinkId = null;
+                    }
+
                     _transactionRecords.Add(record);
                 }
-                var pays = _transactionRecords.Where(o => !o.isIncome).ToList();
-                foreach (var pay in pays)
-                {
-                    var refund = _transactionRecords.Where(o => o.isIncome && o.RefundLinkId.Trim() == pay.Id.ToString()).ToList();
-                    if (refund.Any())
-                    {
-                        pay.RefundLinkId = string.Join(',', refund.Select(o => o.Id));
-                        pay.Remark = refund.Sum(o => o.Amount) + pay.Amount >= 0 ?
-                            "[已全额退款]" + pay.Remark : "[已部分退款]" + pay.Remark;
-                    }
-                }
+
+
             }
         }
 
@@ -229,6 +231,24 @@ namespace BookkeepingAssistant
         {
             List<TransactionRecordModel> records = new List<TransactionRecordModel>();
             records.AddRange(_transactionRecords);
+
+            var deleteLinks = records.Where(o => o.DeleteLinkId.HasValue).ToList();
+            var deleteIds = deleteLinks.Select(o => o.DeleteLinkId.Value).ToList();
+            deleteIds.AddRange(deleteLinks.Select(o => o.Id));
+            records.RemoveAll(o => deleteIds.Contains(o.Id));
+
+            var pays = records.Where(o => !o.isIncome).ToList();
+            foreach (var pay in pays)
+            {
+                var refund = records.Where(o => o.isIncome && o.RefundLinkId.Trim() == pay.Id.ToString()).ToList();
+                if (refund.Any())
+                {
+                    pay.RefundLinkId = string.Join(',', refund.Select(o => o.Id));
+                    pay.Remark = refund.Sum(o => o.Amount) + pay.Amount >= 0 ?
+                        "[已全额退款]" + pay.Remark : "[已部分退款]" + pay.Remark;
+                }
+            }
+
             return records;
         }
 
@@ -363,6 +383,7 @@ namespace BookkeepingAssistant
             {
                 tr.Id = _transactionRecords.Last().Id + 1;
             }
+            tr.Time = DateTime.Now;
             tr.isIncome = tr.Amount > 0 ? true : false;
             _dicAssets[tr.AssetName] += tr.Amount;
             tr.AssetValue = _dicAssets[tr.AssetName];
@@ -377,7 +398,7 @@ namespace BookkeepingAssistant
             File.AppendAllLines(_transactionRecordDataFile,
                 new List<string>() {
                     string.Join('|',tr.Id, tr.Time, tr.isIncome ? "收" : "支", tr.Amount, tr.AssetName,
-                    tr.AssetValue, tr.TransactionType,tr.RefundLinkId, tr.Remark) });
+                    tr.AssetValue, tr.TransactionType,tr.RefundLinkId, tr.Remark,tr.DeleteLinkId) });
 
             StageFile(_transactionRecordDataFile);
             StageFile(_assetsDataFile);
