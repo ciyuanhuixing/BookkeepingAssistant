@@ -160,6 +160,8 @@ namespace BookkeepingAssistant
             {
                 sb.AppendLine(item.Value);
             }
+            sb.AppendLine();
+            sb.AppendLine("总计：" + DAL.Singleton.GetAssets().Values.Sum());
             txtAssets.Text = sb.ToString();
         }
 
