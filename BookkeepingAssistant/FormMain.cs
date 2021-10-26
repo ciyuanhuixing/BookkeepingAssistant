@@ -68,6 +68,14 @@ namespace BookkeepingAssistant
                 dr["交易后该资产余额"] = item.AssetValue;
                 dr["交易类型"] = item.TransactionType;
                 dr["退款关联Id"] = item.RefundLinkId;
+                if (!item.isIncome)
+                {
+                    var refundRecord = records.Where(o => o.isIncome && o.RefundLinkId == item.Id.ToString()).FirstOrDefault();
+                    if (refundRecord != null)
+                    {
+                        dr["退款关联Id"] = refundRecord.Id;
+                    }
+                }
                 dt.Rows.Add(dr);
             }
             dgvDetail.DataSource = dt;
@@ -210,6 +218,12 @@ namespace BookkeepingAssistant
                 MessageBox.Show("收入不可退款。");
                 return;
             }
+            if (!string.IsNullOrWhiteSpace(row.Cells["退款关联Id"].Value.ToString()))
+            {
+                MessageBox.Show("此支出已退款，不可再次退款。");
+                return;
+            }
+
             TransactionRecordModel model = new TransactionRecordModel();
             model.Time = DateTime.Now;
             model.isIncome = true;
@@ -218,6 +232,27 @@ namespace BookkeepingAssistant
             model.Amount = decimal.Parse(row.Cells["金额"].Value.ToString());
             model.RefundLinkId = row.Cells["Id"].Value.ToString();
             AddTransactionRecord(model);
+        }
+
+        private void dgvDetail_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvDetail.SelectedRows.Count == 0)
+            {
+                return;
+            }
+            var row = dgvDetail.SelectedRows[0];
+            if (row.Cells["收支类型"].Value.ToString() != "支出")
+            {
+                btnRefund.Enabled = false;
+                return;
+            }
+            if (!string.IsNullOrWhiteSpace(row.Cells["退款关联Id"].Value.ToString()))
+            {
+                btnRefund.Enabled = false;
+                return;
+            }
+
+            btnRefund.Enabled = true;
         }
     }
 }

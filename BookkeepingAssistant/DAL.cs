@@ -247,8 +247,11 @@ namespace BookkeepingAssistant
             }
             catch (Exception)
             {
-                ReadData();
                 throw;
+            }
+            finally
+            {
+                ReadData();
             }
         }
 
