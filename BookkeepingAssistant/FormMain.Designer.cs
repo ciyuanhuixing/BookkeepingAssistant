@@ -136,7 +136,7 @@ namespace BookkeepingAssistant
             this.comboBoxInOut.Location = new System.Drawing.Point(12, 12);
             this.comboBoxInOut.Name = "comboBoxInOut";
             this.comboBoxInOut.Size = new System.Drawing.Size(110, 32);
-            this.comboBoxInOut.TabIndex = 0;
+            this.comboBoxInOut.TabIndex = 3;
             this.comboBoxInOut.SelectedIndexChanged += new System.EventHandler(this.comboBoxInOut_SelectedIndexChanged);
             // 
             // label1
@@ -164,7 +164,7 @@ namespace BookkeepingAssistant
             this.comboBoxTransactionTypes.Location = new System.Drawing.Point(608, 12);
             this.comboBoxTransactionTypes.Name = "comboBoxTransactionTypes";
             this.comboBoxTransactionTypes.Size = new System.Drawing.Size(182, 32);
-            this.comboBoxTransactionTypes.TabIndex = 2;
+            this.comboBoxTransactionTypes.TabIndex = 1;
             // 
             // label3
             // 
@@ -182,7 +182,7 @@ namespace BookkeepingAssistant
             this.comboBoxAssets.Location = new System.Drawing.Point(225, 12);
             this.comboBoxAssets.Name = "comboBoxAssets";
             this.comboBoxAssets.Size = new System.Drawing.Size(273, 32);
-            this.comboBoxAssets.TabIndex = 1;
+            this.comboBoxAssets.TabIndex = 2;
             // 
             // linkLabelManageTransactionType
             // 
@@ -221,7 +221,9 @@ namespace BookkeepingAssistant
             this.txtAmount.Location = new System.Drawing.Point(869, 13);
             this.txtAmount.Name = "txtAmount";
             this.txtAmount.Size = new System.Drawing.Size(132, 30);
-            this.txtAmount.TabIndex = 3;
+            this.txtAmount.TabIndex = 0;
+            this.txtAmount.TextChanged += new System.EventHandler(this.txtAmount_TextChanged);
+            this.txtAmount.Enter += new System.EventHandler(this.txtAmount_Enter);
             this.txtAmount.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtAmount_KeyUp);
             // 
             // txtAssets

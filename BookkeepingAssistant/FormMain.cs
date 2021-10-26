@@ -70,14 +70,6 @@ namespace BookkeepingAssistant
                 dr["交易类型"] = item.TransactionType;
                 dr["退款关联Id"] = item.RefundLinkId;
                 dr["备注"] = item.Remark;
-                if (!item.isIncome)
-                {
-                    var refundRecord = records.Where(o => o.isIncome && o.RefundLinkId == item.Id.ToString()).FirstOrDefault();
-                    if (refundRecord != null)
-                    {
-                        dr["退款关联Id"] = refundRecord.Id;
-                    }
-                }
                 dt.Rows.Add(dr);
             }
             dgvDetail.DataSource = dt;
@@ -88,7 +80,6 @@ namespace BookkeepingAssistant
         {
             TransactionRecordModel tr = new TransactionRecordModel();
             tr.Time = DateTime.Now;
-            tr.isIncome = (string)comboBoxInOut.SelectedValue == "收入" ? true : false;
             decimal amount;
             if (!decimal.TryParse(txtAmount.Text.Trim(), out amount))
             {
@@ -100,7 +91,16 @@ namespace BookkeepingAssistant
             tr.TransactionType = (string)comboBoxTransactionTypes.SelectedValue;
             tr.Remark = txtRemake.Text.Trim();
             AddTransactionRecord(tr);
-            txtAmount.Clear();
+
+            if (txtAmount.Text.Trim().StartsWith('-'))
+            {
+                txtAmount.Text = "-";
+                txtAmount.Select(txtAmount.Text.Length, 0);
+            }
+            else
+            {
+                txtAmount.Clear();
+            }
             txtRemake.Clear();
         }
 
@@ -188,18 +188,6 @@ namespace BookkeepingAssistant
             }
         }
 
-        private void comboBoxInOut_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (comboBoxInOut.Text == "收入")
-            {
-                txtAmount.BackColor = Color.LightGreen;
-            }
-            else
-            {
-                txtAmount.BackColor = Color.White;
-            }
-        }
-
         private void dgvDetail_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
         {
             var row = dgvDetail.Rows[e.RowIndex];
@@ -216,26 +204,34 @@ namespace BookkeepingAssistant
                 MessageBox.Show("请先选中一行记录。");
                 return;
             }
-            var row = dgvDetail.SelectedRows[0];
-            if (row.Cells["收支类型"].Value.ToString() != "支出")
+            int id = int.Parse(dgvDetail.SelectedRows[0].Cells["Id"].Value.ToString());
+            var record = _records.Single(o => o.Id == id);
+            if (record.isIncome)
             {
                 MessageBox.Show("收入不可退款。");
                 return;
             }
-            if (!string.IsNullOrWhiteSpace(row.Cells["退款关联Id"].Value.ToString()))
+            var linkIds = record.RefundLinkId.Split(',').Where(o => !string.IsNullOrWhiteSpace(o)).ToList();
+            var totalRefundAmount = _records.Where(o => linkIds.Contains(o.Id.ToString())).Sum(o => o.Amount);
+            if (totalRefundAmount + record.Amount >= 0)
             {
-                MessageBox.Show("此支出已退款，不可再次退款。");
+                MessageBox.Show("此支出已全额退款，不可再次退款。");
+                return;
+            }
+
+            FormRefund formRefund = new FormRefund(Math.Abs(record.Amount) - totalRefundAmount);
+            if (formRefund.ShowDialog() != DialogResult.OK)
+            {
                 return;
             }
 
             TransactionRecordModel model = new TransactionRecordModel();
             model.Time = DateTime.Now;
-            model.isIncome = true;
-            model.AssetName = row.Cells["资产名称"].Value.ToString();
-            model.TransactionType = row.Cells["交易类型"].Value.ToString();
-            model.Amount = decimal.Parse(row.Cells["金额"].Value.ToString());
-            model.RefundLinkId = row.Cells["Id"].Value.ToString();
-            model.Remark = "退款";
+            model.AssetName = record.AssetName;
+            model.TransactionType = record.TransactionType;
+            model.Amount = formRefund.RefundAmount;
+            model.RefundLinkId = record.Id.ToString();
+            model.Remark = totalRefundAmount == 0 ? "[全额退款的收款]" : "[部分退款的收款]";
             AddTransactionRecord(model);
         }
 
@@ -245,19 +241,56 @@ namespace BookkeepingAssistant
             {
                 return;
             }
-            var row = dgvDetail.SelectedRows[0];
-            if (row.Cells["收支类型"].Value.ToString() != "支出")
+            int id = int.Parse(dgvDetail.SelectedRows[0].Cells["Id"].Value.ToString());
+            var record = _records.Single(o => o.Id == id);
+            if (record.isIncome)
             {
                 btnRefund.Enabled = false;
                 return;
             }
-            if (!string.IsNullOrWhiteSpace(row.Cells["退款关联Id"].Value.ToString()))
+            var linkIds = record.RefundLinkId.Split(',').Where(o => !string.IsNullOrWhiteSpace(o)).ToList();
+            var totalRefundAmount = _records.Where(o => linkIds.Contains(o.Id.ToString())).Sum(o => o.Amount);
+            if (totalRefundAmount + record.Amount >= 0)
             {
                 btnRefund.Enabled = false;
                 return;
             }
 
             btnRefund.Enabled = true;
+        }
+
+        private void txtAmount_TextChanged(object sender, EventArgs e)
+        {
+            if (txtAmount.Text.TrimStart().StartsWith('-'))
+            {
+                comboBoxInOut.SelectedItem = "支出";
+            }
+            else
+            {
+                comboBoxInOut.SelectedItem = "收入";
+            }
+        }
+
+        private void comboBoxInOut_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxInOut.SelectedItem.ToString() == "收入")
+            {
+                txtAmount.BackColor = Color.LightGreen;
+                txtAmount.Text = txtAmount.Text.Trim().TrimStart('-');
+            }
+            else
+            {
+                txtAmount.BackColor = Color.White;
+                if (!txtAmount.Text.Trim().StartsWith('-'))
+                {
+                    txtAmount.Text = '-' + txtAmount.Text.Trim();
+                }
+            }
+        }
+
+        private void txtAmount_Enter(object sender, EventArgs e)
+        {
+            txtAmount.Select(txtAmount.Text.Length, 0);
         }
     }
 }

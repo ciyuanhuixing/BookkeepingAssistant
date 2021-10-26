@@ -180,6 +180,20 @@ namespace BookkeepingAssistant
                     record.Remark = arr[n++];
                     _transactionRecords.Add(record);
                 }
+                var pays = _transactionRecords.Where(o => !o.isIncome).ToList();
+                foreach (var pay in pays)
+                {
+                    var refund = _transactionRecords.Where(o => o.isIncome && o.RefundLinkId.Trim() == pay.Id.ToString()).ToList();
+                    if (refund.Any())
+                    {
+                        pay.RefundLinkId = string.Join(',', refund.Select(o => o.Id));
+                        if (refund.Sum(o => o.Amount) + pay.Amount >= 0)
+                        {
+                            pay.Remark = "[已全额退款]" + pay.Remark;
+                        }
+                    }
+                }
+
             }
         }
 
@@ -336,22 +350,18 @@ namespace BookkeepingAssistant
             {
                 throw new Exception("交易类型不能为空");
             }
+            if (tr.Amount == 0)
+            {
+                throw new Exception("金额不能等于0");
+            }
 
             if (_transactionRecords.Any())
             {
                 tr.Id = _transactionRecords.Last().Id + 1;
             }
-            decimal assetValue = _dicAssets[tr.AssetName];
-            if (tr.isIncome)
-            {
-                assetValue += tr.Amount;
-            }
-            else
-            {
-                assetValue -= tr.Amount;
-            }
-            _dicAssets[tr.AssetName] = assetValue;
-            tr.AssetValue = assetValue;
+            tr.isIncome = tr.Amount > 0 ? true : false;
+            _dicAssets[tr.AssetName] += tr.Amount;
+            tr.AssetValue = _dicAssets[tr.AssetName];
             _transactionRecords.Add(tr);
 
             PossibleRollback(SaveTransactionRecord, tr);
