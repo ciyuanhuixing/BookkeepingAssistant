@@ -22,8 +22,24 @@ namespace BookkeepingAssistant
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            bool needInit = false;
             var config = ConfigHelper.ReadConfig();
             if (!config.IsInit)
+            {
+                needInit = true;
+            }
+            if (!needInit)
+            {
+                try
+                {
+                    var dal = DAL.Singleton;
+                }
+                catch (Exception)
+                {
+                    needInit = true;
+                }
+            }
+            if (needInit)
             {
                 this.Visible = false;
                 FormInit formInit = new FormInit();
