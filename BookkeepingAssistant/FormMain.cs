@@ -284,6 +284,7 @@ namespace BookkeepingAssistant
                 if (!txtAmount.Text.Trim().StartsWith('-'))
                 {
                     txtAmount.Text = '-' + txtAmount.Text.Trim();
+                    txtAmount.Select(txtAmount.Text.Length, 0);
                 }
             }
         }
