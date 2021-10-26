@@ -385,10 +385,14 @@ namespace BookkeepingAssistant
             }
             tr.Time = DateTime.Now;
             tr.isIncome = tr.Amount > 0 ? true : false;
-            _dicAssets[tr.AssetName] += tr.Amount;
-            tr.AssetValue = _dicAssets[tr.AssetName];
-            _transactionRecords.Add(tr);
 
+            if (_dicAssets.ContainsKey(tr.AssetName))
+            {
+                _dicAssets[tr.AssetName] += tr.Amount;
+                tr.AssetValue = _dicAssets[tr.AssetName];
+            }
+
+            _transactionRecords.Add(tr);
             PossibleRollback(SaveTransactionRecord, tr);
         }
 
