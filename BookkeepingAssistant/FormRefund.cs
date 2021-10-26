@@ -20,6 +20,7 @@ namespace BookkeepingAssistant
         private void btnEditAmount_Click(object sender, EventArgs e)
         {
             txtRefundAmount.Enabled = true;
+            txtRefundAmount.Focus();
         }
 
         private void btnOK_Click(object sender, EventArgs e)
