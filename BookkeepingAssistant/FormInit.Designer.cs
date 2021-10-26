@@ -39,6 +39,7 @@ namespace BookkeepingAssistant
             this.label3 = new System.Windows.Forms.Label();
             this.txtGitEmail = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -50,10 +51,10 @@ namespace BookkeepingAssistant
             this.label1.TabIndex = 0;
             this.label1.Text = "数据（Git 仓库）文件夹";
             // 
-            // txtGitDir
+            // txtGitRepoDir
             // 
             this.txtGitRepoDir.Location = new System.Drawing.Point(282, 35);
-            this.txtGitRepoDir.Name = "txtGitDir";
+            this.txtGitRepoDir.Name = "txtGitRepoDir";
             this.txtGitRepoDir.ReadOnly = true;
             this.txtGitRepoDir.Size = new System.Drawing.Size(596, 30);
             this.txtGitRepoDir.TabIndex = 1;
@@ -96,7 +97,7 @@ namespace BookkeepingAssistant
             // 
             // txtGitUsername
             // 
-            this.txtGitUsername.Location = new System.Drawing.Point(282, 133);
+            this.txtGitUsername.Location = new System.Drawing.Point(282, 181);
             this.txtGitUsername.Name = "txtGitUsername";
             this.txtGitUsername.Size = new System.Drawing.Size(335, 30);
             this.txtGitUsername.TabIndex = 7;
@@ -104,7 +105,7 @@ namespace BookkeepingAssistant
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(182, 133);
+            this.label3.Location = new System.Drawing.Point(182, 181);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(94, 24);
             this.label3.TabIndex = 6;
@@ -112,7 +113,7 @@ namespace BookkeepingAssistant
             // 
             // txtGitEmail
             // 
-            this.txtGitEmail.Location = new System.Drawing.Point(727, 136);
+            this.txtGitEmail.Location = new System.Drawing.Point(727, 184);
             this.txtGitEmail.Name = "txtGitEmail";
             this.txtGitEmail.Size = new System.Drawing.Size(394, 30);
             this.txtGitEmail.TabIndex = 9;
@@ -120,17 +121,28 @@ namespace BookkeepingAssistant
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(645, 139);
+            this.label4.Location = new System.Drawing.Point(645, 187);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(76, 24);
             this.label4.TabIndex = 8;
             this.label4.Text = "Git 邮箱";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(284, 121);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(758, 48);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "格式：https://[用户名]:[Token]@[仓库链接]\r\n例如：https://ciyuanhuixing:d2088d98058@gitee.com/c" +
+    "iyuanhuixing/bookkeeping.git\r\n";
             // 
             // FormInit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1143, 450);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.txtGitEmail);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.txtGitUsername);
@@ -162,5 +174,6 @@ namespace BookkeepingAssistant
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtGitEmail;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
     }
 }
