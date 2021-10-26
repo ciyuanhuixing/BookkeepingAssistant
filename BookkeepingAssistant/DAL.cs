@@ -394,6 +394,7 @@ namespace BookkeepingAssistant
             Signature signature = new Signature(_config.GitUsername, _config.GitEmail, DateTimeOffset.Now);
             _repo.Commit(commitMsg, signature, signature);
             _repo.Network.Push(_repo.Head);
+            _haveCommits = true;
         }
     }
 }
