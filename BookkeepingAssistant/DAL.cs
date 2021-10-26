@@ -15,6 +15,7 @@ namespace BookkeepingAssistant
         private string _transactionRecordDataFile;
         private Repository _repo;
         private bool _haveCommits = false;
+        private string _lastCheckoutCommitSha;
 
         private Dictionary<string, decimal> _dicAssets = new Dictionary<string, decimal>();
         private List<string> _transactionTypes = new List<string>();
@@ -58,7 +59,7 @@ namespace BookkeepingAssistant
             return true;
         }
 
-        private void CheckoutLastPushFile()
+        private string CheckoutLastPushFile()
         {
             List<string> paths = new List<string>() {
                 _assetsDataFile,
@@ -68,16 +69,18 @@ namespace BookkeepingAssistant
             if (!_haveCommits)
             {
                 paths.ForEach(o => File.Delete(o));
-                return;
+                return null;
             }
             CheckoutOptions options = new CheckoutOptions();
             options.CheckoutModifiers = CheckoutModifiers.Force;
-            _repo.Checkout(_repo.Head.TrackedBranch.Tip.Tree, paths.Select(o => GetGitRelativePath(o)), options);
+            var commit = _repo.Head.TrackedBranch.Tip;
+            _repo.Checkout(commit.Tree, paths.Select(o => GetGitRelativePath(o)), options);
+            return commit.Sha;
         }
 
         private void ReadData()
         {
-            CheckoutLastPushFile();
+            _lastCheckoutCommitSha = CheckoutLastPushFile();
 
             _dicAssets.Clear();
             _transactionTypes.Clear();
@@ -260,7 +263,11 @@ namespace BookkeepingAssistant
         {
             try
             {
-                CheckoutLastPushFile();
+                string sha = CheckoutLastPushFile();
+                if (sha != _lastCheckoutCommitSha)
+                {
+                    throw new Exception("检测到 Git 仓库已被其它程序修改，本程序无法继续运行");
+                }
                 if (work != null)
                 {
                     work();
