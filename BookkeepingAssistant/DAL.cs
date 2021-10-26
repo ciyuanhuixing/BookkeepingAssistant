@@ -187,10 +187,8 @@ namespace BookkeepingAssistant
                     if (refund.Any())
                     {
                         pay.RefundLinkId = string.Join(',', refund.Select(o => o.Id));
-                        if (refund.Sum(o => o.Amount) + pay.Amount >= 0)
-                        {
-                            pay.Remark = "[已全额退款]" + pay.Remark;
-                        }
+                        pay.Remark = refund.Sum(o => o.Amount) + pay.Amount >= 0 ?
+                            "[已全额退款]" + pay.Remark : "[已部分退款]" + pay.Remark;
                     }
                 }
             }
