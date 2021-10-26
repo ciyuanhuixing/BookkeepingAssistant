@@ -180,14 +180,6 @@ namespace BookkeepingAssistant
             }
         }
 
-        private void txtAmount_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                btnAdd_Click(null, null);
-            }
-        }
-
         private void dgvDetail_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
         {
             var row = dgvDetail.Rows[e.RowIndex];
@@ -292,6 +284,14 @@ namespace BookkeepingAssistant
         private void txtAmount_Enter(object sender, EventArgs e)
         {
             txtAmount.Select(txtAmount.Text.Length, 0);
+        }
+
+        private void txtAmount_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                btnAdd_Click(null, null);
+            }
         }
     }
 }

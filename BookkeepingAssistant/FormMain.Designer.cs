@@ -119,7 +119,7 @@ namespace BookkeepingAssistant
             this.txtRemake.Name = "txtRemake";
             this.txtRemake.Size = new System.Drawing.Size(993, 39);
             this.txtRemake.TabIndex = 4;
-            this.txtRemake.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtAmount_KeyUp);
+            this.txtRemake.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtAmount_KeyPress);
             // 
             // btnRefund
             // 
@@ -141,7 +141,7 @@ namespace BookkeepingAssistant
             this.comboBoxInOut.Location = new System.Drawing.Point(214, 14);
             this.comboBoxInOut.Name = "comboBoxInOut";
             this.comboBoxInOut.Size = new System.Drawing.Size(110, 39);
-            this.comboBoxInOut.TabIndex = 3;
+            this.comboBoxInOut.TabIndex = 1;
             this.comboBoxInOut.SelectedIndexChanged += new System.EventHandler(this.comboBoxInOut_SelectedIndexChanged);
             // 
             // label1
@@ -172,7 +172,7 @@ namespace BookkeepingAssistant
             this.comboBoxTransactionTypes.Location = new System.Drawing.Point(886, 14);
             this.comboBoxTransactionTypes.Name = "comboBoxTransactionTypes";
             this.comboBoxTransactionTypes.Size = new System.Drawing.Size(182, 39);
-            this.comboBoxTransactionTypes.TabIndex = 1;
+            this.comboBoxTransactionTypes.TabIndex = 3;
             // 
             // label3
             // 
@@ -238,7 +238,7 @@ namespace BookkeepingAssistant
             this.txtAmount.TabIndex = 0;
             this.txtAmount.TextChanged += new System.EventHandler(this.txtAmount_TextChanged);
             this.txtAmount.Enter += new System.EventHandler(this.txtAmount_Enter);
-            this.txtAmount.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtAmount_KeyUp);
+            this.txtAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtAmount_KeyPress);
             // 
             // txtAssets
             // 
