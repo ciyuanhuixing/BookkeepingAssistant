@@ -50,25 +50,23 @@ namespace BookkeepingAssistant
         {
             DataTable dt = new DataTable();
             dt.Columns.Add("Id");
-            dt.Columns.Add("时间");
-            dt.Columns.Add("收支类型");
+            dt.Columns.Add("年-月-日 时");
+            dt.Columns.Add("收/支");
             dt.Columns.Add("金额");
-            dt.Columns.Add("资产名称");
-            dt.Columns.Add("交易后该资产余额");
-            dt.Columns.Add("交易类型");
-            dt.Columns.Add("退款关联Id");
+            dt.Columns.Add("资产");
+            dt.Columns.Add("交易后余额");
+            dt.Columns.Add("类型");
             dt.Columns.Add("备注");
             foreach (var item in records)
             {
                 DataRow dr = dt.NewRow();
                 dr["Id"] = item.Id;
-                dr["时间"] = item.Time.ToString("yyyy-MM-dd HH:mm");
-                dr["收支类型"] = item.isIncome ? "收入" : "支出";
+                dr["年-月-日 时"] = item.Time.ToString("yy-MM-dd HH");
+                dr["收/支"] = item.isIncome ? "收入" : "支出";
                 dr["金额"] = item.Amount;
-                dr["资产名称"] = item.AssetName;
-                dr["交易后该资产余额"] = item.AssetValue;
-                dr["交易类型"] = item.TransactionType;
-                dr["退款关联Id"] = item.RefundLinkId;
+                dr["资产"] = item.AssetName;
+                dr["交易后余额"] = item.AssetValue;
+                dr["类型"] = item.TransactionType;
                 dr["备注"] = item.Remark;
                 dt.Rows.Add(dr);
             }
@@ -184,7 +182,7 @@ namespace BookkeepingAssistant
         private void dgvDetail_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
         {
             var row = dgvDetail.Rows[e.RowIndex];
-            if (row.Cells["收支类型"].Value.ToString() == "收入")
+            if (row.Cells["收/支"].Value.ToString() == "收入")
             {
                 row.DefaultCellStyle.BackColor = Color.LightGreen;
             }
@@ -241,17 +239,22 @@ namespace BookkeepingAssistant
             if (record.isIncome)
             {
                 btnRefund.Enabled = false;
-                return;
             }
-            var linkIds = record.RefundLinkId.Split(',').Where(o => !string.IsNullOrWhiteSpace(o)).ToList();
-            var totalRefundAmount = _records.Where(o => linkIds.Contains(o.Id.ToString())).Sum(o => o.Amount);
-            if (totalRefundAmount + record.Amount >= 0)
+            else
             {
-                btnRefund.Enabled = false;
-                return;
-            }
+                var linkIds = record.RefundLinkId.Split(',').Where(o => !string.IsNullOrWhiteSpace(o)).ToList();
+                if (linkIds.Any())
+                {
+                    var refundRecords = _records.Where(o => linkIds.Contains(o.Id.ToString())).ToList();
+                    var totalRefundAmount = refundRecords.Sum(o => o.Amount);
+                    btnRefund.Enabled = totalRefundAmount + record.Amount >= 0 ? false : true;
 
-            btnRefund.Enabled = true;
+                    new FormRefundRecord(refundRecords)
+                    {
+                        Text = $"【退款记录】原交易记录 Id：{record.Id}，时间：{record.Time.ToString("yy-MM-dd HH")}，金额：{record.Amount}"
+                    }.ShowDialog();
+                }
+            }
         }
 
         private void txtAmount_TextChanged(object sender, EventArgs e)
