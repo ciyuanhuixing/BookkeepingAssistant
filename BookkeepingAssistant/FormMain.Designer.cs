@@ -29,9 +29,11 @@ namespace BookkeepingAssistant
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvDetail = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtRemake = new System.Windows.Forms.TextBox();
             this.btnRefund = new System.Windows.Forms.Button();
             this.comboBoxInOut = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -57,29 +59,31 @@ namespace BookkeepingAssistant
             this.dgvDetail.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvDetail.ColumnHeadersHeight = 34;
             this.dgvDetail.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDetail.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDetail.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvDetail.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvDetail.Location = new System.Drawing.Point(0, 58);
+            this.dgvDetail.Location = new System.Drawing.Point(0, 102);
             this.dgvDetail.MultiSelect = false;
             this.dgvDetail.Name = "dgvDetail";
             this.dgvDetail.ReadOnly = true;
             this.dgvDetail.RowHeadersWidth = 62;
             this.dgvDetail.RowTemplate.Height = 32;
             this.dgvDetail.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDetail.Size = new System.Drawing.Size(1145, 750);
+            this.dgvDetail.Size = new System.Drawing.Size(1145, 706);
             this.dgvDetail.TabIndex = 13;
             this.dgvDetail.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dgvDetail_RowPrePaint);
             this.dgvDetail.SelectionChanged += new System.EventHandler(this.dgvDetail_SelectionChanged);
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.txtRemake);
             this.panel1.Controls.Add(this.btnRefund);
             this.panel1.Controls.Add(this.comboBoxInOut);
             this.panel1.Controls.Add(this.label1);
@@ -94,8 +98,25 @@ namespace BookkeepingAssistant
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1616, 58);
+            this.panel1.Size = new System.Drawing.Size(1616, 102);
             this.panel1.TabIndex = 0;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 64);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(46, 24);
+            this.label4.TabIndex = 27;
+            this.label4.Text = "备注";
+            // 
+            // txtRemake
+            // 
+            this.txtRemake.Location = new System.Drawing.Point(64, 61);
+            this.txtRemake.Name = "txtRemake";
+            this.txtRemake.Size = new System.Drawing.Size(937, 30);
+            this.txtRemake.TabIndex = 4;
+            this.txtRemake.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtAmount_KeyUp);
             // 
             // btnRefund
             // 
@@ -103,7 +124,7 @@ namespace BookkeepingAssistant
             this.btnRefund.Location = new System.Drawing.Point(1177, 12);
             this.btnRefund.Name = "btnRefund";
             this.btnRefund.Size = new System.Drawing.Size(156, 34);
-            this.btnRefund.TabIndex = 25;
+            this.btnRefund.TabIndex = 6;
             this.btnRefund.Text = "对选中记录退款";
             this.btnRefund.UseVisualStyleBackColor = true;
             this.btnRefund.Click += new System.EventHandler(this.btnRefund_Click);
@@ -189,8 +210,8 @@ namespace BookkeepingAssistant
             // 
             this.btnAdd.Location = new System.Drawing.Point(1030, 11);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(112, 34);
-            this.btnAdd.TabIndex = 4;
+            this.btnAdd.Size = new System.Drawing.Size(112, 77);
+            this.btnAdd.TabIndex = 5;
             this.btnAdd.Text = "新增";
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
@@ -206,12 +227,12 @@ namespace BookkeepingAssistant
             // txtAssets
             // 
             this.txtAssets.Dock = System.Windows.Forms.DockStyle.Right;
-            this.txtAssets.Location = new System.Drawing.Point(1145, 58);
+            this.txtAssets.Location = new System.Drawing.Point(1145, 102);
             this.txtAssets.Multiline = true;
             this.txtAssets.Name = "txtAssets";
             this.txtAssets.ReadOnly = true;
             this.txtAssets.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtAssets.Size = new System.Drawing.Size(471, 750);
+            this.txtAssets.Size = new System.Drawing.Size(471, 706);
             this.txtAssets.TabIndex = 14;
             // 
             // FormMain
@@ -249,6 +270,8 @@ namespace BookkeepingAssistant
         private System.Windows.Forms.TextBox txtAmount;
         private System.Windows.Forms.TextBox txtAssets;
         private System.Windows.Forms.Button btnRefund;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtRemake;
     }
 }
 

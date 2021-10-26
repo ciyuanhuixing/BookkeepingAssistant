@@ -57,6 +57,7 @@ namespace BookkeepingAssistant
             dt.Columns.Add("交易后该资产余额");
             dt.Columns.Add("交易类型");
             dt.Columns.Add("退款关联Id");
+            dt.Columns.Add("备注");
             foreach (var item in records)
             {
                 DataRow dr = dt.NewRow();
@@ -68,6 +69,7 @@ namespace BookkeepingAssistant
                 dr["交易后该资产余额"] = item.AssetValue;
                 dr["交易类型"] = item.TransactionType;
                 dr["退款关联Id"] = item.RefundLinkId;
+                dr["备注"] = item.Remark;
                 if (!item.isIncome)
                 {
                     var refundRecord = records.Where(o => o.isIncome && o.RefundLinkId == item.Id.ToString()).FirstOrDefault();
@@ -96,8 +98,10 @@ namespace BookkeepingAssistant
             tr.Amount = amount;
             tr.AssetName = (string)comboBoxAssets.SelectedValue;
             tr.TransactionType = (string)comboBoxTransactionTypes.SelectedValue;
+            tr.Remark = txtRemake.Text.Trim();
             AddTransactionRecord(tr);
             txtAmount.Clear();
+            txtRemake.Clear();
         }
 
         private void AddTransactionRecord(TransactionRecordModel tr)
@@ -231,6 +235,7 @@ namespace BookkeepingAssistant
             model.TransactionType = row.Cells["交易类型"].Value.ToString();
             model.Amount = decimal.Parse(row.Cells["金额"].Value.ToString());
             model.RefundLinkId = row.Cells["Id"].Value.ToString();
+            model.Remark = "退款";
             AddTransactionRecord(model);
         }
 

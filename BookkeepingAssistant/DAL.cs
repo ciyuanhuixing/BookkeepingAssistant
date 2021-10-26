@@ -105,7 +105,7 @@ namespace BookkeepingAssistant
                 foreach (var line in lines)
                 {
                     string[] arr = line.Split('|');
-                    if (arr.Length != 8)
+                    if (arr.Length != 9)
                     {
                         continue;
                     }
@@ -164,6 +164,7 @@ namespace BookkeepingAssistant
                     }
 
                     record.RefundLinkId = arr[n++];
+                    record.Remark = arr[n++];
                     _transactionRecords.Add(record);
                 }
             }
@@ -349,7 +350,7 @@ namespace BookkeepingAssistant
             File.AppendAllLines(_transactionRecordDataFile,
                 new List<string>() {
                     string.Join('|',tr.Id, tr.Time, tr.isIncome ? "收" : "支", tr.Amount, tr.AssetName,
-                    tr.AssetValue, tr.TransactionType,tr.RefundLinkId) });
+                    tr.AssetValue, tr.TransactionType,tr.RefundLinkId, tr.Remark) });
 
             StageFile(_transactionRecordDataFile);
             StageFile(_assetsDataFile);
