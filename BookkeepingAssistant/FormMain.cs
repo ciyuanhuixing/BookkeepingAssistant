@@ -231,7 +231,7 @@ namespace BookkeepingAssistant
             model.TransactionType = record.TransactionType;
             model.Amount = formRefund.RefundAmount;
             model.RefundLinkId = record.Id.ToString();
-            model.Remark = totalRefundAmount == 0 ? "[全额退款的收款]" : "[部分退款的收款]";
+            model.Remark = formRefund.RefundAmount >= Math.Abs(record.Amount) ? "[全额退款]" : "[部分退款]";
             AddTransactionRecord(model);
         }
 

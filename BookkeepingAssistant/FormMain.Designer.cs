@@ -68,14 +68,15 @@ namespace BookkeepingAssistant
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvDetail.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvDetail.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvDetail.Location = new System.Drawing.Point(0, 102);
+            this.dgvDetail.Location = new System.Drawing.Point(0, 112);
             this.dgvDetail.MultiSelect = false;
             this.dgvDetail.Name = "dgvDetail";
             this.dgvDetail.ReadOnly = true;
+            this.dgvDetail.RowHeadersVisible = false;
             this.dgvDetail.RowHeadersWidth = 62;
             this.dgvDetail.RowTemplate.Height = 32;
             this.dgvDetail.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDetail.Size = new System.Drawing.Size(1145, 706);
+            this.dgvDetail.Size = new System.Drawing.Size(1255, 696);
             this.dgvDetail.TabIndex = 13;
             this.dgvDetail.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dgvDetail_RowPrePaint);
             this.dgvDetail.SelectionChanged += new System.EventHandler(this.dgvDetail_SelectionChanged);
@@ -98,32 +99,35 @@ namespace BookkeepingAssistant
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1616, 102);
+            this.panel1.Size = new System.Drawing.Size(1616, 112);
             this.panel1.TabIndex = 0;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label4.Location = new System.Drawing.Point(12, 64);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(46, 24);
+            this.label4.Size = new System.Drawing.Size(62, 31);
             this.label4.TabIndex = 27;
             this.label4.Text = "备注";
             // 
             // txtRemake
             // 
-            this.txtRemake.Location = new System.Drawing.Point(64, 61);
+            this.txtRemake.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtRemake.Location = new System.Drawing.Point(75, 61);
             this.txtRemake.Name = "txtRemake";
-            this.txtRemake.Size = new System.Drawing.Size(937, 30);
+            this.txtRemake.Size = new System.Drawing.Size(993, 39);
             this.txtRemake.TabIndex = 4;
             this.txtRemake.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtAmount_KeyUp);
             // 
             // btnRefund
             // 
             this.btnRefund.Enabled = false;
-            this.btnRefund.Location = new System.Drawing.Point(1177, 12);
+            this.btnRefund.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnRefund.Location = new System.Drawing.Point(1238, 14);
             this.btnRefund.Name = "btnRefund";
-            this.btnRefund.Size = new System.Drawing.Size(156, 34);
+            this.btnRefund.Size = new System.Drawing.Size(156, 86);
             this.btnRefund.TabIndex = 6;
             this.btnRefund.Text = "对选中记录退款";
             this.btnRefund.UseVisualStyleBackColor = true;
@@ -132,64 +136,71 @@ namespace BookkeepingAssistant
             // comboBoxInOut
             // 
             this.comboBoxInOut.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxInOut.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.comboBoxInOut.FormattingEnabled = true;
-            this.comboBoxInOut.Location = new System.Drawing.Point(12, 12);
+            this.comboBoxInOut.Location = new System.Drawing.Point(214, 14);
             this.comboBoxInOut.Name = "comboBoxInOut";
-            this.comboBoxInOut.Size = new System.Drawing.Size(110, 32);
+            this.comboBoxInOut.Size = new System.Drawing.Size(110, 39);
             this.comboBoxInOut.TabIndex = 3;
             this.comboBoxInOut.SelectedIndexChanged += new System.EventHandler(this.comboBoxInOut_SelectedIndexChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(817, 16);
+            this.label1.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label1.Location = new System.Drawing.Point(12, 18);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(46, 24);
+            this.label1.Size = new System.Drawing.Size(62, 31);
             this.label1.TabIndex = 24;
             this.label1.Text = "金额";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(520, 16);
+            this.label2.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label2.Location = new System.Drawing.Point(771, 18);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(82, 24);
+            this.label2.Size = new System.Drawing.Size(110, 31);
             this.label2.TabIndex = 23;
             this.label2.Text = "交易类型";
             // 
             // comboBoxTransactionTypes
             // 
             this.comboBoxTransactionTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTransactionTypes.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.comboBoxTransactionTypes.FormattingEnabled = true;
-            this.comboBoxTransactionTypes.Location = new System.Drawing.Point(608, 12);
+            this.comboBoxTransactionTypes.Location = new System.Drawing.Point(886, 14);
             this.comboBoxTransactionTypes.Name = "comboBoxTransactionTypes";
-            this.comboBoxTransactionTypes.Size = new System.Drawing.Size(182, 32);
+            this.comboBoxTransactionTypes.Size = new System.Drawing.Size(182, 39);
             this.comboBoxTransactionTypes.TabIndex = 1;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(139, 16);
+            this.label3.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label3.Location = new System.Drawing.Point(339, 18);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(82, 24);
+            this.label3.Size = new System.Drawing.Size(110, 31);
             this.label3.TabIndex = 22;
             this.label3.Text = "资产类型";
             // 
             // comboBoxAssets
             // 
             this.comboBoxAssets.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxAssets.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.comboBoxAssets.FormattingEnabled = true;
-            this.comboBoxAssets.Location = new System.Drawing.Point(225, 12);
+            this.comboBoxAssets.Location = new System.Drawing.Point(455, 14);
             this.comboBoxAssets.Name = "comboBoxAssets";
-            this.comboBoxAssets.Size = new System.Drawing.Size(273, 32);
+            this.comboBoxAssets.Size = new System.Drawing.Size(302, 39);
             this.comboBoxAssets.TabIndex = 2;
             // 
             // linkLabelManageTransactionType
             // 
             this.linkLabelManageTransactionType.AutoSize = true;
-            this.linkLabelManageTransactionType.Location = new System.Drawing.Point(1477, 19);
+            this.linkLabelManageTransactionType.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.linkLabelManageTransactionType.Location = new System.Drawing.Point(1453, 64);
             this.linkLabelManageTransactionType.Name = "linkLabelManageTransactionType";
-            this.linkLabelManageTransactionType.Size = new System.Drawing.Size(118, 24);
+            this.linkLabelManageTransactionType.Size = new System.Drawing.Size(158, 31);
             this.linkLabelManageTransactionType.TabIndex = 21;
             this.linkLabelManageTransactionType.TabStop = true;
             this.linkLabelManageTransactionType.Text = "管理交易类型";
@@ -198,9 +209,10 @@ namespace BookkeepingAssistant
             // linkLabelManageAssets
             // 
             this.linkLabelManageAssets.AutoSize = true;
-            this.linkLabelManageAssets.Location = new System.Drawing.Point(1374, 19);
+            this.linkLabelManageAssets.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.linkLabelManageAssets.Location = new System.Drawing.Point(1453, 18);
             this.linkLabelManageAssets.Name = "linkLabelManageAssets";
-            this.linkLabelManageAssets.Size = new System.Drawing.Size(82, 24);
+            this.linkLabelManageAssets.Size = new System.Drawing.Size(110, 31);
             this.linkLabelManageAssets.TabIndex = 20;
             this.linkLabelManageAssets.TabStop = true;
             this.linkLabelManageAssets.Text = "管理资产";
@@ -208,9 +220,10 @@ namespace BookkeepingAssistant
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(1030, 11);
+            this.btnAdd.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnAdd.Location = new System.Drawing.Point(1091, 14);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(112, 77);
+            this.btnAdd.Size = new System.Drawing.Size(112, 86);
             this.btnAdd.TabIndex = 5;
             this.btnAdd.Text = "新增";
             this.btnAdd.UseVisualStyleBackColor = true;
@@ -218,9 +231,10 @@ namespace BookkeepingAssistant
             // 
             // txtAmount
             // 
-            this.txtAmount.Location = new System.Drawing.Point(869, 13);
+            this.txtAmount.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtAmount.Location = new System.Drawing.Point(76, 14);
             this.txtAmount.Name = "txtAmount";
-            this.txtAmount.Size = new System.Drawing.Size(132, 30);
+            this.txtAmount.Size = new System.Drawing.Size(132, 39);
             this.txtAmount.TabIndex = 0;
             this.txtAmount.TextChanged += new System.EventHandler(this.txtAmount_TextChanged);
             this.txtAmount.Enter += new System.EventHandler(this.txtAmount_Enter);
@@ -229,12 +243,13 @@ namespace BookkeepingAssistant
             // txtAssets
             // 
             this.txtAssets.Dock = System.Windows.Forms.DockStyle.Right;
-            this.txtAssets.Location = new System.Drawing.Point(1145, 102);
+            this.txtAssets.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtAssets.Location = new System.Drawing.Point(1255, 112);
             this.txtAssets.Multiline = true;
             this.txtAssets.Name = "txtAssets";
             this.txtAssets.ReadOnly = true;
             this.txtAssets.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtAssets.Size = new System.Drawing.Size(471, 706);
+            this.txtAssets.Size = new System.Drawing.Size(361, 696);
             this.txtAssets.TabIndex = 14;
             // 
             // FormMain

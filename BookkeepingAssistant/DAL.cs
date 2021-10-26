@@ -193,7 +193,6 @@ namespace BookkeepingAssistant
                         }
                     }
                 }
-
             }
         }
 
