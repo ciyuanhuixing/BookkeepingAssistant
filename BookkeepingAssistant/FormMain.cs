@@ -22,24 +22,8 @@ namespace BookkeepingAssistant
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            bool needInit = false;
             var config = ConfigHelper.ReadConfig();
-            if (!config.IsInit)
-            {
-                needInit = true;
-            }
-            if (!needInit)
-            {
-                try
-                {
-                    var dal = DAL.Singleton;
-                }
-                catch (Exception)
-                {
-                    needInit = true;
-                }
-            }
-            if (needInit)
+            if (!config.IsInit || !DAL.VerifyGitRepo())
             {
                 this.Visible = false;
                 FormInit formInit = new FormInit();

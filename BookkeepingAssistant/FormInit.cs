@@ -104,6 +104,7 @@ namespace BookkeepingAssistant
             ConfigHelper.SaveConfig(model);
 
             isInit = true;
+            _repo.Dispose();
             Close();
         }
 

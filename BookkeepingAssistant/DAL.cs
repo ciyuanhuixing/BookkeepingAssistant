@@ -45,6 +45,19 @@ namespace BookkeepingAssistant
             ReadData();
         }
 
+        public static bool VerifyGitRepo()
+        {
+            try
+            {
+                new DAL();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+
         private void CheckoutLastPushFile()
         {
             List<string> paths = new List<string>() {
