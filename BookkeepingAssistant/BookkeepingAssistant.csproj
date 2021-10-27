@@ -4,6 +4,40 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
+    <Authors>次元彗星</Authors>
+    <Description>次元彗星-记账助手</Description>
+    <PackageProjectUrl>https://ciyuanhuixing.com</PackageProjectUrl>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="FormInit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormManageAssets.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormManageTransactionType.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormMessage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormRefund.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormRefundRecord.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormStatistics.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
 
 </Project>
