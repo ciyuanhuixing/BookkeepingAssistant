@@ -20,7 +20,7 @@ namespace BookkeepingAssistant
         private void FormRefundRecord_Load(object sender, EventArgs e)
         {
             DataTable dt = new DataTable();
-            dt.Columns.Add("Id");
+            dt.Columns.Add("Id", typeof(int));
             dt.Columns.Add("年-月-日 时");
             dt.Columns.Add("收/支");
             dt.Columns.Add("金额");

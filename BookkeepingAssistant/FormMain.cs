@@ -49,7 +49,7 @@ namespace BookkeepingAssistant
         private void RefreshDetailView(List<TransactionRecordModel> records)
         {
             DataTable dt = new DataTable();
-            dt.Columns.Add("Id");
+            dt.Columns.Add("Id", typeof(int));
             dt.Columns.Add("年-月-日 时");
             dt.Columns.Add("收/支");
             dt.Columns.Add("金额");
@@ -195,7 +195,7 @@ namespace BookkeepingAssistant
                 MessageBox.Show("请先选中一行记录。");
                 return;
             }
-            int id = int.Parse(dgvDetail.SelectedRows[0].Cells["Id"].Value.ToString());
+            int id = (int)dgvDetail.SelectedRows[0].Cells["Id"].Value;
             var record = _records.Single(o => o.Id == id);
             if (record.isIncome)
             {
@@ -234,7 +234,7 @@ namespace BookkeepingAssistant
             }
             btnDeleteSelect.Enabled = true;
 
-            int id = int.Parse(dgvDetail.SelectedRows[0].Cells["Id"].Value.ToString());
+            int id = (int)dgvDetail.SelectedRows[0].Cells["Id"].Value;
             var record = _records.Single(o => o.Id == id);
             if (record.isIncome)
             {
@@ -307,7 +307,7 @@ namespace BookkeepingAssistant
                 MessageBox.Show("请先选中一行记录。");
                 return;
             }
-            int id = int.Parse(dgvDetail.SelectedRows[0].Cells["Id"].Value.ToString());
+            int id = (int)dgvDetail.SelectedRows[0].Cells["Id"].Value;
             var record = _records.Single(o => o.Id == id);
             if (MessageBox.Show($"Id：{record.Id}，金额：{record.Amount}{Environment.NewLine}确认删除该记录？",
                 "确认删除？", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) != DialogResult.Yes)

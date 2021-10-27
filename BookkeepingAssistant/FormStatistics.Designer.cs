@@ -29,57 +29,92 @@ namespace BookkeepingAssistant
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.dgvDetail = new System.Windows.Forms.DataGridView();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvDetail)).BeginInit();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            this.dgvMonth = new System.Windows.Forms.DataGridView();
+            this.dgvYear = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMonth)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvYear)).BeginInit();
             this.SuspendLayout();
             // 
-            // dgvDetail
+            // dgvMonth
             // 
-            this.dgvDetail.AllowUserToAddRows = false;
-            this.dgvDetail.AllowUserToDeleteRows = false;
-            this.dgvDetail.AllowUserToResizeColumns = false;
-            this.dgvDetail.AllowUserToResizeRows = false;
-            this.dgvDetail.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dgvDetail.ColumnHeadersHeight = 34;
-            this.dgvDetail.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDetail.DefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvDetail.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvDetail.Location = new System.Drawing.Point(0, 0);
-            this.dgvDetail.MultiSelect = false;
-            this.dgvDetail.Name = "dgvDetail";
-            this.dgvDetail.ReadOnly = true;
-            this.dgvDetail.RowHeadersVisible = false;
-            this.dgvDetail.RowHeadersWidth = 62;
-            this.dgvDetail.RowTemplate.Height = 32;
-            this.dgvDetail.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDetail.Size = new System.Drawing.Size(800, 450);
-            this.dgvDetail.TabIndex = 14;
+            this.dgvMonth.AllowUserToAddRows = false;
+            this.dgvMonth.AllowUserToDeleteRows = false;
+            this.dgvMonth.AllowUserToResizeColumns = false;
+            this.dgvMonth.AllowUserToResizeRows = false;
+            this.dgvMonth.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvMonth.ColumnHeadersHeight = 34;
+            this.dgvMonth.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMonth.DefaultCellStyle = dataGridViewCellStyle3;
+            this.dgvMonth.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvMonth.Location = new System.Drawing.Point(0, 0);
+            this.dgvMonth.MultiSelect = false;
+            this.dgvMonth.Name = "dgvMonth";
+            this.dgvMonth.ReadOnly = true;
+            this.dgvMonth.RowHeadersVisible = false;
+            this.dgvMonth.RowHeadersWidth = 62;
+            this.dgvMonth.RowTemplate.Height = 32;
+            this.dgvMonth.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvMonth.Size = new System.Drawing.Size(1128, 363);
+            this.dgvMonth.TabIndex = 14;
+            // 
+            // dgvYear
+            // 
+            this.dgvYear.AllowUserToAddRows = false;
+            this.dgvYear.AllowUserToDeleteRows = false;
+            this.dgvYear.AllowUserToResizeColumns = false;
+            this.dgvYear.AllowUserToResizeRows = false;
+            this.dgvYear.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvYear.ColumnHeadersHeight = 34;
+            this.dgvYear.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvYear.DefaultCellStyle = dataGridViewCellStyle4;
+            this.dgvYear.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.dgvYear.Location = new System.Drawing.Point(0, 363);
+            this.dgvYear.MultiSelect = false;
+            this.dgvYear.Name = "dgvYear";
+            this.dgvYear.ReadOnly = true;
+            this.dgvYear.RowHeadersVisible = false;
+            this.dgvYear.RowHeadersWidth = 62;
+            this.dgvYear.RowTemplate.Height = 32;
+            this.dgvYear.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvYear.Size = new System.Drawing.Size(1128, 301);
+            this.dgvYear.TabIndex = 15;
             // 
             // FormStatistics
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.dgvDetail);
+            this.ClientSize = new System.Drawing.Size(1128, 664);
+            this.Controls.Add(this.dgvMonth);
+            this.Controls.Add(this.dgvYear);
             this.Name = "FormStatistics";
             this.Text = "记账统计";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.FormStatistics_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvDetail)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMonth)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvYear)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dgvDetail;
+        private System.Windows.Forms.DataGridView dgvMonth;
+        private System.Windows.Forms.DataGridView dgvYear;
     }
 }
