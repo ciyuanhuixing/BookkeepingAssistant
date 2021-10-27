@@ -50,7 +50,12 @@ namespace BookkeepingAssistant
                     }
                     if (inTypeAmount != 0)
                     {
-                        monthInTypesAmount.Add(inType.Key, inTypeAmount);
+                        string columnName = $"【{inType.Key}】收入";
+                        monthInTypesAmount.Add(columnName, inTypeAmount);
+                        if (!dtMonth.Columns.Contains(columnName))
+                        {
+                            dtMonth.Columns.Add(columnName);
+                        }
                     }
                 }
                 foreach (var outType in monthOutTypes)
@@ -62,25 +67,13 @@ namespace BookkeepingAssistant
                     }
                     if (outTypeAmount != 0)
                     {
-                        monthOutTypesAmount.Add(outType.Key, outTypeAmount);
-
-                        string columnName = $"[{outType.Key}]支出";
+                        string columnName = $"【{outType.Key}】支出";
+                        monthOutTypesAmount.Add(columnName, outTypeAmount);
                         if (!dtMonth.Columns.Contains(columnName))
                         {
                             dtMonth.Columns.Add(columnName);
                         }
-                        rowItems.Add(columnName, outTypeAmount);
                     }
-                }
-
-                foreach (var typeAndAmount in monthInTypesAmount)
-                {
-                    string columnName = $"[{typeAndAmount.Key}]收入";
-                    if (!dtMonth.Columns.Contains(columnName))
-                    {
-                        dtMonth.Columns.Add(columnName);
-                    }
-                    row[columnName] = typeAndAmount.Value;
                 }
 
                 var row = dtMonth.NewRow();
@@ -88,6 +81,14 @@ namespace BookkeepingAssistant
                 row["月份"] = month.Key;
                 row["月度总收入"] = monthIn.Sum(o => o.Amount) - monthRefundAmount;
                 row["月度总支出"] = monthOut.Sum(o => o.Amount) + monthRefundAmount;
+                foreach (var typeAndAmount in monthInTypesAmount)
+                {
+                    row[typeAndAmount.Key] = typeAndAmount.Value;
+                }
+                foreach (var typeAndAmount in monthOutTypesAmount)
+                {
+                    row[typeAndAmount.Key] = typeAndAmount.Value;
+                }
             }
 
             dgvMonth.DataSource = dtMonth;
