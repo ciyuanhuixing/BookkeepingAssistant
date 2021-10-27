@@ -21,13 +21,21 @@ namespace BookkeepingAssistant
 
         private void FormStatistics_Load(object sender, EventArgs e)
         {
-            DataTable dtMonth = new DataTable();
-            dtMonth.Columns.Add("月份");
-            dtMonth.Columns.Add("月度总收入");
-            dtMonth.Columns.Add("月度总支出");
-            dtMonth.Columns.Add("月度盈余");
+            dgvMonth.DataSource = GetStatisticsTable(true);
+            dgvYear.DataSource = GetStatisticsTable(false);
+        }
 
-            var monthsData = _models.GroupBy(o => o.Time.ToString("yyyy-MM")).OrderByDescending(o => o).ToList();
+        private DataTable GetStatisticsTable(bool isMonth)
+        {
+            string timeUnit = isMonth ? "月" : "年";
+
+            DataTable dtMonth = new DataTable();
+            dtMonth.Columns.Add($"{timeUnit}份");
+            dtMonth.Columns.Add($"{timeUnit}度总收入");
+            dtMonth.Columns.Add($"{timeUnit}度总支出");
+            dtMonth.Columns.Add($"{timeUnit}度盈余");
+
+            var monthsData = _models.GroupBy(o => o.Time.ToString(isMonth ? "yyyy-MM" : "yyyy")).OrderByDescending(o => o).ToList();
             foreach (var month in monthsData)
             {
                 var monthIn = month.Where(o => o.isIncome).ToList();
@@ -79,12 +87,12 @@ namespace BookkeepingAssistant
 
                 var row = dtMonth.NewRow();
                 dtMonth.Rows.Add(row);
-                row["月份"] = month.Key;
+                row[$"{timeUnit}份"] = month.Key;
                 var inAmount = monthIn.Sum(o => o.Amount) - monthRefundAmount;
                 var outAmount = monthOut.Sum(o => o.Amount) + monthRefundAmount;
-                row["月度总收入"] = inAmount;
-                row["月度总支出"] = outAmount;
-                row["月度盈余"] = inAmount + outAmount;
+                row[$"{timeUnit}度总收入"] = inAmount;
+                row[$"{timeUnit}度总支出"] = outAmount;
+                row[$"{timeUnit}度盈余"] = inAmount + outAmount;
                 foreach (var typeAndAmount in monthInTypesAmount)
                 {
                     row[typeAndAmount.Key] = typeAndAmount.Value;
@@ -94,10 +102,7 @@ namespace BookkeepingAssistant
                     row[typeAndAmount.Key] = typeAndAmount.Value;
                 }
             }
-
-            dgvMonth.DataSource = dtMonth;
-
-
+            return dtMonth;
         }
     }
 }
