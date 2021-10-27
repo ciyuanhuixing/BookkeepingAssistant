@@ -25,6 +25,7 @@ namespace BookkeepingAssistant
             dtMonth.Columns.Add("月份");
             dtMonth.Columns.Add("月度总收入");
             dtMonth.Columns.Add("月度总支出");
+            dtMonth.Columns.Add("月度盈余");
 
             var monthsData = _models.GroupBy(o => o.Time.ToString("yyyy-MM")).OrderByDescending(o => o).ToList();
             foreach (var month in monthsData)
@@ -79,8 +80,11 @@ namespace BookkeepingAssistant
                 var row = dtMonth.NewRow();
                 dtMonth.Rows.Add(row);
                 row["月份"] = month.Key;
-                row["月度总收入"] = monthIn.Sum(o => o.Amount) - monthRefundAmount;
-                row["月度总支出"] = monthOut.Sum(o => o.Amount) + monthRefundAmount;
+                var inAmount = monthIn.Sum(o => o.Amount) - monthRefundAmount;
+                var outAmount = monthOut.Sum(o => o.Amount) + monthRefundAmount;
+                row["月度总收入"] = inAmount;
+                row["月度总支出"] = outAmount;
+                row["月度盈余"] = inAmount + outAmount;
                 foreach (var typeAndAmount in monthInTypesAmount)
                 {
                     row[typeAndAmount.Key] = typeAndAmount.Value;
