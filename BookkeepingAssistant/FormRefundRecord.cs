@@ -21,7 +21,7 @@ namespace BookkeepingAssistant
         {
             DataTable dt = new DataTable();
             dt.Columns.Add("Id", typeof(int));
-            dt.Columns.Add("年-月-日 时");
+            dt.Columns.Add("年-月-日  时");
             dt.Columns.Add("收/支");
             dt.Columns.Add("金额");
             dt.Columns.Add("资产");
@@ -32,7 +32,7 @@ namespace BookkeepingAssistant
             {
                 DataRow dr = dt.NewRow();
                 dr["Id"] = item.Id;
-                dr["年-月-日 时"] = item.Time.ToString("yy-MM-dd HH");
+                dr["年-月-日  时"] = item.Time.ToString("yyyy-MM-dd  HH");
                 dr["收/支"] = item.isIncome ? "收入" : "支出";
                 dr["金额"] = item.Amount;
                 dr["资产"] = item.AssetName;

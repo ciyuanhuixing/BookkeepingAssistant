@@ -27,18 +27,18 @@ namespace BookkeepingAssistant
             string type = txtType.Text.Trim();
             if (string.IsNullOrEmpty(type))
             {
-                MessageBox.Show("新增失败：名称不能为空。");
+                FormMessage.Show("新增失败：名称不能为空。");
                 return;
             }
             if (DAL.Singleton.GetTransactionTypes().Contains(type))
             {
-                MessageBox.Show("新增失败：已存在该名称的交易类型。");
+                FormMessage.Show("新增失败：已存在该名称的交易类型。");
                 return;
             }
 
             DAL.Singleton.AddTransactionType(type);
             RefreshTransactionTypes();
-            MessageBox.Show($"已新增「{type}」");
+            FormMessage.Show($"已新增「{type}」");
         }
 
         private void RefreshTransactionTypes()

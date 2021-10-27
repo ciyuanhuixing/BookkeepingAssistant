@@ -50,7 +50,7 @@ namespace BookkeepingAssistant
         {
             DataTable dt = new DataTable();
             dt.Columns.Add("Id", typeof(int));
-            dt.Columns.Add("年-月-日 时");
+            dt.Columns.Add("年-月-日  时");
             dt.Columns.Add("收/支");
             dt.Columns.Add("金额");
             dt.Columns.Add("资产");
@@ -61,7 +61,7 @@ namespace BookkeepingAssistant
             {
                 DataRow dr = dt.NewRow();
                 dr["Id"] = item.Id;
-                dr["年-月-日 时"] = item.Time.ToString("yy-MM-dd HH");
+                dr["年-月-日  时"] = item.Time.ToString("yyyy-MM-dd  HH");
                 dr["收/支"] = item.isIncome ? "收入" : "支出";
                 dr["金额"] = item.Amount;
                 dr["资产"] = item.AssetName;
@@ -80,7 +80,7 @@ namespace BookkeepingAssistant
             decimal amount;
             if (!decimal.TryParse(txtAmount.Text.Trim(), out amount))
             {
-                MessageBox.Show("新增失败：金额不能填入非数字。");
+                FormMessage.Show("新增失败：金额不能填入非数字。");
                 return;
             }
             tr.Amount = amount;
@@ -99,6 +99,8 @@ namespace BookkeepingAssistant
                 txtAmount.Clear();
             }
             txtRemake.Clear();
+            FormMessage.Show($"已新增一条记录，金额：{tr.Amount}");
+            txtAmount.Focus();
         }
 
         private void AddTransactionRecord(TransactionRecordModel tr)
@@ -109,7 +111,7 @@ namespace BookkeepingAssistant
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"新增交易记录失败：{ ex.Message}。");
+                FormMessage.Show($"新增交易记录失败：{ ex.Message}。");
                 return;
             }
 
@@ -192,21 +194,21 @@ namespace BookkeepingAssistant
         {
             if (dgvDetail.SelectedRows.Count == 0)
             {
-                MessageBox.Show("请先选中一行记录。");
+                FormMessage.Show("请先选中一行记录。");
                 return;
             }
             int id = (int)dgvDetail.SelectedRows[0].Cells["Id"].Value;
             var record = _records.Single(o => o.Id == id);
             if (record.isIncome)
             {
-                MessageBox.Show("收入不可退款。");
+                FormMessage.Show("收入不可退款。");
                 return;
             }
             var linkIds = record.RefundLinkId.Split(',').Where(o => !string.IsNullOrWhiteSpace(o)).ToList();
             var totalRefundAmount = _records.Where(o => linkIds.Contains(o.Id.ToString())).Sum(o => o.Amount);
             if (totalRefundAmount + record.Amount >= 0)
             {
-                MessageBox.Show("此支出已全额退款，不可再次退款。");
+                FormMessage.Show("此支出已全额退款，不可再次退款。");
                 return;
             }
 
@@ -251,7 +253,7 @@ namespace BookkeepingAssistant
 
                     new FormRefundRecord(refundRecords)
                     {
-                        Text = $"【退款记录】原交易记录 Id：{record.Id}，时间：{record.Time.ToString("yy-MM-dd HH")}，金额：{record.Amount}"
+                        Text = $"【退款记录】原交易记录 Id：{record.Id}，时间：{record.Time.ToString("yyyy-MM-dd HH")}，金额：{record.Amount}"
                     }.ShowDialog();
                 }
             }
@@ -304,7 +306,7 @@ namespace BookkeepingAssistant
         {
             if (dgvDetail.SelectedRows.Count == 0)
             {
-                MessageBox.Show("请先选中一行记录。");
+                FormMessage.Show("请先选中一行记录。");
                 return;
             }
             int id = (int)dgvDetail.SelectedRows[0].Cells["Id"].Value;
@@ -327,6 +329,19 @@ namespace BookkeepingAssistant
         private void btnStatistics_Click(object sender, EventArgs e)
         {
             new FormStatistics(_records).ShowDialog();
+        }
+
+        private void FormMain_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F2 || (e.Control && e.KeyCode == Keys.Enter))
+            {
+                e.Handled = true;
+                txtAmount.Focus();
+            }
+            else if (e.KeyCode == Keys.F8)
+            {
+                btnStatistics.PerformClick();
+            }
         }
     }
 }

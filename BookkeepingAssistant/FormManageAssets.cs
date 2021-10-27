@@ -27,25 +27,25 @@ namespace BookkeepingAssistant
             string assetName = txtAssetName.Text.Trim();
             if (string.IsNullOrEmpty(assetName))
             {
-                MessageBox.Show("新增失败：名称不能为空。");
+                FormMessage.Show("新增失败：名称不能为空。");
                 return;
             }
             if (DAL.Singleton.GetAssets().ContainsKey(assetName))
             {
-                MessageBox.Show("新增失败：已存在该名称的资产。");
+                FormMessage.Show("新增失败：已存在该名称的资产。");
                 return;
             }
 
             decimal assetValue;
             if (!decimal.TryParse(txtAssetValue.Text.Trim(), out assetValue))
             {
-                MessageBox.Show("新增失败：资产余额不能填非数字。");
+                FormMessage.Show("新增失败：资产余额不能填非数字。");
                 return;
             }
 
             DAL.Singleton.AddAsset(assetName, assetValue);
             DisplayAssets();
-            MessageBox.Show($"已新增「{assetName}」");
+            FormMessage.Show($"已新增「{assetName}」");
         }
 
         private void DisplayAssets()
@@ -79,7 +79,7 @@ namespace BookkeepingAssistant
             }
             catch (Exception ex)
             {
-                MessageBox.Show("删除失败：" + ex.Message);
+                FormMessage.Show("删除失败：" + ex.Message);
             }
             DisplayAssets();
         }

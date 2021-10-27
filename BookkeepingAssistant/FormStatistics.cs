@@ -23,6 +23,8 @@ namespace BookkeepingAssistant
         {
             dgvMonth.DataSource = GetStatisticsTable(true);
             dgvYear.DataSource = GetStatisticsTable(false);
+            dgvMonth.ClearSelection();
+            dgvYear.ClearSelection();
         }
 
         private DataTable GetStatisticsTable(bool isMonth)
