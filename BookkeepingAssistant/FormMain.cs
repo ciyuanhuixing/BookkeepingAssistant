@@ -34,15 +34,12 @@ namespace BookkeepingAssistant
             _records = DAL.Singleton.GetTransactionRecords();
             _records.Reverse();
 
-            if (_records.Any())
+            txtAmount.Text = "-";
+            if (_records.Any() && _records.First().isIncome)
             {
-                var r = _records.First();
-                if (!r.isIncome)
-                {
-                    txtAmount.Text = "-";
-                }
-                txtAmount_TextChanged(null, null);
+                txtAmount.Clear();
             }
+            txtAmount_TextChanged(null, null);
 
             RefreshAssetsControl();
             RefreshTransactionTypesControl();
