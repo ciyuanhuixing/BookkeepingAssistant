@@ -87,7 +87,7 @@ namespace BookkeepingAssistant
             tr.AssetName = (string)comboBoxAssets.SelectedValue;
             tr.TransactionType = (string)comboBoxTransactionTypes.SelectedValue;
             tr.Remark = txtRemake.Text.Trim();
-            AddTransactionRecord(tr);
+            string addResult = AddTransactionRecord(tr);
 
             if (txtAmount.Text.Trim().StartsWith('-'))
             {
@@ -99,26 +99,34 @@ namespace BookkeepingAssistant
                 txtAmount.Clear();
             }
             txtRemake.Clear();
-            FormMessage.Show($"已新增一条记录，金额：{tr.Amount}");
+            StringBuilder sbMessage = new StringBuilder();
+            sbMessage.AppendLine($"已新增一条{(tr.isIncome ? "收入" : "支出")}：");
+            sbMessage.AppendLine($"金额：{tr.Amount}");
+            sbMessage.AppendLine($"交易类型：{tr.TransactionType}");
+            sbMessage.AppendLine($"资产类型：{tr.AssetName}");
+            sbMessage.AppendLine($"交易后余额：{addResult}");
+            FormMessage.Show(sbMessage.ToString(), tr.isIncome ? Color.LightGreen : Color.Empty);
             txtAmount.Focus();
         }
 
-        private void AddTransactionRecord(TransactionRecordModel tr)
+        private string AddTransactionRecord(TransactionRecordModel tr)
         {
+            string resultMessage = string.Empty;
             try
             {
-                DAL.Singleton.AppendTransactionRecord(tr);
+                resultMessage = DAL.Singleton.AppendTransactionRecord(tr);
             }
             catch (Exception ex)
             {
                 FormMessage.Show($"新增交易记录失败：{ ex.Message}。");
-                return;
+                return resultMessage;
             }
 
             _records = DAL.Singleton.GetTransactionRecords();
             _records.Reverse();
             RefreshDetailView(_records);
             RefreshAssetsControl();
+            return resultMessage;
         }
 
         private void linkLabelModifyAssets_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

@@ -357,7 +357,7 @@ namespace BookkeepingAssistant
             PossibleRollback(SaveTransactionTypes);
         }
 
-        public void AppendTransactionRecord(TransactionRecordModel tr)
+        public string AppendTransactionRecord(TransactionRecordModel tr)
         {
             if (string.IsNullOrWhiteSpace(tr.AssetName))
             {
@@ -378,14 +378,25 @@ namespace BookkeepingAssistant
             }
             tr.Time = DateTime.Now;
 
+            string message = string.Empty;
             if (_dicAssets.ContainsKey(tr.AssetName))
             {
+                message = _dicAssets[tr.AssetName].ToString();
+                if (tr.isIncome)
+                {
+                    message += "+";
+                }
+                message += tr.Amount;
+
                 _dicAssets[tr.AssetName] += tr.Amount;
                 tr.AssetValue = _dicAssets[tr.AssetName];
+
+                message += "=" + tr.AssetValue;
             }
 
             _transactionRecords.Add(tr);
             PossibleRollback(SaveTransactionRecord, tr);
+            return message;
         }
 
         private void SaveTransactionRecord(TransactionRecordModel tr)
