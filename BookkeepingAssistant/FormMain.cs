@@ -34,11 +34,14 @@ namespace BookkeepingAssistant
             _records = DAL.Singleton.GetTransactionRecords();
             _records.Reverse();
 
-            comboBoxInOut.DataSource = new string[] { "支出", "收入" };
             if (_records.Any())
             {
                 var r = _records.First();
-                comboBoxInOut.SelectedItem = r.isIncome ? "收入" : "支出";
+                if (!r.isIncome)
+                {
+                    txtAmount.Text = "-";
+                }
+                txtAmount_TextChanged(null, null);
             }
 
             RefreshAssetsControl();
@@ -263,29 +266,15 @@ namespace BookkeepingAssistant
         {
             if (txtAmount.Text.TrimStart().StartsWith('-'))
             {
-                comboBoxInOut.SelectedItem = "支出";
-            }
-            else
-            {
-                comboBoxInOut.SelectedItem = "收入";
-            }
-        }
-
-        private void comboBoxInOut_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (comboBoxInOut.SelectedItem.ToString() == "收入")
-            {
-                txtAmount.BackColor = Color.LightGreen;
-                txtAmount.Text = txtAmount.Text.Trim().TrimStart('-');
-            }
-            else
-            {
+                lblInOut.Text = "(支出)";
+                lblInOut.BackColor = Color.Transparent;
                 txtAmount.BackColor = Color.White;
-                if (!txtAmount.Text.Trim().StartsWith('-'))
-                {
-                    txtAmount.Text = '-' + txtAmount.Text.Trim();
-                    txtAmount.Select(txtAmount.Text.Length, 0);
-                }
+            }
+            else
+            {
+                lblInOut.Text = "(收入)";
+                lblInOut.BackColor = Color.LightGreen;
+                txtAmount.BackColor = Color.LightGreen;
             }
         }
 
@@ -298,7 +287,7 @@ namespace BookkeepingAssistant
         {
             if (e.KeyChar == (char)Keys.Enter)
             {
-                btnAdd_Click(null, null);
+                btnAdd.PerformClick();
             }
         }
 
