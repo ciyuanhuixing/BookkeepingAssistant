@@ -121,7 +121,7 @@ namespace BookkeepingAssistant
                 foreach (var line in lines)
                 {
                     string[] arr = line.Split('|');
-                    if (arr.Length != 10)
+                    if (arr.Length != 9)
                     {
                         continue;
                     }
@@ -145,13 +145,6 @@ namespace BookkeepingAssistant
                         continue;
                     }
                     record.Time = time;
-
-                    string inOut = arr[n++];
-                    if (inOut != "收" && inOut != "支")
-                    {
-                        continue;
-                    }
-                    record.isIncome = inOut == "收" ? true : false;
 
                     decimal amount;
                     if (!decimal.TryParse(arr[n++], out amount))
@@ -384,7 +377,6 @@ namespace BookkeepingAssistant
                 tr.Id = _transactionRecords.Last().Id + 1;
             }
             tr.Time = DateTime.Now;
-            tr.isIncome = tr.Amount > 0 ? true : false;
 
             if (_dicAssets.ContainsKey(tr.AssetName))
             {
@@ -401,7 +393,7 @@ namespace BookkeepingAssistant
             WriteAssetsDataFile();
             File.AppendAllLines(_transactionRecordDataFile,
                 new List<string>() {
-                    string.Join('|',tr.Id, tr.Time, tr.isIncome ? "收" : "支", tr.Amount, tr.AssetName,
+                    string.Join('|',tr.Id, tr.Time, tr.Amount, tr.AssetName,
                     tr.AssetValue, tr.TransactionType,tr.RefundLinkId, tr.Remark,tr.DeleteLinkId) });
 
             StageFile(_transactionRecordDataFile);
