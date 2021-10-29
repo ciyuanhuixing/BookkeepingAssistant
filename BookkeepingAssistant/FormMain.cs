@@ -54,7 +54,8 @@ namespace BookkeepingAssistant
             dt.Columns.Add("金额", typeof(int));
             dt.Columns.Add("交易类型");
             dt.Columns.Add("资产");
-            dt.Columns.Add("交易后余额");
+            dt.Columns.Add("交易后该资产余额");
+            dt.Columns.Add("交易后所有资产总余额");
             dt.Columns.Add("备注");
             foreach (var item in records)
             {
@@ -64,7 +65,8 @@ namespace BookkeepingAssistant
                 dr["金额"] = item.Amount;
                 dr["交易类型"] = item.TransactionType;
                 dr["资产"] = item.AssetName;
-                dr["交易后余额"] = item.AssetValue;
+                dr["交易后该资产余额"] = item.AssetValue;
+                dr["交易后所有资产总余额"] = item.AssetsTotalValue;
                 dr["备注"] = item.Remark;
                 dt.Rows.Add(dr);
             }
@@ -161,13 +163,13 @@ namespace BookkeepingAssistant
             }
 
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("【所有资产】");
+            sb.AppendLine("【所有资产余额】");
             foreach (var item in assets)
             {
                 sb.AppendLine(item.Value);
             }
             sb.AppendLine();
-            sb.AppendLine("总计：" + DAL.Singleton.GetAssets().Values.Sum());
+            sb.AppendLine("总余额：" + DAL.Singleton.GetAssets().Values.Sum());
             txtAssets.Text = sb.ToString();
         }
 

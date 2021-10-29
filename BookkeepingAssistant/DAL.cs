@@ -121,7 +121,7 @@ namespace BookkeepingAssistant
                 foreach (var line in lines)
                 {
                     string[] arr = line.Split('|');
-                    if (arr.Length != 9)
+                    if (arr.Length != 10)
                     {
                         continue;
                     }
@@ -153,6 +153,12 @@ namespace BookkeepingAssistant
                     }
                     record.Amount = amount;
 
+                    record.TransactionType = arr[n++];
+                    if (string.IsNullOrEmpty(record.TransactionType))
+                    {
+                        continue;
+                    }
+
                     record.AssetName = arr[n++];
                     if (string.IsNullOrEmpty(record.AssetName))
                     {
@@ -166,11 +172,12 @@ namespace BookkeepingAssistant
                     }
                     record.AssetValue = assetValue;
 
-                    record.TransactionType = arr[n++];
-                    if (string.IsNullOrEmpty(record.TransactionType))
+                    decimal assetsTotalValue;
+                    if (!decimal.TryParse(arr[n++], out assetsTotalValue))
                     {
                         continue;
                     }
+                    record.AssetsTotalValue = assetsTotalValue;
 
                     record.RefundLinkId = arr[n++];
                     record.Remark = arr[n++];
@@ -390,6 +397,7 @@ namespace BookkeepingAssistant
 
                 _dicAssets[tr.AssetName] += tr.Amount;
                 tr.AssetValue = _dicAssets[tr.AssetName];
+                tr.AssetsTotalValue = _dicAssets.Values.Sum();
 
                 message += "=" + tr.AssetValue;
             }
@@ -402,10 +410,9 @@ namespace BookkeepingAssistant
         private void SaveTransactionRecord(TransactionRecordModel tr)
         {
             WriteAssetsDataFile();
-            File.AppendAllLines(_transactionRecordDataFile,
-                new List<string>() {
-                    string.Join('|',tr.Id, tr.Time, tr.Amount, tr.AssetName,
-                    tr.AssetValue, tr.TransactionType,tr.RefundLinkId, tr.Remark,tr.DeleteLinkId) });
+            string line = string.Join('|', tr.Id, tr.Time, tr.Amount, tr.TransactionType, tr.AssetName,
+                    tr.AssetValue, tr.AssetsTotalValue, tr.RefundLinkId, tr.Remark, tr.DeleteLinkId);
+            File.AppendAllLines(_transactionRecordDataFile, new List<string>() { line });
 
             StageFile(_transactionRecordDataFile);
             StageFile(_assetsDataFile);

@@ -16,9 +16,11 @@ namespace BookkeepingAssistant
             }
         }
         public decimal Amount { get; set; }
+        public string TransactionType { get; set; }
         public string AssetName { get; set; }
         public decimal AssetValue { get; set; }
-        public string TransactionType { get; set; }
+        public decimal AssetsTotalValue { get; set; }
+
         public string RefundLinkId { get; set; }
         public string Remark { get; set; }
         public int? DeleteLinkId { get; set; }
