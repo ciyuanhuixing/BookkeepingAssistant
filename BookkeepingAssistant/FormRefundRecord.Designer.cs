@@ -69,7 +69,7 @@ namespace BookkeepingAssistant
             this.dgvDetail.RowHeadersWidth = 62;
             this.dgvDetail.RowTemplate.Height = 42;
             this.dgvDetail.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDetail.Size = new System.Drawing.Size(1242, 380);
+            this.dgvDetail.Size = new System.Drawing.Size(1313, 380);
             this.dgvDetail.TabIndex = 14;
             this.dgvDetail.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dgvDetail_RowPrePaint);
             // 
@@ -77,7 +77,7 @@ namespace BookkeepingAssistant
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1242, 380);
+            this.ClientSize = new System.Drawing.Size(1313, 380);
             this.Controls.Add(this.dgvDetail);
             this.Name = "FormRefundRecord";
             this.Text = "退款记录";
