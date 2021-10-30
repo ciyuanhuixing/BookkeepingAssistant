@@ -79,9 +79,11 @@ namespace BookkeepingAssistant
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1313, 380);
             this.Controls.Add(this.dgvDetail);
+            this.KeyPreview = true;
             this.Name = "FormRefundRecord";
             this.Text = "退款记录";
             this.Load += new System.EventHandler(this.FormRefundRecord_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormRefundRecord_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetail)).EndInit();
             this.ResumeLayout(false);
 

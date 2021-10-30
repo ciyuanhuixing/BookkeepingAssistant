@@ -108,5 +108,14 @@ namespace BookkeepingAssistant
             }
             return dtMonth;
         }
+
+        private void FormStatistics_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                e.Handled = true;
+                Close();
+            }
+        }
     }
 }

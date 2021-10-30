@@ -52,5 +52,14 @@ namespace BookkeepingAssistant
                 row.DefaultCellStyle.BackColor = Color.LightGreen;
             }
         }
+
+        private void FormRefundRecord_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                e.Handled = true;
+                Close();
+            }
+        }
     }
 }

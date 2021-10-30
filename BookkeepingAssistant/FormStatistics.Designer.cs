@@ -120,10 +120,12 @@ namespace BookkeepingAssistant
             this.ClientSize = new System.Drawing.Size(1128, 664);
             this.Controls.Add(this.dgvMonth);
             this.Controls.Add(this.dgvYear);
+            this.KeyPreview = true;
             this.Name = "FormStatistics";
             this.Text = "记账统计";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.FormStatistics_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormStatistics_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.dgvMonth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvYear)).EndInit();
             this.ResumeLayout(false);
