@@ -46,6 +46,8 @@ namespace BookkeepingAssistant
             DAL.Singleton.AddAsset(assetName, assetValue);
             DisplayAssets();
             FormMessage.Show($"已新增「{assetName}」");
+            txtAssetName.Clear();
+            txtAssetValue.Clear();
         }
 
         private void DisplayAssets()

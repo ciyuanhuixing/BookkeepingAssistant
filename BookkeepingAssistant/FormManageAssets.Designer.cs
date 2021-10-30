@@ -81,7 +81,7 @@ namespace BookkeepingAssistant
             this.txtAssetValue.Location = new System.Drawing.Point(397, 81);
             this.txtAssetValue.Name = "txtAssetValue";
             this.txtAssetValue.Size = new System.Drawing.Size(221, 30);
-            this.txtAssetValue.TabIndex = 4;
+            this.txtAssetValue.TabIndex = 1;
             // 
             // label1
             // 
