@@ -40,6 +40,7 @@ namespace BookkeepingAssistant
             RefreshTransactionTypes();
             FormMessage.Show($"已新增「{type}」");
             txtType.Clear();
+            txtType.Focus();
         }
 
         private void RefreshTransactionTypes()

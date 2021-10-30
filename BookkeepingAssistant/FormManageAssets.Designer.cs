@@ -47,7 +47,7 @@ namespace BookkeepingAssistant
             this.comboBoxAssets.FormattingEnabled = true;
             this.comboBoxAssets.Location = new System.Drawing.Point(133, 228);
             this.comboBoxAssets.Name = "comboBoxAssets";
-            this.comboBoxAssets.Size = new System.Drawing.Size(534, 39);
+            this.comboBoxAssets.Size = new System.Drawing.Size(611, 39);
             this.comboBoxAssets.TabIndex = 8;
             // 
             // txtAssetName
@@ -61,7 +61,7 @@ namespace BookkeepingAssistant
             // addAsset
             // 
             this.addAsset.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.addAsset.Location = new System.Drawing.Point(673, 76);
+            this.addAsset.Location = new System.Drawing.Point(750, 76);
             this.addAsset.Name = "addAsset";
             this.addAsset.Size = new System.Drawing.Size(140, 40);
             this.addAsset.TabIndex = 2;
@@ -72,7 +72,7 @@ namespace BookkeepingAssistant
             // btnRemove
             // 
             this.btnRemove.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnRemove.Location = new System.Drawing.Point(673, 227);
+            this.btnRemove.Location = new System.Drawing.Point(750, 227);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(112, 40);
             this.btnRemove.TabIndex = 9;
@@ -85,7 +85,7 @@ namespace BookkeepingAssistant
             this.txtAssetValue.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.txtAssetValue.Location = new System.Drawing.Point(409, 77);
             this.txtAssetValue.Name = "txtAssetValue";
-            this.txtAssetValue.Size = new System.Drawing.Size(258, 38);
+            this.txtAssetValue.Size = new System.Drawing.Size(335, 38);
             this.txtAssetValue.TabIndex = 1;
             // 
             // label1
@@ -122,7 +122,7 @@ namespace BookkeepingAssistant
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label4.Location = new System.Drawing.Point(409, 119);
+            this.label4.Location = new System.Drawing.Point(409, 118);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(270, 31);
             this.label4.TabIndex = 10;
@@ -132,7 +132,7 @@ namespace BookkeepingAssistant
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(839, 595);
+            this.ClientSize = new System.Drawing.Size(919, 595);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);

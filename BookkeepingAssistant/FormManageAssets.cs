@@ -48,6 +48,7 @@ namespace BookkeepingAssistant
             FormMessage.Show($"已新增「{assetName}」");
             txtAssetName.Clear();
             txtAssetValue.Clear();
+            txtAssetName.Focus();
         }
 
         private void DisplayAssets()
