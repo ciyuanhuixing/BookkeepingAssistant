@@ -122,11 +122,15 @@ namespace BookkeepingAssistant
                 return resultMessage;
             }
 
+            RefreshTransactionRecordsView();
+            return resultMessage;
+        }
+        private void RefreshTransactionRecordsView()
+        {
             _records = DAL.Singleton.GetTransactionRecords();
             _records.Reverse();
             RefreshDetailView(_records);
             RefreshAssetsControl();
-            return resultMessage;
         }
 
         private void linkLabelModifyAssets_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -246,7 +250,7 @@ namespace BookkeepingAssistant
 
             int id = (int)dgvDetail.SelectedRows[0].Cells["Id"].Value;
             var record = _records.Single(o => o.Id == id);
-            if (record.isIncome)
+            if (record.isIncome || record.TransactionType == "借款" || record.TransactionType == "还款")
             {
                 btnRefund.Enabled = false;
             }
@@ -263,6 +267,10 @@ namespace BookkeepingAssistant
                     {
                         Text = $"【退款记录】原交易记录 Id：{record.Id}，时间：{record.Time.ToString("yyyy-MM-dd HH")}，金额：{record.Amount}"
                     }.ShowDialog();
+                }
+                else
+                {
+                    btnRefund.Enabled = true;
                 }
             }
         }
@@ -336,6 +344,20 @@ namespace BookkeepingAssistant
             {
                 btnStatistics.PerformClick();
             }
+        }
+
+        private void btnLoan_Click(object sender, EventArgs e)
+        {
+            new FormLoan().ShowDialog();
+            RefreshTransactionRecordsView();
+        }
+
+        private void btnRepay_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void btnRepayInterest_Click(object sender, EventArgs e)
+        {
         }
     }
 }

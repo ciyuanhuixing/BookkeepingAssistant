@@ -18,6 +18,7 @@ namespace BookkeepingAssistant
         private string _lastCheckoutCommitSha;
 
         private Dictionary<string, decimal> _dicAssets = new Dictionary<string, decimal>();
+        private List<string> _defaultTransactionTypes = new List<string> { "衣", "食", "住", "行", "用", "资产间转账", "借款", "还款", "还利息" };
         private List<string> _transactionTypes = new List<string>();
         private List<TransactionRecordModel> _transactionRecords = new List<TransactionRecordModel>();
 
@@ -211,18 +212,34 @@ namespace BookkeepingAssistant
 
         public Dictionary<string, string> GetDisplayAssets()
         {
-            _dicAssets = _dicAssets.OrderByDescending(o => o.Value).ToDictionary(o => o.Key, o => o.Value);
+            return GetDisplayAssets(_dicAssets);
+        }
+
+        private Dictionary<string, string> GetDisplayAssets(IEnumerable<KeyValuePair<string, decimal>> assets)
+        {
+            assets = assets.OrderByDescending(o => o.Value);
             Dictionary<string, string> dicDisplayAssets = new Dictionary<string, string>();
-            foreach (var kvp in _dicAssets)
+            foreach (var kvp in assets)
             {
                 dicDisplayAssets.Add(kvp.Key, string.Join('：', kvp.Key, kvp.Value));
             }
             return dicDisplayAssets;
         }
 
+        public Dictionary<string, string> GetDisplayCanBeBorrowedAssets()
+        {
+            return GetDisplayAssets(_dicAssets.Where(o => o.Value <= 0));
+        }
+
+        public Dictionary<string, string> GetDisplayCanBorrowAssets()
+        {
+            return GetDisplayAssets(_dicAssets.Where(o => o.Value >= 0));
+        }
+
         public List<string> GetTransactionTypes()
         {
             List<string> types = new List<string>();
+            types.AddRange(_defaultTransactionTypes);
             types.AddRange(_transactionTypes);
             return types;
         }
@@ -360,7 +377,14 @@ namespace BookkeepingAssistant
             {
                 throw new Exception("交易类型不能为空");
             }
-            _transactionTypes.Remove(name);
+            if (_defaultTransactionTypes.Contains(name))
+            {
+                throw new Exception("默认交易类型不能删除");
+            }
+            if (!_transactionTypes.Remove(name))
+            {
+                throw new Exception("找不到该交易类型");
+            }
             PossibleRollback(SaveTransactionTypes);
         }
 
@@ -407,12 +431,71 @@ namespace BookkeepingAssistant
             return message;
         }
 
-        private void SaveTransactionRecord(TransactionRecordModel tr)
+        public string Loan(string fromAsset, string toAsset, decimal amount)
+        {
+            if (string.IsNullOrWhiteSpace(fromAsset) || string.IsNullOrWhiteSpace(toAsset))
+            {
+                throw new Exception("资产名称不能为空");
+            }
+            if (amount <= 0)
+            {
+                throw new Exception("借款金额必须大于0");
+            }
+            if (!_dicAssets.ContainsKey(fromAsset) || !_dicAssets.ContainsKey(toAsset))
+            {
+                throw new Exception("被借款的资产或要借款的资产不存在");
+            }
+
+            string fromAssetCal = fromAsset + "：" + _dicAssets[fromAsset] + "-" + amount + "=";
+            string toAssetCal = toAsset + "：" + _dicAssets[toAsset] + "+" + amount + "=";
+
+            int id = 0;
+            if (_transactionRecords.Any())
+            {
+                id = _transactionRecords.Last().Id + 1;
+            }
+
+            TransactionRecordModel trFrom = new TransactionRecordModel();
+            trFrom.Id = id;
+            trFrom.Time = DateTime.Now;
+            trFrom.Amount = -amount;
+            _dicAssets[fromAsset] += trFrom.Amount;
+            trFrom.TransactionType = "借款";
+            trFrom.AssetName = fromAsset;
+            trFrom.AssetValue = _dicAssets[fromAsset];
+            trFrom.Remark = $"从{fromAsset}借{amount}到{toAsset}";
+            fromAssetCal += _dicAssets[fromAsset];
+
+            TransactionRecordModel trTo = new TransactionRecordModel();
+            id++;
+            trTo.Id = id;
+            trTo.Time = trFrom.Time;
+            trTo.Amount = amount;
+            _dicAssets[toAsset] += trTo.Amount;
+            trTo.TransactionType = trFrom.TransactionType;
+            trTo.AssetName = toAsset;
+            trTo.AssetValue = _dicAssets[toAsset];
+            trTo.Remark = trFrom.Remark;
+            toAssetCal += _dicAssets[toAsset];
+
+            trTo.AssetsTotalValue = trFrom.AssetsTotalValue = _dicAssets.Values.Sum();
+            _transactionRecords.Add(trFrom);
+            _transactionRecords.Add(trTo);
+
+            PossibleRollback(SaveTransactionRecord, new List<TransactionRecordModel> { trFrom, trTo });
+            return new StringBuilder().AppendLine(fromAssetCal).AppendLine(toAssetCal).ToString();
+        }
+
+        private void SaveTransactionRecord(TransactionRecordModel model)
+        {
+            SaveTransactionRecord(new List<TransactionRecordModel> { model });
+        }
+        private void SaveTransactionRecord(List<TransactionRecordModel> models)
         {
             WriteAssetsDataFile();
-            string line = string.Join('|', tr.Id, tr.Time, tr.Amount, tr.TransactionType, tr.AssetName,
-                    tr.AssetValue, tr.AssetsTotalValue, tr.RefundLinkId, tr.Remark, tr.DeleteLinkId);
-            File.AppendAllLines(_transactionRecordDataFile, new List<string>() { line });
+            File.AppendAllLines(_transactionRecordDataFile, models.Select(o => string.Join('|', o.Id, o.Time,
+                o.Amount, o.TransactionType, o.AssetName, o.AssetValue, o.AssetsTotalValue, o.RefundLinkId,
+                o.Remark, o.DeleteLinkId)));
 
             StageFile(_transactionRecordDataFile);
             StageFile(_assetsDataFile);

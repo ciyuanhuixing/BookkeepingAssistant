@@ -29,10 +29,13 @@ namespace BookkeepingAssistant
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvDetail = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnRepayInterest = new System.Windows.Forms.Button();
+            this.btnRepay = new System.Windows.Forms.Button();
+            this.btnLoan = new System.Windows.Forms.Button();
             this.lblInOut = new System.Windows.Forms.Label();
             this.btnStatistics = new System.Windows.Forms.Button();
             this.btnDeleteSelect = new System.Windows.Forms.Button();
@@ -60,24 +63,24 @@ namespace BookkeepingAssistant
             this.dgvDetail.AllowUserToResizeColumns = false;
             this.dgvDetail.AllowUserToResizeRows = false;
             this.dgvDetail.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDetail.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDetail.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvDetail.ColumnHeadersHeight = 42;
             this.dgvDetail.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDetail.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDetail.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvDetail.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvDetail.Location = new System.Drawing.Point(0, 112);
             this.dgvDetail.MultiSelect = false;
@@ -94,6 +97,9 @@ namespace BookkeepingAssistant
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnRepayInterest);
+            this.panel1.Controls.Add(this.btnRepay);
+            this.panel1.Controls.Add(this.btnLoan);
             this.panel1.Controls.Add(this.lblInOut);
             this.panel1.Controls.Add(this.btnStatistics);
             this.panel1.Controls.Add(this.btnDeleteSelect);
@@ -115,6 +121,39 @@ namespace BookkeepingAssistant
             this.panel1.Size = new System.Drawing.Size(1720, 112);
             this.panel1.TabIndex = 0;
             // 
+            // btnRepayInterest
+            // 
+            this.btnRepayInterest.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnRepayInterest.Location = new System.Drawing.Point(1382, 13);
+            this.btnRepayInterest.Name = "btnRepayInterest";
+            this.btnRepayInterest.Size = new System.Drawing.Size(40, 86);
+            this.btnRepayInterest.TabIndex = 33;
+            this.btnRepayInterest.Text = "还利息";
+            this.btnRepayInterest.UseVisualStyleBackColor = true;
+            this.btnRepayInterest.Click += new System.EventHandler(this.btnRepayInterest_Click);
+            // 
+            // btnRepay
+            // 
+            this.btnRepay.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnRepay.Location = new System.Drawing.Point(1335, 13);
+            this.btnRepay.Name = "btnRepay";
+            this.btnRepay.Size = new System.Drawing.Size(40, 86);
+            this.btnRepay.TabIndex = 32;
+            this.btnRepay.Text = "还款";
+            this.btnRepay.UseVisualStyleBackColor = true;
+            this.btnRepay.Click += new System.EventHandler(this.btnRepay_Click);
+            // 
+            // btnLoan
+            // 
+            this.btnLoan.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnLoan.Location = new System.Drawing.Point(1289, 13);
+            this.btnLoan.Name = "btnLoan";
+            this.btnLoan.Size = new System.Drawing.Size(40, 86);
+            this.btnLoan.TabIndex = 31;
+            this.btnLoan.Text = "借款";
+            this.btnLoan.UseVisualStyleBackColor = true;
+            this.btnLoan.Click += new System.EventHandler(this.btnLoan_Click);
+            // 
             // lblInOut
             // 
             this.lblInOut.AutoSize = true;
@@ -128,9 +167,9 @@ namespace BookkeepingAssistant
             // btnStatistics
             // 
             this.btnStatistics.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnStatistics.Location = new System.Drawing.Point(1203, 14);
+            this.btnStatistics.Location = new System.Drawing.Point(1153, 13);
             this.btnStatistics.Name = "btnStatistics";
-            this.btnStatistics.Size = new System.Drawing.Size(124, 86);
+            this.btnStatistics.Size = new System.Drawing.Size(118, 86);
             this.btnStatistics.TabIndex = 29;
             this.btnStatistics.Text = "记账统计(&F8)";
             this.btnStatistics.UseVisualStyleBackColor = true;
@@ -140,7 +179,7 @@ namespace BookkeepingAssistant
             // 
             this.btnDeleteSelect.Enabled = false;
             this.btnDeleteSelect.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnDeleteSelect.Location = new System.Drawing.Point(1673, 14);
+            this.btnDeleteSelect.Location = new System.Drawing.Point(1686, 14);
             this.btnDeleteSelect.Name = "btnDeleteSelect";
             this.btnDeleteSelect.Size = new System.Drawing.Size(56, 86);
             this.btnDeleteSelect.TabIndex = 28;
@@ -171,9 +210,9 @@ namespace BookkeepingAssistant
             // 
             this.btnRefund.Enabled = false;
             this.btnRefund.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnRefund.Location = new System.Drawing.Point(1571, 14);
+            this.btnRefund.Location = new System.Drawing.Point(1617, 14);
             this.btnRefund.Name = "btnRefund";
-            this.btnRefund.Size = new System.Drawing.Size(53, 86);
+            this.btnRefund.Size = new System.Drawing.Size(38, 86);
             this.btnRefund.TabIndex = 6;
             this.btnRefund.Text = "退款";
             this.btnRefund.UseVisualStyleBackColor = true;
@@ -235,7 +274,7 @@ namespace BookkeepingAssistant
             // 
             this.linkLabelManageTransactionType.AutoSize = true;
             this.linkLabelManageTransactionType.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.linkLabelManageTransactionType.Location = new System.Drawing.Point(1351, 64);
+            this.linkLabelManageTransactionType.Location = new System.Drawing.Point(1434, 64);
             this.linkLabelManageTransactionType.Name = "linkLabelManageTransactionType";
             this.linkLabelManageTransactionType.Size = new System.Drawing.Size(158, 31);
             this.linkLabelManageTransactionType.TabIndex = 21;
@@ -247,7 +286,7 @@ namespace BookkeepingAssistant
             // 
             this.linkLabelManageAssets.AutoSize = true;
             this.linkLabelManageAssets.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.linkLabelManageAssets.Location = new System.Drawing.Point(1351, 18);
+            this.linkLabelManageAssets.Location = new System.Drawing.Point(1434, 18);
             this.linkLabelManageAssets.Name = "linkLabelManageAssets";
             this.linkLabelManageAssets.Size = new System.Drawing.Size(110, 31);
             this.linkLabelManageAssets.TabIndex = 20;
@@ -258,9 +297,9 @@ namespace BookkeepingAssistant
             // btnAdd
             // 
             this.btnAdd.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnAdd.Location = new System.Drawing.Point(1103, 14);
+            this.btnAdd.Location = new System.Drawing.Point(1103, 13);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(77, 86);
+            this.btnAdd.Size = new System.Drawing.Size(44, 86);
             this.btnAdd.TabIndex = 5;
             this.btnAdd.Text = "新增";
             this.btnAdd.UseVisualStyleBackColor = true;
@@ -330,6 +369,9 @@ namespace BookkeepingAssistant
         private System.Windows.Forms.Button btnDeleteSelect;
         private System.Windows.Forms.Button btnStatistics;
         private System.Windows.Forms.Label lblInOut;
+        private System.Windows.Forms.Button btnRepayInterest;
+        private System.Windows.Forms.Button btnRepay;
+        private System.Windows.Forms.Button btnLoan;
     }
 }
 
