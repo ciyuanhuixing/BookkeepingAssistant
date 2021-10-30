@@ -313,13 +313,14 @@ namespace BookkeepingAssistant
 
         private void PossibleRollback<T>(Action work, Action<T> workWithArg, T obj)
         {
+            string sha = CheckoutLastPushFile();
+            if (sha != _lastCheckoutCommitSha)
+            {
+                ReadData();
+                throw new Exception("检测到 Git 仓库已被其它程序修改，为防止数据不一致，本次操作已取消并已刷新数据，请重试刚才的操作");
+            }
             try
             {
-                string sha = CheckoutLastPushFile();
-                if (sha != _lastCheckoutCommitSha)
-                {
-                    throw new Exception("检测到 Git 仓库已被其它程序修改，本程序无法继续运行");
-                }
                 if (work != null)
                 {
                     work();
@@ -331,6 +332,8 @@ namespace BookkeepingAssistant
             }
             catch (Exception)
             {
+                _repo.Dispose();
+                _repo = new Repository(_config.GitRepoDir);
                 throw;
             }
             finally
