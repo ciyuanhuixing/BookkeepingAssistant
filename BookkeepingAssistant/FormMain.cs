@@ -46,13 +46,13 @@ namespace BookkeepingAssistant
             if (isPlus)
             {
                 txtAmount.Clear();
-                txtAmount.Focus();
             }
             else
             {
                 txtAmount.Text = "-";
                 txtAmount.Select(txtAmount.Text.Length, 0);
             }
+            txtAmount.Focus();
         }
 
         private void RefreshDetailView(List<TransactionRecordModel> records)
