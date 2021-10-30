@@ -33,7 +33,6 @@ namespace BookkeepingAssistant
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvDetail = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btnRepayInterest = new System.Windows.Forms.Button();
             this.btnRepay = new System.Windows.Forms.Button();
             this.btnLoan = new System.Windows.Forms.Button();
             this.lblInOut = new System.Windows.Forms.Label();
@@ -97,7 +96,6 @@ namespace BookkeepingAssistant
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.btnRepayInterest);
             this.panel1.Controls.Add(this.btnRepay);
             this.panel1.Controls.Add(this.btnLoan);
             this.panel1.Controls.Add(this.lblInOut);
@@ -120,17 +118,6 @@ namespace BookkeepingAssistant
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1720, 112);
             this.panel1.TabIndex = 0;
-            // 
-            // btnRepayInterest
-            // 
-            this.btnRepayInterest.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnRepayInterest.Location = new System.Drawing.Point(1382, 13);
-            this.btnRepayInterest.Name = "btnRepayInterest";
-            this.btnRepayInterest.Size = new System.Drawing.Size(40, 86);
-            this.btnRepayInterest.TabIndex = 33;
-            this.btnRepayInterest.Text = "还利息";
-            this.btnRepayInterest.UseVisualStyleBackColor = true;
-            this.btnRepayInterest.Click += new System.EventHandler(this.btnRepayInterest_Click);
             // 
             // btnRepay
             // 
@@ -369,7 +356,6 @@ namespace BookkeepingAssistant
         private System.Windows.Forms.Button btnDeleteSelect;
         private System.Windows.Forms.Button btnStatistics;
         private System.Windows.Forms.Label lblInOut;
-        private System.Windows.Forms.Button btnRepayInterest;
         private System.Windows.Forms.Button btnRepay;
         private System.Windows.Forms.Button btnLoan;
     }

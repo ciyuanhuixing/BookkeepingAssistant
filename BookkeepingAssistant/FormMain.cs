@@ -185,11 +185,16 @@ namespace BookkeepingAssistant
                 comboBoxTransactionTypes.DataSource = null;
                 return;
             }
+            types.Remove(TransactionType.借款.ToString());
+            types.Remove(TransactionType.还款.ToString());
             comboBoxTransactionTypes.DataSource = types;
             if (_records.Any())
             {
                 var r = _records.First();
-                comboBoxTransactionTypes.SelectedItem = r.TransactionType;
+                if (types.Contains(r.TransactionType))
+                {
+                    comboBoxTransactionTypes.SelectedItem = r.TransactionType;
+                }
             }
         }
 
@@ -357,10 +362,6 @@ namespace BookkeepingAssistant
         {
             new FormLoan(true).ShowDialog();
             RefreshTransactionRecordsView();
-        }
-
-        private void btnRepayInterest_Click(object sender, EventArgs e)
-        {
         }
     }
 }

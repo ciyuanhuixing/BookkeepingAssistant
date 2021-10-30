@@ -37,22 +37,25 @@ namespace BookkeepingAssistant
             this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.comboBoxToAssets = new System.Windows.Forms.ComboBox();
+            this.lblTip = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(183, 77);
+            this.label3.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label3.Location = new System.Drawing.Point(183, 44);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(28, 24);
+            this.label3.Size = new System.Drawing.Size(38, 31);
             this.label3.TabIndex = 10;
             this.label3.Text = "从";
             // 
             // btnOK
             // 
+            this.btnOK.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.btnOK.Location = new System.Drawing.Point(337, 378);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(112, 34);
+            this.btnOK.Size = new System.Drawing.Size(112, 47);
             this.btnOK.TabIndex = 12;
             this.btnOK.Text = "确定";
             this.btnOK.UseVisualStyleBackColor = true;
@@ -61,60 +64,77 @@ namespace BookkeepingAssistant
             // comboBoxFromAssets
             // 
             this.comboBoxFromAssets.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxFromAssets.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.comboBoxFromAssets.FormattingEnabled = true;
-            this.comboBoxFromAssets.Location = new System.Drawing.Point(235, 74);
+            this.comboBoxFromAssets.Location = new System.Drawing.Point(235, 41);
             this.comboBoxFromAssets.Name = "comboBoxFromAssets";
-            this.comboBoxFromAssets.Size = new System.Drawing.Size(372, 32);
+            this.comboBoxFromAssets.Size = new System.Drawing.Size(372, 39);
             this.comboBoxFromAssets.TabIndex = 11;
             // 
             // lblPayType
             // 
             this.lblPayType.AutoSize = true;
-            this.lblPayType.Location = new System.Drawing.Point(183, 154);
+            this.lblPayType.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblPayType.Location = new System.Drawing.Point(183, 145);
             this.lblPayType.Name = "lblPayType";
-            this.lblPayType.Size = new System.Drawing.Size(28, 24);
+            this.lblPayType.Size = new System.Drawing.Size(38, 31);
             this.lblPayType.TabIndex = 13;
             this.lblPayType.Text = "借";
             // 
             // txtLoanAmount
             // 
-            this.txtLoanAmount.Location = new System.Drawing.Point(235, 154);
+            this.txtLoanAmount.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtLoanAmount.Location = new System.Drawing.Point(235, 145);
             this.txtLoanAmount.Name = "txtLoanAmount";
-            this.txtLoanAmount.Size = new System.Drawing.Size(150, 30);
+            this.txtLoanAmount.Size = new System.Drawing.Size(195, 38);
             this.txtLoanAmount.TabIndex = 14;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(391, 154);
+            this.label2.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label2.Location = new System.Drawing.Point(436, 145);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(28, 24);
+            this.label2.Size = new System.Drawing.Size(38, 31);
             this.label2.TabIndex = 15;
             this.label2.Text = "元";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(183, 232);
+            this.label4.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label4.Location = new System.Drawing.Point(183, 273);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(28, 24);
+            this.label4.Size = new System.Drawing.Size(38, 31);
             this.label4.TabIndex = 16;
             this.label4.Text = "到";
             // 
             // comboBoxToAssets
             // 
             this.comboBoxToAssets.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxToAssets.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.comboBoxToAssets.FormattingEnabled = true;
-            this.comboBoxToAssets.Location = new System.Drawing.Point(235, 229);
+            this.comboBoxToAssets.Location = new System.Drawing.Point(235, 270);
             this.comboBoxToAssets.Name = "comboBoxToAssets";
-            this.comboBoxToAssets.Size = new System.Drawing.Size(372, 32);
+            this.comboBoxToAssets.Size = new System.Drawing.Size(372, 39);
             this.comboBoxToAssets.TabIndex = 17;
+            // 
+            // lblTip
+            // 
+            this.lblTip.AutoSize = true;
+            this.lblTip.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblTip.Location = new System.Drawing.Point(235, 186);
+            this.lblTip.Name = "lblTip";
+            this.lblTip.Size = new System.Drawing.Size(150, 31);
+            this.lblTip.TabIndex = 18;
+            this.lblTip.Text = "(不包括利息)";
             // 
             // FormLoan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.lblTip);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.comboBoxToAssets);
             this.Controls.Add(this.label2);
@@ -141,5 +161,6 @@ namespace BookkeepingAssistant
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox comboBoxToAssets;
+        private System.Windows.Forms.Label lblTip;
     }
 }

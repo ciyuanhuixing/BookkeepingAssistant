@@ -21,6 +21,7 @@ namespace BookkeepingAssistant
             _payType = _isRepay ? "还" : "借";
             Text = _payType + "款";
             lblPayType.Text = _payType;
+            lblTip.Visible = _isRepay;
         }
 
         private void FormLoan_Load(object sender, EventArgs e)

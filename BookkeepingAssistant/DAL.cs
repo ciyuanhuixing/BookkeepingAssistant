@@ -9,7 +9,7 @@ namespace BookkeepingAssistant
 {
     public enum TransactionType
     {
-        衣, 食, 住, 行, 用, 资产间转账, 借款, 还款, 还利息
+        衣, 食, 住, 行, 用, 资产间转账, 借款, 还款, 利息
     }
 
     public class DAL
@@ -24,7 +24,7 @@ namespace BookkeepingAssistant
 
         private Dictionary<string, decimal> _dicAssets = new Dictionary<string, decimal>();
         private HashSet<string> _defaultTransactionTypes = new HashSet<string>(Enum.GetNames(typeof(TransactionType)));
-        private HashSet<string> _transactionTypes = new HashSet<string>();
+        private HashSet<string> _customizeTransactionTypes = new HashSet<string>();
         private List<TransactionRecordModel> _transactionRecords = new List<TransactionRecordModel>();
 
         private static readonly DAL _singletonInstance = new DAL();
@@ -89,7 +89,7 @@ namespace BookkeepingAssistant
             _lastCheckoutCommitSha = CheckoutLastPushFile();
 
             _dicAssets.Clear();
-            _transactionTypes.Clear();
+            _customizeTransactionTypes.Clear();
             _transactionRecords.Clear();
 
             if (File.Exists(_assetsDataFile))
@@ -117,7 +117,7 @@ namespace BookkeepingAssistant
                 string[] lines = File.ReadAllLines(_transactionTypeDataFile);
                 foreach (var line in lines)
                 {
-                    _transactionTypes.Add(line.Trim());
+                    _customizeTransactionTypes.Add(line.Trim());
                 }
             }
 
@@ -248,7 +248,7 @@ namespace BookkeepingAssistant
             {
                 types.Add(item);
             }
-            foreach (var item in _transactionTypes)
+            foreach (var item in _customizeTransactionTypes)
             {
                 types.Add(item);
             }
@@ -362,7 +362,7 @@ namespace BookkeepingAssistant
         private void SaveTransactionTypes()
         {
             StringBuilder sb = new StringBuilder();
-            foreach (var asset in _transactionTypes)
+            foreach (var asset in _customizeTransactionTypes)
             {
                 sb.AppendLine(asset);
             }
@@ -378,7 +378,11 @@ namespace BookkeepingAssistant
             {
                 throw new Exception("交易类型不能为空");
             }
-            _transactionTypes.Add(name);
+            if (_customizeTransactionTypes.Contains(name) || _defaultTransactionTypes.Contains(name))
+            {
+                throw new Exception("该类型已存在，不能重复添加");
+            }
+            _customizeTransactionTypes.Add(name);
             PossibleRollback(SaveTransactionTypes);
         }
 
@@ -392,7 +396,7 @@ namespace BookkeepingAssistant
             {
                 throw new Exception("默认交易类型不能删除");
             }
-            if (!_transactionTypes.Remove(name))
+            if (!_customizeTransactionTypes.Remove(name))
             {
                 throw new Exception("找不到该交易类型");
             }
