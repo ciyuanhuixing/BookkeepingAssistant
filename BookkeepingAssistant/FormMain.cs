@@ -355,6 +355,8 @@ namespace BookkeepingAssistant
 
         private void btnRepay_Click(object sender, EventArgs e)
         {
+            new FormLoan(true).ShowDialog();
+            RefreshTransactionRecordsView();
         }
 
         private void btnRepayInterest_Click(object sender, EventArgs e)

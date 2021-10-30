@@ -32,7 +32,7 @@ namespace BookkeepingAssistant
             this.label3 = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
             this.comboBoxFromAssets = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblPayType = new System.Windows.Forms.Label();
             this.txtLoanAmount = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -67,14 +67,14 @@ namespace BookkeepingAssistant
             this.comboBoxFromAssets.Size = new System.Drawing.Size(372, 32);
             this.comboBoxFromAssets.TabIndex = 11;
             // 
-            // label1
+            // lblPayType
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(183, 154);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(28, 24);
-            this.label1.TabIndex = 13;
-            this.label1.Text = "借";
+            this.lblPayType.AutoSize = true;
+            this.lblPayType.Location = new System.Drawing.Point(183, 154);
+            this.lblPayType.Name = "lblPayType";
+            this.lblPayType.Size = new System.Drawing.Size(28, 24);
+            this.lblPayType.TabIndex = 13;
+            this.lblPayType.Text = "借";
             // 
             // txtLoanAmount
             // 
@@ -119,7 +119,7 @@ namespace BookkeepingAssistant
             this.Controls.Add(this.comboBoxToAssets);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtLoanAmount);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lblPayType);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.comboBoxFromAssets);
@@ -136,7 +136,7 @@ namespace BookkeepingAssistant
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.ComboBox comboBoxFromAssets;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblPayType;
         private System.Windows.Forms.TextBox txtLoanAmount;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label4;

@@ -11,9 +11,16 @@ namespace BookkeepingAssistant
 {
     public partial class FormLoan : Form
     {
-        public FormLoan()
+        private bool _isRepay;
+        private string _payType;
+
+        public FormLoan(bool isRepay = false)
         {
             InitializeComponent();
+            _isRepay = isRepay;
+            _payType = _isRepay ? "还" : "借";
+            Text = _payType + "款";
+            lblPayType.Text = _payType;
         }
 
         private void FormLoan_Load(object sender, EventArgs e)
@@ -23,27 +30,33 @@ namespace BookkeepingAssistant
 
         private void DisplayAssets()
         {
-            var canBeBorrowedAssets = DAL.Singleton.GetDisplayCanBeBorrowedAssets();
-            if (canBeBorrowedAssets.Any())
+            var negativeAssets = DAL.Singleton.GetNegativeAssets();
+            if (negativeAssets.Any())
             {
-                BindingSource bs = new BindingSource();
-                bs.DataSource = canBeBorrowedAssets;
-                comboBoxFromAssets.DisplayMember = "Value";
-                comboBoxFromAssets.ValueMember = "Key";
-                comboBoxFromAssets.DataSource = bs;
+                if (_isRepay)
+                {
+                    BindComboBox(comboBoxToAssets, negativeAssets);
+                }
+                else
+                {
+                    BindComboBox(comboBoxFromAssets, negativeAssets);
+                }
             }
             else
             {
                 btnOK.Enabled = false;
             }
-            var canBorrowAssets = DAL.Singleton.GetDisplayCanBorrowAssets();
-            if (canBorrowAssets.Any())
+            var plusAssets = DAL.Singleton.GetPlusAssets();
+            if (plusAssets.Any())
             {
-                BindingSource bs = new BindingSource();
-                bs.DataSource = canBorrowAssets;
-                comboBoxToAssets.DisplayMember = "Value";
-                comboBoxToAssets.ValueMember = "Key";
-                comboBoxToAssets.DataSource = bs;
+                if (_isRepay)
+                {
+                    BindComboBox(comboBoxFromAssets, plusAssets);
+                }
+                else
+                {
+                    BindComboBox(comboBoxToAssets, plusAssets);
+                }
             }
             else
             {
@@ -51,12 +64,21 @@ namespace BookkeepingAssistant
             }
         }
 
+        private void BindComboBox(ComboBox comboBox, Dictionary<string, string> dataSource)
+        {
+            BindingSource bs = new BindingSource();
+            bs.DataSource = dataSource;
+            comboBox.DisplayMember = "Value";
+            comboBox.ValueMember = "Key";
+            comboBox.DataSource = bs;
+        }
+
         private void btnOK_Click(object sender, EventArgs e)
         {
             decimal loanAmount;
             if (!decimal.TryParse(txtLoanAmount.Text.Trim(), out loanAmount))
             {
-                FormMessage.Show("借款金额不能填入非数字。");
+                FormMessage.Show($"{_payType}款金额不能填入非数字。");
                 return;
             }
 
@@ -64,16 +86,16 @@ namespace BookkeepingAssistant
             try
             {
                 resultMessage = DAL.Singleton.Loan(comboBoxFromAssets.SelectedValue.ToString(),
-                    comboBoxToAssets.SelectedValue.ToString(), loanAmount);
+                    comboBoxToAssets.SelectedValue.ToString(), loanAmount, _isRepay);
             }
             catch (Exception ex)
             {
-                FormMessage.Show($"新增借款记录失败：{ ex.Message}。");
+                FormMessage.Show($"新增{_payType}款记录失败：{ ex.Message}。");
                 return;
             }
 
             txtLoanAmount.Clear();
-            FormMessage.Show(new StringBuilder().AppendLine("已新增借款记录，借款资产变动计算过程：")
+            FormMessage.Show(new StringBuilder().AppendLine($"已新增{_payType}款记录，{_payType}款资产变动计算过程：")
                 .AppendLine(resultMessage).ToString());
         }
     }

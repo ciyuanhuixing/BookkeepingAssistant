@@ -231,12 +231,12 @@ namespace BookkeepingAssistant
             return dicDisplayAssets;
         }
 
-        public Dictionary<string, string> GetDisplayCanBeBorrowedAssets()
+        public Dictionary<string, string> GetNegativeAssets()
         {
             return GetDisplayAssets(_dicAssets.Where(o => o.Value <= 0));
         }
 
-        public Dictionary<string, string> GetDisplayCanBorrowAssets()
+        public Dictionary<string, string> GetPlusAssets()
         {
             return GetDisplayAssets(_dicAssets.Where(o => o.Value >= 0));
         }
@@ -442,19 +442,20 @@ namespace BookkeepingAssistant
             return message;
         }
 
-        public string Loan(string fromAsset, string toAsset, decimal amount)
+        public string Loan(string fromAsset, string toAsset, decimal amount, bool isRepay = false)
         {
             if (string.IsNullOrWhiteSpace(fromAsset) || string.IsNullOrWhiteSpace(toAsset))
             {
                 throw new Exception("资产名称不能为空");
             }
+            string payType = isRepay ? "还" : "借";
             if (amount <= 0)
             {
-                throw new Exception("借款金额必须大于0");
+                throw new Exception($"{payType}款金额必须大于0");
             }
             if (!_dicAssets.ContainsKey(fromAsset) || !_dicAssets.ContainsKey(toAsset))
             {
-                throw new Exception("被借款的资产或要借款的资产不存在");
+                throw new Exception($"{payType}款的资产不存在");
             }
 
             string fromAssetCal = fromAsset + "：" + _dicAssets[fromAsset] + "-" + amount + "=";
@@ -471,10 +472,10 @@ namespace BookkeepingAssistant
             trFrom.Time = DateTime.Now;
             trFrom.Amount = -amount;
             _dicAssets[fromAsset] += trFrom.Amount;
-            trFrom.TransactionType = TransactionType.借款.ToString();
+            trFrom.TransactionType = (isRepay ? TransactionType.还款 : TransactionType.借款).ToString();
             trFrom.AssetName = fromAsset;
             trFrom.AssetValue = _dicAssets[fromAsset];
-            trFrom.Remark = $"从{fromAsset}借{amount}到{toAsset}";
+            trFrom.Remark = $"从{fromAsset}{payType}{amount}到{toAsset}";
             fromAssetCal += _dicAssets[fromAsset];
 
             TransactionRecordModel trTo = new TransactionRecordModel();
