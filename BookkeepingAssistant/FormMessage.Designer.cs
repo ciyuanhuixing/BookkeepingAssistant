@@ -52,6 +52,7 @@ namespace BookkeepingAssistant
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormMessage";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "（按回车键或Esc键关闭）";
             this.Load += new System.EventHandler(this.FormMessage_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormMessage_KeyDown);
