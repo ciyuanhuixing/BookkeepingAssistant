@@ -11,12 +11,14 @@ namespace BookkeepingAssistant
 {
     public partial class FormStatistics : Form
     {
-        private List<TransactionRecordModel> _models = new List<TransactionRecordModel>();
+        private List<TransactionRecordModel> _models;
 
         public FormStatistics(List<TransactionRecordModel> models)
         {
             InitializeComponent();
-            _models.AddRange(models);
+            List<string> excludeTypes = new TransactionType[] { TransactionType.借款, TransactionType.还款,
+                TransactionType.资产间转账 }.Select(o => o.ToString()).ToList();
+            _models = models.Where(o => !excludeTypes.Contains(o.TransactionType)).ToList();
         }
 
         private void FormStatistics_Load(object sender, EventArgs e)
