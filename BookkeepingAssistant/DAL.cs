@@ -23,7 +23,6 @@ namespace BookkeepingAssistant
         private string _transactionTypeDataFile;
         private string _transactionRecordDataFile;
         private Repository _repo;
-        private bool _haveCommits = false;
         private string _lastCheckoutCommitSha;
 
         private Dictionary<string, decimal> _dicAssets = new Dictionary<string, decimal>();
@@ -44,10 +43,6 @@ namespace BookkeepingAssistant
         {
             _config = ConfigHelper.ReadConfig();
             _repo = new Repository(_config.GitRepoDir);
-            if (_repo.Head.TrackedBranch?.Tip != null)
-            {
-                _haveCommits = true;
-            }
 
             _assetsDataFile = Path.Combine(_config.GitRepoDir, "资产.md");
             _transactionTypeDataFile = Path.Combine(_config.GitRepoDir, "交易类型.md");
@@ -76,15 +71,28 @@ namespace BookkeepingAssistant
                 _transactionTypeDataFile,
                 _transactionRecordDataFile
             };
-            if (!_haveCommits)
+            if (_repo.Head.TrackedBranch?.Tip == null)
             {
                 paths.ForEach(o => File.Delete(o));
                 return null;
             }
-            CheckoutOptions options = new CheckoutOptions();
-            options.CheckoutModifiers = CheckoutModifiers.Force;
+            var allWorkFileGitPaths = paths.Select(o => GetGitRelativePath(o)).ToList();
+            if (allWorkFileGitPaths.Except(_repo.Head.Tip.Tree.Select(o => o.Path)).Any())
+            {
+                throw new Exception("警告：Git 仓库已提交过非本程序提交的文件");
+            }
             var commit = _repo.Head.TrackedBranch.Tip;
-            _repo.Checkout(commit.Tree, paths.Select(o => GetGitRelativePath(o)), options);
+            if (_repo.Head.TrackingDetails.AheadBy > 0)
+            {
+                _repo.Reset(ResetMode.Hard, commit);
+            }
+            else
+            {
+                CheckoutOptions options = new CheckoutOptions();
+                options.CheckoutModifiers = CheckoutModifiers.Force;
+                _repo.Checkout(commit.Tree, allWorkFileGitPaths, options);
+            }
+
             return commit.Sha;
         }
 
@@ -565,19 +573,9 @@ namespace BookkeepingAssistant
 
         private void PushGitCommit(string commitMsg)
         {
-            if (_repo.Head.TrackingDetails.AheadBy > 0)
-            {
-                commitMsg = "[上次提交未实时推送，所以上次提交无效]" + commitMsg;
-                //_repo.Refs.RewriteHistory(new RewriteHistoryOptions()
-                //{
-                //    CommitHeaderRewriter = c => CommitRewriteInfo.From(c, "[未实时推送，故提交无效]" + c.Message)
-                //}, _repo.Head.Tip);
-            }
-
             Signature signature = new Signature(_config.GitUsername, _config.GitEmail, DateTimeOffset.Now);
             _repo.Commit(commitMsg, signature, signature);
             _repo.Network.Push(_repo.Head);
-            _haveCommits = true;
         }
     }
 }
