@@ -77,7 +77,8 @@ namespace BookkeepingAssistant
                 return null;
             }
             var allWorkFileGitPaths = paths.Select(o => GetGitRelativePath(o)).ToList();
-            if (allWorkFileGitPaths.Except(_repo.Head.Tip.Tree.Select(o => o.Path)).Any())
+            var treeFilePaths = _repo.Head.Tip.Tree.Select(o => o.Path).ToList();
+            if (!treeFilePaths.All(o => allWorkFileGitPaths.Contains(o)))
             {
                 throw new Exception("警告：Git 仓库已提交过非本程序提交的文件");
             }
