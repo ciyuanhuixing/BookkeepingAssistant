@@ -185,8 +185,6 @@ namespace BookkeepingAssistant
                 comboBoxTransactionTypes.DataSource = null;
                 return;
             }
-            types.Remove(TransactionType.借款.ToString());
-            types.Remove(TransactionType.还款.ToString());
             comboBoxTransactionTypes.DataSource = types;
             if (_records.Any())
             {
@@ -255,8 +253,9 @@ namespace BookkeepingAssistant
 
             int id = (int)dgvDetail.SelectedRows[0].Cells["Id"].Value;
             var record = _records.Single(o => o.Id == id);
-            if (record.isIncome || record.TransactionType == TransactionType.借款.ToString()
-                || record.TransactionType == TransactionType.还款.ToString())
+            List<string> excludeTypes = new TransferType[] { TransferType.借款, TransferType.还款,
+                TransferType.资产间转账 }.Select(o => o.ToString()).ToList();
+            if (record.isIncome || excludeTypes.Contains(record.TransactionType))
             {
                 btnRefund.Enabled = false;
             }
@@ -354,13 +353,19 @@ namespace BookkeepingAssistant
 
         private void btnLoan_Click(object sender, EventArgs e)
         {
-            new FormLoan().ShowDialog();
+            new FormLoan(TransferType.借款).ShowDialog();
             RefreshTransactionRecordsView();
         }
 
         private void btnRepay_Click(object sender, EventArgs e)
         {
-            new FormLoan(true).ShowDialog();
+            new FormLoan(TransferType.还款).ShowDialog();
+            RefreshTransactionRecordsView();
+        }
+
+        private void btnTransfer_Click(object sender, EventArgs e)
+        {
+            new FormLoan(TransferType.资产间转账).ShowDialog();
             RefreshTransactionRecordsView();
         }
     }

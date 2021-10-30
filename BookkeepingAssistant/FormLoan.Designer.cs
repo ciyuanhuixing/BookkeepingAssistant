@@ -128,6 +128,7 @@ namespace BookkeepingAssistant
             this.lblTip.Size = new System.Drawing.Size(150, 31);
             this.lblTip.TabIndex = 18;
             this.lblTip.Text = "(不包括利息)";
+            this.lblTip.Visible = false;
             // 
             // FormLoan
             // 

@@ -16,8 +16,8 @@ namespace BookkeepingAssistant
         public FormStatistics(List<TransactionRecordModel> models)
         {
             InitializeComponent();
-            List<string> excludeTypes = new TransactionType[] { TransactionType.借款, TransactionType.还款,
-                TransactionType.资产间转账 }.Select(o => o.ToString()).ToList();
+            List<string> excludeTypes = new TransferType[] { TransferType.借款, TransferType.还款,
+                TransferType.资产间转账 }.Select(o => o.ToString()).ToList();
             _models = models.Where(o => !excludeTypes.Contains(o.TransactionType)).ToList();
         }
 

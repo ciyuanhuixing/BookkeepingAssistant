@@ -9,7 +9,11 @@ namespace BookkeepingAssistant
 {
     public enum TransactionType
     {
-        衣, 食, 住, 行, 用, 资产间转账, 借款, 还款, 利息
+        衣, 食, 住, 行, 用, 利息
+    }
+    public enum TransferType
+    {
+        资产间转账, 借款, 还款,
     }
 
     public class DAL
@@ -378,7 +382,8 @@ namespace BookkeepingAssistant
             {
                 throw new Exception("交易类型不能为空");
             }
-            if (_customizeTransactionTypes.Contains(name) || _defaultTransactionTypes.Contains(name))
+            if (_customizeTransactionTypes.Contains(name) || _defaultTransactionTypes.Contains(name) ||
+                Enum.GetNames(typeof(TransferType)).Contains(name))
             {
                 throw new Exception("该类型已存在，不能重复添加");
             }
@@ -446,24 +451,42 @@ namespace BookkeepingAssistant
             return message;
         }
 
-        public string Loan(string fromAsset, string toAsset, decimal amount, bool isRepay = false)
+        public string Loan(string fromAsset, string toAsset, decimal amount, TransferType transferType)
         {
             if (string.IsNullOrWhiteSpace(fromAsset) || string.IsNullOrWhiteSpace(toAsset))
             {
                 throw new Exception("资产名称不能为空");
             }
-            string payType = isRepay ? "还" : "借";
+            if (fromAsset == toAsset)
+            {
+                throw new Exception("资产双方名称不能相同");
+            }
             if (amount <= 0)
             {
-                throw new Exception($"{payType}款金额必须大于0");
+                throw new Exception("金额必须大于0");
             }
             if (!_dicAssets.ContainsKey(fromAsset) || !_dicAssets.ContainsKey(toAsset))
             {
-                throw new Exception($"{payType}款的资产不存在");
+                throw new Exception("资产不存在");
             }
 
             string fromAssetCal = fromAsset + "：" + _dicAssets[fromAsset] + "-" + amount + "=";
             string toAssetCal = toAsset + "：" + _dicAssets[toAsset] + "+" + amount + "=";
+            string transferTypeShortName = string.Empty;
+            switch (transferType)
+            {
+                case TransferType.资产间转账:
+                    transferTypeShortName = "转";
+                    break;
+                case TransferType.借款:
+                    transferTypeShortName = "借";
+                    break;
+                case TransferType.还款:
+                    transferTypeShortName = "还";
+                    break;
+                default:
+                    break;
+            }
 
             int id = 0;
             if (_transactionRecords.Any())
@@ -476,10 +499,10 @@ namespace BookkeepingAssistant
             trFrom.Time = DateTime.Now;
             trFrom.Amount = -amount;
             _dicAssets[fromAsset] += trFrom.Amount;
-            trFrom.TransactionType = (isRepay ? TransactionType.还款 : TransactionType.借款).ToString();
+            trFrom.TransactionType = transferType.ToString();
             trFrom.AssetName = fromAsset;
             trFrom.AssetValue = _dicAssets[fromAsset];
-            trFrom.Remark = $"从{fromAsset}{payType}{amount}到{toAsset}";
+            trFrom.Remark = $"从{fromAsset}{transferTypeShortName}{amount}到{toAsset}";
             fromAssetCal += _dicAssets[fromAsset];
 
             TransactionRecordModel trTo = new TransactionRecordModel();

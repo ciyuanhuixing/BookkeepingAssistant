@@ -51,6 +51,7 @@ namespace BookkeepingAssistant
             this.btnAdd = new System.Windows.Forms.Button();
             this.txtAmount = new System.Windows.Forms.TextBox();
             this.txtAssets = new System.Windows.Forms.TextBox();
+            this.btnTransfer = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetail)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -96,6 +97,7 @@ namespace BookkeepingAssistant
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnTransfer);
             this.panel1.Controls.Add(this.btnRepay);
             this.panel1.Controls.Add(this.btnLoan);
             this.panel1.Controls.Add(this.lblInOut);
@@ -122,9 +124,9 @@ namespace BookkeepingAssistant
             // btnRepay
             // 
             this.btnRepay.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnRepay.Location = new System.Drawing.Point(1335, 13);
+            this.btnRepay.Location = new System.Drawing.Point(1359, 61);
             this.btnRepay.Name = "btnRepay";
-            this.btnRepay.Size = new System.Drawing.Size(40, 86);
+            this.btnRepay.Size = new System.Drawing.Size(70, 38);
             this.btnRepay.TabIndex = 32;
             this.btnRepay.Text = "还款";
             this.btnRepay.UseVisualStyleBackColor = true;
@@ -133,9 +135,9 @@ namespace BookkeepingAssistant
             // btnLoan
             // 
             this.btnLoan.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnLoan.Location = new System.Drawing.Point(1289, 13);
+            this.btnLoan.Location = new System.Drawing.Point(1277, 61);
             this.btnLoan.Name = "btnLoan";
-            this.btnLoan.Size = new System.Drawing.Size(40, 86);
+            this.btnLoan.Size = new System.Drawing.Size(71, 38);
             this.btnLoan.TabIndex = 31;
             this.btnLoan.Text = "借款";
             this.btnLoan.UseVisualStyleBackColor = true;
@@ -315,6 +317,17 @@ namespace BookkeepingAssistant
             this.txtAssets.Size = new System.Drawing.Size(361, 696);
             this.txtAssets.TabIndex = 14;
             // 
+            // btnTransfer
+            // 
+            this.btnTransfer.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnTransfer.Location = new System.Drawing.Point(1277, 11);
+            this.btnTransfer.Name = "btnTransfer";
+            this.btnTransfer.Size = new System.Drawing.Size(151, 38);
+            this.btnTransfer.TabIndex = 33;
+            this.btnTransfer.Text = "资产间转账";
+            this.btnTransfer.UseVisualStyleBackColor = true;
+            this.btnTransfer.Click += new System.EventHandler(this.btnTransfer_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
@@ -358,6 +371,7 @@ namespace BookkeepingAssistant
         private System.Windows.Forms.Label lblInOut;
         private System.Windows.Forms.Button btnRepay;
         private System.Windows.Forms.Button btnLoan;
+        private System.Windows.Forms.Button btnTransfer;
     }
 }
 
