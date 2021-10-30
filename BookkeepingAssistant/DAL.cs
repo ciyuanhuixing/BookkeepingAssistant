@@ -7,6 +7,11 @@ using System.Linq;
 
 namespace BookkeepingAssistant
 {
+    public enum TransactionType
+    {
+        衣, 食, 住, 行, 用, 资产间转账, 借款, 还款, 还利息
+    }
+
     public class DAL
     {
         private ConfigModel _config;
@@ -18,8 +23,8 @@ namespace BookkeepingAssistant
         private string _lastCheckoutCommitSha;
 
         private Dictionary<string, decimal> _dicAssets = new Dictionary<string, decimal>();
-        private List<string> _defaultTransactionTypes = new List<string> { "衣", "食", "住", "行", "用", "资产间转账", "借款", "还款", "还利息" };
-        private List<string> _transactionTypes = new List<string>();
+        private HashSet<string> _defaultTransactionTypes = new HashSet<string>(Enum.GetNames(typeof(TransactionType)));
+        private HashSet<string> _transactionTypes = new HashSet<string>();
         private List<TransactionRecordModel> _transactionRecords = new List<TransactionRecordModel>();
 
         private static readonly DAL _singletonInstance = new DAL();
@@ -238,10 +243,16 @@ namespace BookkeepingAssistant
 
         public List<string> GetTransactionTypes()
         {
-            List<string> types = new List<string>();
-            types.AddRange(_defaultTransactionTypes);
-            types.AddRange(_transactionTypes);
-            return types;
+            HashSet<string> types = new HashSet<string>();
+            foreach (var item in _defaultTransactionTypes)
+            {
+                types.Add(item);
+            }
+            foreach (var item in _transactionTypes)
+            {
+                types.Add(item);
+            }
+            return types.ToList();
         }
 
         public List<TransactionRecordModel> GetTransactionRecords()
@@ -460,7 +471,7 @@ namespace BookkeepingAssistant
             trFrom.Time = DateTime.Now;
             trFrom.Amount = -amount;
             _dicAssets[fromAsset] += trFrom.Amount;
-            trFrom.TransactionType = "借款";
+            trFrom.TransactionType = TransactionType.借款.ToString();
             trFrom.AssetName = fromAsset;
             trFrom.AssetValue = _dicAssets[fromAsset];
             trFrom.Remark = $"从{fromAsset}借{amount}到{toAsset}";

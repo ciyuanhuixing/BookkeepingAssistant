@@ -250,7 +250,8 @@ namespace BookkeepingAssistant
 
             int id = (int)dgvDetail.SelectedRows[0].Cells["Id"].Value;
             var record = _records.Single(o => o.Id == id);
-            if (record.isIncome || record.TransactionType == "借款" || record.TransactionType == "还款")
+            if (record.isIncome || record.TransactionType == TransactionType.借款.ToString()
+                || record.TransactionType == TransactionType.还款.ToString())
             {
                 btnRefund.Enabled = false;
             }
