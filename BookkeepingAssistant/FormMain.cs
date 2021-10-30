@@ -33,17 +33,26 @@ namespace BookkeepingAssistant
 
             _records = DAL.Singleton.GetTransactionRecords();
             _records.Reverse();
-
-            comboBoxInOut.DataSource = new string[] { "支出", "收入" };
-            if (_records.Any())
-            {
-                var r = _records.First();
-                comboBoxInOut.SelectedItem = r.isIncome ? "收入" : "支出";
-            }
+            CleanAndFocusTxtAmount(_records.Any() && _records.First().isIncome);
+            txtAmount_TextChanged(null, null);
 
             RefreshAssetsControl();
             RefreshTransactionTypesControl();
             RefreshDetailView(_records);
+        }
+
+        private void CleanAndFocusTxtAmount(bool isPlus)
+        {
+            if (isPlus)
+            {
+                txtAmount.Clear();
+            }
+            else
+            {
+                txtAmount.Text = "-";
+                txtAmount.Select(txtAmount.Text.Length, 0);
+            }
+            txtAmount.Focus();
         }
 
         private void RefreshDetailView(List<TransactionRecordModel> records)
@@ -51,22 +60,22 @@ namespace BookkeepingAssistant
             DataTable dt = new DataTable();
             dt.Columns.Add("Id", typeof(int));
             dt.Columns.Add("年-月-日  时");
-            dt.Columns.Add("收/支");
-            dt.Columns.Add("金额");
+            dt.Columns.Add("金额", typeof(int));
+            dt.Columns.Add("交易类型");
             dt.Columns.Add("资产");
-            dt.Columns.Add("交易后余额");
-            dt.Columns.Add("类型");
+            dt.Columns.Add("交易后该资产余额");
+            dt.Columns.Add("交易后所有资产总余额");
             dt.Columns.Add("备注");
             foreach (var item in records)
             {
                 DataRow dr = dt.NewRow();
                 dr["Id"] = item.Id;
                 dr["年-月-日  时"] = item.Time.ToString("yyyy-MM-dd  HH");
-                dr["收/支"] = item.isIncome ? "收入" : "支出";
                 dr["金额"] = item.Amount;
+                dr["交易类型"] = item.TransactionType;
                 dr["资产"] = item.AssetName;
-                dr["交易后余额"] = item.AssetValue;
-                dr["类型"] = item.TransactionType;
+                dr["交易后该资产余额"] = item.AssetValue;
+                dr["交易后所有资产总余额"] = item.AssetsTotalValue;
                 dr["备注"] = item.Remark;
                 dt.Rows.Add(dr);
             }
@@ -87,34 +96,35 @@ namespace BookkeepingAssistant
             tr.AssetName = (string)comboBoxAssets.SelectedValue;
             tr.TransactionType = (string)comboBoxTransactionTypes.SelectedValue;
             tr.Remark = txtRemake.Text.Trim();
-            AddTransactionRecord(tr);
 
-            if (txtAmount.Text.Trim().StartsWith('-'))
-            {
-                txtAmount.Text = "-";
-                txtAmount.Select(txtAmount.Text.Length, 0);
-            }
-            else
-            {
-                txtAmount.Clear();
-            }
-            txtRemake.Clear();
-            FormMessage.Show($"已新增一条记录，金额：{tr.Amount}");
-            txtAmount.Focus();
-        }
-
-        private void AddTransactionRecord(TransactionRecordModel tr)
-        {
+            string addResult;
             try
             {
-                DAL.Singleton.AppendTransactionRecord(tr);
+                addResult = DAL.Singleton.AppendTransactionRecord(tr);
             }
             catch (Exception ex)
             {
                 FormMessage.Show($"新增交易记录失败：{ ex.Message}。");
                 return;
             }
+            finally
+            {
+                RefreshTransactionRecordsView();
+            }
 
+            CleanAndFocusTxtAmount(!txtAmount.Text.Trim().StartsWith('-'));
+            txtRemake.Clear();
+            StringBuilder sbMessage = new StringBuilder();
+            sbMessage.AppendLine($"已新增一条{(tr.isIncome ? "收入" : "支出")}：");
+            sbMessage.AppendLine($"金额：{tr.Amount}");
+            sbMessage.AppendLine($"交易类型：{tr.TransactionType}");
+            sbMessage.AppendLine($"资产类型：{tr.AssetName}");
+            sbMessage.AppendLine($"交易后余额：{addResult}");
+            FormMessage.Show(sbMessage.ToString(), tr.isIncome ? Color.LightGreen : Color.Empty);
+        }
+
+        private void RefreshTransactionRecordsView()
+        {
             _records = DAL.Singleton.GetTransactionRecords();
             _records.Reverse();
             RefreshDetailView(_records);
@@ -155,13 +165,13 @@ namespace BookkeepingAssistant
             }
 
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("【所有资产】");
+            sb.AppendLine("【所有资产余额】");
             foreach (var item in assets)
             {
                 sb.AppendLine(item.Value);
             }
             sb.AppendLine();
-            sb.AppendLine("总计：" + DAL.Singleton.GetAssets().Values.Sum());
+            sb.AppendLine("总余额：" + DAL.Singleton.GetAssets().Values.Sum());
             txtAssets.Text = sb.ToString();
         }
 
@@ -177,14 +187,17 @@ namespace BookkeepingAssistant
             if (_records.Any())
             {
                 var r = _records.First();
-                comboBoxTransactionTypes.SelectedItem = r.TransactionType;
+                if (types.Contains(r.TransactionType))
+                {
+                    comboBoxTransactionTypes.SelectedItem = r.TransactionType;
+                }
             }
         }
 
         private void dgvDetail_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
         {
             var row = dgvDetail.Rows[e.RowIndex];
-            if (row.Cells["收/支"].Value.ToString() == "收入")
+            if ((int)row.Cells["金额"].Value > 0)
             {
                 row.DefaultCellStyle.BackColor = Color.LightGreen;
             }
@@ -224,7 +237,18 @@ namespace BookkeepingAssistant
             model.Amount = formRefund.RefundAmount;
             model.RefundLinkId = record.Id.ToString();
             model.Remark = formRefund.RefundAmount >= Math.Abs(record.Amount) ? "[全额退款]" : "[部分退款]";
-            AddTransactionRecord(model);
+            try
+            {
+                DAL.Singleton.AppendTransactionRecord(model);
+            }
+            catch (Exception ex)
+            {
+                FormMessage.Show($"新增退款记录失败：{ ex.Message}。");
+            }
+            finally
+            {
+                RefreshTransactionRecordsView();
+            }
         }
 
         private void dgvDetail_SelectionChanged(object sender, EventArgs e)
@@ -238,7 +262,9 @@ namespace BookkeepingAssistant
 
             int id = (int)dgvDetail.SelectedRows[0].Cells["Id"].Value;
             var record = _records.Single(o => o.Id == id);
-            if (record.isIncome)
+            List<string> excludeTypes = new TransferType[] { TransferType.借款, TransferType.还款,
+                TransferType.资产间转账 }.Select(o => o.ToString()).ToList();
+            if (record.isIncome || excludeTypes.Contains(record.TransactionType))
             {
                 btnRefund.Enabled = false;
             }
@@ -256,6 +282,10 @@ namespace BookkeepingAssistant
                         Text = $"【退款记录】原交易记录 Id：{record.Id}，时间：{record.Time.ToString("yyyy-MM-dd HH")}，金额：{record.Amount}"
                     }.ShowDialog();
                 }
+                else
+                {
+                    btnRefund.Enabled = true;
+                }
             }
         }
 
@@ -263,42 +293,31 @@ namespace BookkeepingAssistant
         {
             if (txtAmount.Text.TrimStart().StartsWith('-'))
             {
-                comboBoxInOut.SelectedItem = "支出";
-            }
-            else
-            {
-                comboBoxInOut.SelectedItem = "收入";
-            }
-        }
-
-        private void comboBoxInOut_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (comboBoxInOut.SelectedItem.ToString() == "收入")
-            {
-                txtAmount.BackColor = Color.LightGreen;
-                txtAmount.Text = txtAmount.Text.Trim().TrimStart('-');
-            }
-            else
-            {
+                lblInOut.Text = "(支出)";
+                lblInOut.BackColor = Color.Transparent;
                 txtAmount.BackColor = Color.White;
-                if (!txtAmount.Text.Trim().StartsWith('-'))
-                {
-                    txtAmount.Text = '-' + txtAmount.Text.Trim();
-                    txtAmount.Select(txtAmount.Text.Length, 0);
-                }
+            }
+            else
+            {
+                lblInOut.Text = "(收入)";
+                lblInOut.BackColor = Color.LightGreen;
+                txtAmount.BackColor = Color.LightGreen;
             }
         }
 
         private void txtAmount_Enter(object sender, EventArgs e)
         {
-            txtAmount.Select(txtAmount.Text.Length, 0);
+            if (txtAmount.Text.Trim().StartsWith('-'))
+            {
+                txtAmount.Select(txtAmount.Text.Length, 0);
+            }
         }
 
         private void txtAmount_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Enter)
             {
-                btnAdd_Click(null, null);
+                btnAdd.PerformClick();
             }
         }
 
@@ -323,7 +342,18 @@ namespace BookkeepingAssistant
             model.TransactionType = record.TransactionType;
             model.Remark = "[为删除而抵消]";
             model.DeleteLinkId = record.Id;
-            AddTransactionRecord(model);
+            try
+            {
+                DAL.Singleton.AppendTransactionRecord(model);
+            }
+            catch (Exception ex)
+            {
+                FormMessage.Show($"删除记录失败：{ ex.Message}。");
+            }
+            finally
+            {
+                RefreshTransactionRecordsView();
+            }
         }
 
         private void btnStatistics_Click(object sender, EventArgs e)
@@ -342,6 +372,24 @@ namespace BookkeepingAssistant
             {
                 btnStatistics.PerformClick();
             }
+        }
+
+        private void btnLoan_Click(object sender, EventArgs e)
+        {
+            new FormLoan(TransferType.借款).ShowDialog();
+            RefreshTransactionRecordsView();
+        }
+
+        private void btnRepay_Click(object sender, EventArgs e)
+        {
+            new FormLoan(TransferType.还款).ShowDialog();
+            RefreshTransactionRecordsView();
+        }
+
+        private void btnTransfer_Click(object sender, EventArgs e)
+        {
+            new FormLoan(TransferType.资产间转账).ShowDialog();
+            RefreshTransactionRecordsView();
         }
     }
 }

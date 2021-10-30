@@ -11,6 +11,7 @@ namespace BookkeepingAssistant
     public partial class FormMessage : Form
     {
         private string _message = string.Empty;
+        public Color LabelBackColor { get; set; }
         public FormMessage(string message)
         {
             InitializeComponent();
@@ -20,16 +21,28 @@ namespace BookkeepingAssistant
         private void FormMessage_Load(object sender, EventArgs e)
         {
             label1.Text = _message;
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Close();
+            if (LabelBackColor != Color.Empty)
+            {
+                label1.BackColor = LabelBackColor;
+            }
         }
 
         public static void Show(string message)
         {
-            new FormMessage(message).ShowDialog();
+            Show(message, Color.Empty);
+        }
+        public static void Show(string message, Color color)
+        {
+            new FormMessage(message) { LabelBackColor = color }.ShowDialog();
+        }
+
+        private void FormMessage_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Escape)
+            {
+                e.Handled = true;
+                Close();
+            }
         }
     }
 }

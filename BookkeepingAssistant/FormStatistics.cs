@@ -11,12 +11,14 @@ namespace BookkeepingAssistant
 {
     public partial class FormStatistics : Form
     {
-        private List<TransactionRecordModel> _models = new List<TransactionRecordModel>();
+        private List<TransactionRecordModel> _models;
 
         public FormStatistics(List<TransactionRecordModel> models)
         {
             InitializeComponent();
-            _models.AddRange(models);
+            List<string> excludeTypes = new TransferType[] { TransferType.借款, TransferType.还款,
+                TransferType.资产间转账 }.Select(o => o.ToString()).ToList();
+            _models = models.Where(o => !excludeTypes.Contains(o.TransactionType)).ToList();
         }
 
         private void FormStatistics_Load(object sender, EventArgs e)
@@ -105,6 +107,15 @@ namespace BookkeepingAssistant
                 }
             }
             return dtMonth;
+        }
+
+        private void FormStatistics_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                e.Handled = true;
+                Close();
+            }
         }
     }
 }

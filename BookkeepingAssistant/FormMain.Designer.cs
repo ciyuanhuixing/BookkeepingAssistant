@@ -33,12 +33,14 @@ namespace BookkeepingAssistant
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvDetail = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnRepay = new System.Windows.Forms.Button();
+            this.btnLoan = new System.Windows.Forms.Button();
+            this.lblInOut = new System.Windows.Forms.Label();
             this.btnStatistics = new System.Windows.Forms.Button();
             this.btnDeleteSelect = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.txtRemake = new System.Windows.Forms.TextBox();
             this.btnRefund = new System.Windows.Forms.Button();
-            this.comboBoxInOut = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.comboBoxTransactionTypes = new System.Windows.Forms.ComboBox();
@@ -49,6 +51,7 @@ namespace BookkeepingAssistant
             this.btnAdd = new System.Windows.Forms.Button();
             this.txtAmount = new System.Windows.Forms.TextBox();
             this.txtAssets = new System.Windows.Forms.TextBox();
+            this.btnTransfer = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetail)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -94,12 +97,15 @@ namespace BookkeepingAssistant
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnTransfer);
+            this.panel1.Controls.Add(this.btnRepay);
+            this.panel1.Controls.Add(this.btnLoan);
+            this.panel1.Controls.Add(this.lblInOut);
             this.panel1.Controls.Add(this.btnStatistics);
             this.panel1.Controls.Add(this.btnDeleteSelect);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.txtRemake);
             this.panel1.Controls.Add(this.btnRefund);
-            this.panel1.Controls.Add(this.comboBoxInOut);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.comboBoxTransactionTypes);
@@ -115,12 +121,44 @@ namespace BookkeepingAssistant
             this.panel1.Size = new System.Drawing.Size(1720, 112);
             this.panel1.TabIndex = 0;
             // 
+            // btnRepay
+            // 
+            this.btnRepay.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnRepay.Location = new System.Drawing.Point(1359, 61);
+            this.btnRepay.Name = "btnRepay";
+            this.btnRepay.Size = new System.Drawing.Size(70, 38);
+            this.btnRepay.TabIndex = 32;
+            this.btnRepay.Text = "还款";
+            this.btnRepay.UseVisualStyleBackColor = true;
+            this.btnRepay.Click += new System.EventHandler(this.btnRepay_Click);
+            // 
+            // btnLoan
+            // 
+            this.btnLoan.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnLoan.Location = new System.Drawing.Point(1277, 61);
+            this.btnLoan.Name = "btnLoan";
+            this.btnLoan.Size = new System.Drawing.Size(71, 38);
+            this.btnLoan.TabIndex = 31;
+            this.btnLoan.Text = "借款";
+            this.btnLoan.UseVisualStyleBackColor = true;
+            this.btnLoan.Click += new System.EventHandler(this.btnLoan_Click);
+            // 
+            // lblInOut
+            // 
+            this.lblInOut.AutoSize = true;
+            this.lblInOut.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblInOut.Location = new System.Drawing.Point(261, 18);
+            this.lblInOut.Name = "lblInOut";
+            this.lblInOut.Size = new System.Drawing.Size(78, 31);
+            this.lblInOut.TabIndex = 30;
+            this.lblInOut.Text = "(收支)";
+            // 
             // btnStatistics
             // 
             this.btnStatistics.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnStatistics.Location = new System.Drawing.Point(1228, 14);
+            this.btnStatistics.Location = new System.Drawing.Point(1153, 13);
             this.btnStatistics.Name = "btnStatistics";
-            this.btnStatistics.Size = new System.Drawing.Size(124, 86);
+            this.btnStatistics.Size = new System.Drawing.Size(118, 86);
             this.btnStatistics.TabIndex = 29;
             this.btnStatistics.Text = "记账统计(&F8)";
             this.btnStatistics.UseVisualStyleBackColor = true;
@@ -130,7 +168,7 @@ namespace BookkeepingAssistant
             // 
             this.btnDeleteSelect.Enabled = false;
             this.btnDeleteSelect.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnDeleteSelect.Location = new System.Drawing.Point(1673, 14);
+            this.btnDeleteSelect.Location = new System.Drawing.Point(1686, 14);
             this.btnDeleteSelect.Name = "btnDeleteSelect";
             this.btnDeleteSelect.Size = new System.Drawing.Size(56, 86);
             this.btnDeleteSelect.TabIndex = 28;
@@ -153,7 +191,7 @@ namespace BookkeepingAssistant
             this.txtRemake.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.txtRemake.Location = new System.Drawing.Point(117, 61);
             this.txtRemake.Name = "txtRemake";
-            this.txtRemake.Size = new System.Drawing.Size(997, 39);
+            this.txtRemake.Size = new System.Drawing.Size(971, 39);
             this.txtRemake.TabIndex = 4;
             this.txtRemake.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtAmount_KeyPress);
             // 
@@ -161,25 +199,13 @@ namespace BookkeepingAssistant
             // 
             this.btnRefund.Enabled = false;
             this.btnRefund.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnRefund.Location = new System.Drawing.Point(1576, 14);
+            this.btnRefund.Location = new System.Drawing.Point(1617, 14);
             this.btnRefund.Name = "btnRefund";
-            this.btnRefund.Size = new System.Drawing.Size(53, 86);
+            this.btnRefund.Size = new System.Drawing.Size(38, 86);
             this.btnRefund.TabIndex = 6;
             this.btnRefund.Text = "退款";
             this.btnRefund.UseVisualStyleBackColor = true;
             this.btnRefund.Click += new System.EventHandler(this.btnRefund_Click);
-            // 
-            // comboBoxInOut
-            // 
-            this.comboBoxInOut.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxInOut.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.comboBoxInOut.FormattingEnabled = true;
-            this.comboBoxInOut.Location = new System.Drawing.Point(267, 14);
-            this.comboBoxInOut.Name = "comboBoxInOut";
-            this.comboBoxInOut.Size = new System.Drawing.Size(91, 39);
-            this.comboBoxInOut.TabIndex = 1;
-            this.comboBoxInOut.SelectedIndexChanged += new System.EventHandler(this.comboBoxInOut_SelectedIndexChanged);
-            this.comboBoxInOut.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtAmount_KeyPress);
             // 
             // label1
             // 
@@ -195,7 +221,7 @@ namespace BookkeepingAssistant
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label2.Location = new System.Drawing.Point(809, 18);
+            this.label2.Location = new System.Drawing.Point(352, 18);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(110, 31);
             this.label2.TabIndex = 23;
@@ -206,17 +232,17 @@ namespace BookkeepingAssistant
             this.comboBoxTransactionTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxTransactionTypes.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.comboBoxTransactionTypes.FormattingEnabled = true;
-            this.comboBoxTransactionTypes.Location = new System.Drawing.Point(932, 14);
+            this.comboBoxTransactionTypes.Location = new System.Drawing.Point(468, 14);
             this.comboBoxTransactionTypes.Name = "comboBoxTransactionTypes";
             this.comboBoxTransactionTypes.Size = new System.Drawing.Size(182, 39);
-            this.comboBoxTransactionTypes.TabIndex = 3;
+            this.comboBoxTransactionTypes.TabIndex = 2;
             this.comboBoxTransactionTypes.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtAmount_KeyPress);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label3.Location = new System.Drawing.Point(373, 18);
+            this.label3.Location = new System.Drawing.Point(670, 18);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(110, 31);
             this.label3.TabIndex = 22;
@@ -227,17 +253,17 @@ namespace BookkeepingAssistant
             this.comboBoxAssets.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxAssets.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.comboBoxAssets.FormattingEnabled = true;
-            this.comboBoxAssets.Location = new System.Drawing.Point(493, 14);
+            this.comboBoxAssets.Location = new System.Drawing.Point(786, 14);
             this.comboBoxAssets.Name = "comboBoxAssets";
             this.comboBoxAssets.Size = new System.Drawing.Size(302, 39);
-            this.comboBoxAssets.TabIndex = 2;
+            this.comboBoxAssets.TabIndex = 3;
             this.comboBoxAssets.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtAmount_KeyPress);
             // 
             // linkLabelManageTransactionType
             // 
             this.linkLabelManageTransactionType.AutoSize = true;
             this.linkLabelManageTransactionType.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.linkLabelManageTransactionType.Location = new System.Drawing.Point(1385, 64);
+            this.linkLabelManageTransactionType.Location = new System.Drawing.Point(1434, 64);
             this.linkLabelManageTransactionType.Name = "linkLabelManageTransactionType";
             this.linkLabelManageTransactionType.Size = new System.Drawing.Size(158, 31);
             this.linkLabelManageTransactionType.TabIndex = 21;
@@ -249,7 +275,7 @@ namespace BookkeepingAssistant
             // 
             this.linkLabelManageAssets.AutoSize = true;
             this.linkLabelManageAssets.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.linkLabelManageAssets.Location = new System.Drawing.Point(1385, 18);
+            this.linkLabelManageAssets.Location = new System.Drawing.Point(1434, 18);
             this.linkLabelManageAssets.Name = "linkLabelManageAssets";
             this.linkLabelManageAssets.Size = new System.Drawing.Size(110, 31);
             this.linkLabelManageAssets.TabIndex = 20;
@@ -260,9 +286,9 @@ namespace BookkeepingAssistant
             // btnAdd
             // 
             this.btnAdd.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnAdd.Location = new System.Drawing.Point(1137, 14);
+            this.btnAdd.Location = new System.Drawing.Point(1103, 13);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(77, 86);
+            this.btnAdd.Size = new System.Drawing.Size(44, 86);
             this.btnAdd.TabIndex = 5;
             this.btnAdd.Text = "新增";
             this.btnAdd.UseVisualStyleBackColor = true;
@@ -291,6 +317,17 @@ namespace BookkeepingAssistant
             this.txtAssets.Size = new System.Drawing.Size(361, 696);
             this.txtAssets.TabIndex = 14;
             // 
+            // btnTransfer
+            // 
+            this.btnTransfer.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnTransfer.Location = new System.Drawing.Point(1277, 11);
+            this.btnTransfer.Name = "btnTransfer";
+            this.btnTransfer.Size = new System.Drawing.Size(151, 38);
+            this.btnTransfer.TabIndex = 33;
+            this.btnTransfer.Text = "资产间转账";
+            this.btnTransfer.UseVisualStyleBackColor = true;
+            this.btnTransfer.Click += new System.EventHandler(this.btnTransfer_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
@@ -316,7 +353,6 @@ namespace BookkeepingAssistant
         #endregion
         private System.Windows.Forms.DataGridView dgvDetail;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.ComboBox comboBoxInOut;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox comboBoxTransactionTypes;
@@ -332,6 +368,10 @@ namespace BookkeepingAssistant
         private System.Windows.Forms.TextBox txtRemake;
         private System.Windows.Forms.Button btnDeleteSelect;
         private System.Windows.Forms.Button btnStatistics;
+        private System.Windows.Forms.Label lblInOut;
+        private System.Windows.Forms.Button btnRepay;
+        private System.Windows.Forms.Button btnLoan;
+        private System.Windows.Forms.Button btnTransfer;
     }
 }
 

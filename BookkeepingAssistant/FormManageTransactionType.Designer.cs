@@ -40,24 +40,27 @@ namespace BookkeepingAssistant
             // comboBoxTypes
             // 
             this.comboBoxTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTypes.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.comboBoxTypes.FormattingEnabled = true;
-            this.comboBoxTypes.Location = new System.Drawing.Point(151, 250);
+            this.comboBoxTypes.Location = new System.Drawing.Point(179, 250);
             this.comboBoxTypes.Name = "comboBoxTypes";
-            this.comboBoxTypes.Size = new System.Drawing.Size(182, 32);
+            this.comboBoxTypes.Size = new System.Drawing.Size(350, 39);
             this.comboBoxTypes.TabIndex = 8;
             // 
             // txtType
             // 
-            this.txtType.Location = new System.Drawing.Point(151, 78);
+            this.txtType.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtType.Location = new System.Drawing.Point(179, 76);
             this.txtType.Name = "txtType";
-            this.txtType.Size = new System.Drawing.Size(206, 30);
+            this.txtType.Size = new System.Drawing.Size(350, 38);
             this.txtType.TabIndex = 1;
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(406, 76);
+            this.btnAdd.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnAdd.Location = new System.Drawing.Point(535, 75);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(150, 34);
+            this.btnAdd.Size = new System.Drawing.Size(150, 40);
             this.btnAdd.TabIndex = 2;
             this.btnAdd.Text = "新增";
             this.btnAdd.UseVisualStyleBackColor = true;
@@ -65,9 +68,10 @@ namespace BookkeepingAssistant
             // 
             // btnRemove
             // 
-            this.btnRemove.Location = new System.Drawing.Point(406, 249);
+            this.btnRemove.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnRemove.Location = new System.Drawing.Point(535, 249);
             this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(112, 34);
+            this.btnRemove.Size = new System.Drawing.Size(112, 40);
             this.btnRemove.TabIndex = 9;
             this.btnRemove.Text = "删除";
             this.btnRemove.UseVisualStyleBackColor = true;
@@ -76,18 +80,20 @@ namespace BookkeepingAssistant
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(63, 81);
+            this.label1.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label1.Location = new System.Drawing.Point(63, 80);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(82, 24);
+            this.label1.Size = new System.Drawing.Size(110, 31);
             this.label1.TabIndex = 4;
             this.label1.Text = "交易类型";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label2.Location = new System.Drawing.Point(63, 254);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(82, 24);
+            this.label2.Size = new System.Drawing.Size(110, 31);
             this.label2.TabIndex = 5;
             this.label2.Text = "交易类型";
             // 

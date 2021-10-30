@@ -46,6 +46,9 @@ namespace BookkeepingAssistant
             DAL.Singleton.AddAsset(assetName, assetValue);
             DisplayAssets();
             FormMessage.Show($"已新增「{assetName}」");
+            txtAssetName.Clear();
+            txtAssetValue.Clear();
+            txtAssetName.Focus();
         }
 
         private void DisplayAssets()
@@ -68,7 +71,7 @@ namespace BookkeepingAssistant
         private void btnRemove_Click(object sender, EventArgs e)
         {
             string assetName = (string)comboBoxAssets.SelectedValue;
-            if (MessageBox.Show($"确认删除{assetName}？", "确认删除？", MessageBoxButtons.OKCancel) != DialogResult.OK)
+            if (MessageBox.Show($"确认删除{assetName}？", "确认删除？", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
             {
                 return;
             }
