@@ -49,9 +49,9 @@ namespace BookkeepingAssistant
                 _haveCommits = true;
             }
 
-            _assetsDataFile = Path.Combine(_config.GitRepoDir, "资产.txt");
-            _transactionTypeDataFile = Path.Combine(_config.GitRepoDir, "交易类型.txt");
-            _transactionRecordDataFile = Path.Combine(_config.GitRepoDir, "交易记录.txt");
+            _assetsDataFile = Path.Combine(_config.GitRepoDir, "资产.md");
+            _transactionTypeDataFile = Path.Combine(_config.GitRepoDir, "交易类型.md");
+            _transactionRecordDataFile = Path.Combine(_config.GitRepoDir, "交易记录.md");
 
             ReadData();
         }
@@ -131,7 +131,7 @@ namespace BookkeepingAssistant
                 foreach (var line in lines)
                 {
                     string[] arr = line.Split('|');
-                    if (arr.Length != 10)
+                    if (arr.Length != 12)
                     {
                         continue;
                     }
@@ -141,7 +141,7 @@ namespace BookkeepingAssistant
                     }
 
                     TransactionRecordModel record = new TransactionRecordModel();
-                    int n = 0;
+                    int n = 1;
                     int id;
                     if (!int.TryParse(arr[n++], out id))
                     {
@@ -532,9 +532,18 @@ namespace BookkeepingAssistant
         private void SaveTransactionRecord(List<TransactionRecordModel> models)
         {
             WriteAssetsDataFile();
-            File.AppendAllLines(_transactionRecordDataFile, models.Select(o => string.Join('|', o.Id, o.Time,
+
+            if (!File.Exists(_transactionRecordDataFile))
+            {
+                File.AppendAllLines(_transactionRecordDataFile, new List<string> {
+                "| Id | 时间 | 金额 | 交易类型 | 资产 | 交易后该资产余额 | 交易后所有资产总余额 | 退款关联Id" +
+                " | 备注 | 删除关联Id |",
+                "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+                });
+            }
+            File.AppendAllLines(_transactionRecordDataFile, models.Select(o => "|" + string.Join('|', o.Id, o.Time,
                 o.Amount, o.TransactionType, o.AssetName, o.AssetValue, o.AssetsTotalValue, o.RefundLinkId,
-                o.Remark, o.DeleteLinkId)));
+                o.Remark, o.DeleteLinkId) + "|"));
 
             StageFile(_transactionRecordDataFile);
             StageFile(_assetsDataFile);

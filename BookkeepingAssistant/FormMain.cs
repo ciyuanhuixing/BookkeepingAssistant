@@ -33,17 +33,26 @@ namespace BookkeepingAssistant
 
             _records = DAL.Singleton.GetTransactionRecords();
             _records.Reverse();
-
-            txtAmount.Text = "-";
-            if (_records.Any() && _records.First().isIncome)
-            {
-                txtAmount.Clear();
-            }
+            CleanAndFocusTxtAmount(_records.Any() && _records.First().isIncome);
             txtAmount_TextChanged(null, null);
 
             RefreshAssetsControl();
             RefreshTransactionTypesControl();
             RefreshDetailView(_records);
+        }
+
+        private void CleanAndFocusTxtAmount(bool isPlus)
+        {
+            if (isPlus)
+            {
+                txtAmount.Clear();
+                txtAmount.Focus();
+            }
+            else
+            {
+                txtAmount.Text = "-";
+                txtAmount.Select(txtAmount.Text.Length, 0);
+            }
         }
 
         private void RefreshDetailView(List<TransactionRecordModel> records)
@@ -89,15 +98,7 @@ namespace BookkeepingAssistant
             tr.Remark = txtRemake.Text.Trim();
             string addResult = AddTransactionRecord(tr);
 
-            if (txtAmount.Text.Trim().StartsWith('-'))
-            {
-                txtAmount.Text = "-";
-                txtAmount.Select(txtAmount.Text.Length, 0);
-            }
-            else
-            {
-                txtAmount.Clear();
-            }
+            CleanAndFocusTxtAmount(!txtAmount.Text.Trim().StartsWith('-'));
             txtRemake.Clear();
             StringBuilder sbMessage = new StringBuilder();
             sbMessage.AppendLine($"已新增一条{(tr.isIncome ? "收入" : "支出")}：");
@@ -106,7 +107,6 @@ namespace BookkeepingAssistant
             sbMessage.AppendLine($"资产类型：{tr.AssetName}");
             sbMessage.AppendLine($"交易后余额：{addResult}");
             FormMessage.Show(sbMessage.ToString(), tr.isIncome ? Color.LightGreen : Color.Empty);
-            txtAmount.Focus();
         }
 
         private string AddTransactionRecord(TransactionRecordModel tr)
@@ -298,7 +298,10 @@ namespace BookkeepingAssistant
 
         private void txtAmount_Enter(object sender, EventArgs e)
         {
-            txtAmount.Select(txtAmount.Text.Length, 0);
+            if (txtAmount.Text.Trim().StartsWith('-'))
+            {
+                txtAmount.Select(txtAmount.Text.Length, 0);
+            }
         }
 
         private void txtAmount_KeyPress(object sender, KeyPressEventArgs e)
