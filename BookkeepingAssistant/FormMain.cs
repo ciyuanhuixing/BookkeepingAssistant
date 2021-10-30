@@ -96,7 +96,21 @@ namespace BookkeepingAssistant
             tr.AssetName = (string)comboBoxAssets.SelectedValue;
             tr.TransactionType = (string)comboBoxTransactionTypes.SelectedValue;
             tr.Remark = txtRemake.Text.Trim();
-            string addResult = AddTransactionRecord(tr);
+
+            string addResult;
+            try
+            {
+                addResult = DAL.Singleton.AppendTransactionRecord(tr);
+            }
+            catch (Exception ex)
+            {
+                FormMessage.Show($"新增交易记录失败：{ ex.Message}。");
+                return;
+            }
+            finally
+            {
+                RefreshTransactionRecordsView();
+            }
 
             CleanAndFocusTxtAmount(!txtAmount.Text.Trim().StartsWith('-'));
             txtRemake.Clear();
@@ -109,22 +123,6 @@ namespace BookkeepingAssistant
             FormMessage.Show(sbMessage.ToString(), tr.isIncome ? Color.LightGreen : Color.Empty);
         }
 
-        private string AddTransactionRecord(TransactionRecordModel tr)
-        {
-            string resultMessage = string.Empty;
-            try
-            {
-                resultMessage = DAL.Singleton.AppendTransactionRecord(tr);
-            }
-            catch (Exception ex)
-            {
-                FormMessage.Show($"新增交易记录失败：{ ex.Message}。");
-                return resultMessage;
-            }
-
-            RefreshTransactionRecordsView();
-            return resultMessage;
-        }
         private void RefreshTransactionRecordsView()
         {
             _records = DAL.Singleton.GetTransactionRecords();
@@ -239,7 +237,18 @@ namespace BookkeepingAssistant
             model.Amount = formRefund.RefundAmount;
             model.RefundLinkId = record.Id.ToString();
             model.Remark = formRefund.RefundAmount >= Math.Abs(record.Amount) ? "[全额退款]" : "[部分退款]";
-            AddTransactionRecord(model);
+            try
+            {
+                DAL.Singleton.AppendTransactionRecord(model);
+            }
+            catch (Exception ex)
+            {
+                FormMessage.Show($"新增退款记录失败：{ ex.Message}。");
+            }
+            finally
+            {
+                RefreshTransactionRecordsView();
+            }
         }
 
         private void dgvDetail_SelectionChanged(object sender, EventArgs e)
@@ -333,7 +342,18 @@ namespace BookkeepingAssistant
             model.TransactionType = record.TransactionType;
             model.Remark = "[为删除而抵消]";
             model.DeleteLinkId = record.Id;
-            AddTransactionRecord(model);
+            try
+            {
+                DAL.Singleton.AppendTransactionRecord(model);
+            }
+            catch (Exception ex)
+            {
+                FormMessage.Show($"删除记录失败：{ ex.Message}。");
+            }
+            finally
+            {
+                RefreshTransactionRecordsView();
+            }
         }
 
         private void btnStatistics_Click(object sender, EventArgs e)
