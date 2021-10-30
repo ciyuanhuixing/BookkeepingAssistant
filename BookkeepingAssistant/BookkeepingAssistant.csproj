@@ -38,6 +38,9 @@
     <Compile Update="FormStatistics.cs">
       <SubType>Form</SubType>
     </Compile>
+	<Compile Update="FormLoan.cs">
+	  <SubType>Form</SubType>
+	</Compile>	  
   </ItemGroup>
 
 </Project>
