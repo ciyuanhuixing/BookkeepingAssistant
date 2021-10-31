@@ -33,7 +33,6 @@ namespace BookkeepingAssistant
             }
 
             _records = DAL.Singleton.GetTransactionRecords();
-            _records.Reverse();
             CleanAndFocusTxtAmount(_records.Any() && _records.First().isIncome);
             txtAmount_TextChanged(null, null);
 
@@ -135,7 +134,6 @@ namespace BookkeepingAssistant
         private void RefreshTransactionRecordsView()
         {
             _records = DAL.Singleton.GetTransactionRecords();
-            _records.Reverse();
             RefreshDetailView(_records);
             RefreshAssetsControl();
         }

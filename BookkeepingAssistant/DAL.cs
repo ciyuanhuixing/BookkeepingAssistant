@@ -215,8 +215,7 @@ namespace BookkeepingAssistant
 
                     _transactionRecords.Add(record);
                 }
-
-
+                _transactionRecords = _transactionRecords.OrderByDescending(o => o.Time).ThenByDescending(o => o.Id).ToList();
             }
         }
 
