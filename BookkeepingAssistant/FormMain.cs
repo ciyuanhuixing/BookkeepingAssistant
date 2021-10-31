@@ -380,6 +380,10 @@ namespace BookkeepingAssistant
             {
                 dgvDetail.Focus();
             }
+            else if (e.KeyCode == Keys.Escape)
+            {
+                Close();
+            }
         }
 
         private void btnLoan_Click(object sender, EventArgs e)
