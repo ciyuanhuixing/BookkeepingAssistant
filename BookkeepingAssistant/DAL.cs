@@ -18,6 +18,8 @@ namespace BookkeepingAssistant
 
     public class DAL
     {
+        public const string TimeFormat = "yyyy-MM-dd";
+
         private ConfigModel _config;
         private string _assetsDataFile;
         private string _transactionTypeDataFile;
@@ -213,8 +215,7 @@ namespace BookkeepingAssistant
 
                     _transactionRecords.Add(record);
                 }
-
-
+                _transactionRecords = _transactionRecords.OrderByDescending(o => o.Time).ThenByDescending(o => o.Id).ToList();
             }
         }
 
@@ -435,11 +436,11 @@ namespace BookkeepingAssistant
                 throw new Exception("金额不能等于0");
             }
 
-            if (_transactionRecords.Any())
+            tr.Id = GetTransactionRecordNewId();
+            if (tr.Time == DateTime.MinValue)
             {
-                tr.Id = _transactionRecords.Last().Id + 1;
+                tr.Time = DateTime.Now;
             }
-            tr.Time = DateTime.Now;
 
             string message = string.Empty;
             if (_dicAssets.ContainsKey(tr.AssetName))
@@ -461,6 +462,16 @@ namespace BookkeepingAssistant
             _transactionRecords.Add(tr);
             PossibleRollback(SaveTransactionRecord, tr);
             return message;
+        }
+
+        private int GetTransactionRecordNewId()
+        {
+            int id = 0;
+            if (_transactionRecords.Any())
+            {
+                id = _transactionRecords.Max(o => o.Id) + 1;
+            }
+            return id;
         }
 
         public string Loan(string fromAsset, string toAsset, decimal amount, TransferType transferType)
@@ -500,11 +511,7 @@ namespace BookkeepingAssistant
                     break;
             }
 
-            int id = 0;
-            if (_transactionRecords.Any())
-            {
-                id = _transactionRecords.Last().Id + 1;
-            }
+            int id = GetTransactionRecordNewId();
 
             TransactionRecordModel trFrom = new TransactionRecordModel();
             trFrom.Id = id;
@@ -553,9 +560,9 @@ namespace BookkeepingAssistant
                 "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
                 });
             }
-            File.AppendAllLines(_transactionRecordDataFile, models.Select(o => "|" + string.Join('|', o.Id, o.Time,
-                o.Amount, o.TransactionType, o.AssetName, o.AssetValue, o.AssetsTotalValue, o.RefundLinkId,
-                o.Remark, o.DeleteLinkId) + "|"));
+            File.AppendAllLines(_transactionRecordDataFile, models.Select(o => "|" + string.Join('|', o.Id,
+                o.Time.ToString(TimeFormat), o.Amount, o.TransactionType, o.AssetName, o.AssetValue,
+                o.AssetsTotalValue, o.RefundLinkId, o.Remark, o.DeleteLinkId) + "|"));
 
             StageFile(_transactionRecordDataFile);
             StageFile(_assetsDataFile);

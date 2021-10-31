@@ -18,6 +18,7 @@ namespace BookkeepingAssistant
         public FormMain()
         {
             InitializeComponent();
+            txtDate.Text = DateTime.Now.ToString(DAL.TimeFormat);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -32,7 +33,6 @@ namespace BookkeepingAssistant
             }
 
             _records = DAL.Singleton.GetTransactionRecords();
-            _records.Reverse();
             CleanAndFocusTxtAmount(_records.Any() && _records.First().isIncome);
             txtAmount_TextChanged(null, null);
 
@@ -59,7 +59,7 @@ namespace BookkeepingAssistant
         {
             DataTable dt = new DataTable();
             dt.Columns.Add("Id", typeof(int));
-            dt.Columns.Add("年-月-日  时");
+            dt.Columns.Add("年-月-日");
             dt.Columns.Add("金额", typeof(int));
             dt.Columns.Add("交易类型");
             dt.Columns.Add("资产");
@@ -70,7 +70,7 @@ namespace BookkeepingAssistant
             {
                 DataRow dr = dt.NewRow();
                 dr["Id"] = item.Id;
-                dr["年-月-日  时"] = item.Time.ToString("yyyy-MM-dd  HH");
+                dr["年-月-日"] = item.Time.ToString(DAL.TimeFormat);
                 dr["金额"] = item.Amount;
                 dr["交易类型"] = item.TransactionType;
                 dr["资产"] = item.AssetName;
@@ -92,9 +92,17 @@ namespace BookkeepingAssistant
                 FormMessage.Show("新增失败：金额不能填入非数字。");
                 return;
             }
+            DateTime time;
+            if (!DateTime.TryParse(txtDate.Text.Trim(), out time))
+            {
+                FormMessage.Show("新增失败：日期格式不正确。正确格式的日期示例：" + DateTime.Now.ToString(DAL.TimeFormat));
+                return;
+            }
+
             tr.Amount = amount;
             tr.AssetName = (string)comboBoxAssets.SelectedValue;
             tr.TransactionType = (string)comboBoxTransactionTypes.SelectedValue;
+            tr.Time = time;
             tr.Remark = txtRemake.Text.Trim();
 
             string addResult;
@@ -126,7 +134,6 @@ namespace BookkeepingAssistant
         private void RefreshTransactionRecordsView()
         {
             _records = DAL.Singleton.GetTransactionRecords();
-            _records.Reverse();
             RefreshDetailView(_records);
             RefreshAssetsControl();
         }
@@ -277,10 +284,7 @@ namespace BookkeepingAssistant
                     var totalRefundAmount = refundRecords.Sum(o => o.Amount);
                     btnRefund.Enabled = totalRefundAmount + record.Amount >= 0 ? false : true;
 
-                    new FormRefundRecord(refundRecords)
-                    {
-                        Text = $"【退款记录】原交易记录 Id：{record.Id}，时间：{record.Time.ToString("yyyy-MM-dd HH")}，金额：{record.Amount}"
-                    }.ShowDialog();
+                    new FormRefundRecord(record, refundRecords).ShowDialog();
                 }
                 else
                 {
@@ -371,6 +375,10 @@ namespace BookkeepingAssistant
             else if (e.KeyCode == Keys.F8)
             {
                 btnStatistics.PerformClick();
+            }
+            else if (e.KeyCode == Keys.F5)
+            {
+                dgvDetail.Focus();
             }
         }
 
