@@ -381,6 +381,10 @@ namespace BookkeepingAssistant
             {
                 btnStatistics.PerformClick();
             }
+            else if (e.KeyCode == Keys.F5)
+            {
+                dgvDetail.Focus();
+            }
         }
 
         private void btnLoan_Click(object sender, EventArgs e)

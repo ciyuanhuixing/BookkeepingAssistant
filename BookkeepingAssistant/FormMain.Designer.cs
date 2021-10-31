@@ -152,7 +152,7 @@ namespace BookkeepingAssistant
             this.txtDate.Location = new System.Drawing.Point(117, 62);
             this.txtDate.Name = "txtDate";
             this.txtDate.Size = new System.Drawing.Size(159, 39);
-            this.txtDate.TabIndex = 34;
+            this.txtDate.TabIndex = 4;
             // 
             // btnTransfer
             // 
@@ -160,7 +160,7 @@ namespace BookkeepingAssistant
             this.btnTransfer.Location = new System.Drawing.Point(1277, 11);
             this.btnTransfer.Name = "btnTransfer";
             this.btnTransfer.Size = new System.Drawing.Size(151, 38);
-            this.btnTransfer.TabIndex = 33;
+            this.btnTransfer.TabIndex = 7;
             this.btnTransfer.Text = "资产间转账";
             this.btnTransfer.UseVisualStyleBackColor = true;
             this.btnTransfer.Click += new System.EventHandler(this.btnTransfer_Click);
@@ -171,7 +171,7 @@ namespace BookkeepingAssistant
             this.btnRepay.Location = new System.Drawing.Point(1359, 61);
             this.btnRepay.Name = "btnRepay";
             this.btnRepay.Size = new System.Drawing.Size(70, 38);
-            this.btnRepay.TabIndex = 32;
+            this.btnRepay.TabIndex = 9;
             this.btnRepay.Text = "还款";
             this.btnRepay.UseVisualStyleBackColor = true;
             this.btnRepay.Click += new System.EventHandler(this.btnRepay_Click);
@@ -182,7 +182,7 @@ namespace BookkeepingAssistant
             this.btnLoan.Location = new System.Drawing.Point(1277, 61);
             this.btnLoan.Name = "btnLoan";
             this.btnLoan.Size = new System.Drawing.Size(71, 38);
-            this.btnLoan.TabIndex = 31;
+            this.btnLoan.TabIndex = 8;
             this.btnLoan.Text = "借款";
             this.btnLoan.UseVisualStyleBackColor = true;
             this.btnLoan.Click += new System.EventHandler(this.btnLoan_Click);
@@ -203,7 +203,7 @@ namespace BookkeepingAssistant
             this.btnStatistics.Location = new System.Drawing.Point(1153, 13);
             this.btnStatistics.Name = "btnStatistics";
             this.btnStatistics.Size = new System.Drawing.Size(118, 86);
-            this.btnStatistics.TabIndex = 29;
+            this.btnStatistics.TabIndex = 6;
             this.btnStatistics.Text = "记账统计(&F8)";
             this.btnStatistics.UseVisualStyleBackColor = true;
             this.btnStatistics.Click += new System.EventHandler(this.btnStatistics_Click);
@@ -215,7 +215,7 @@ namespace BookkeepingAssistant
             this.btnDeleteSelect.Location = new System.Drawing.Point(1686, 14);
             this.btnDeleteSelect.Name = "btnDeleteSelect";
             this.btnDeleteSelect.Size = new System.Drawing.Size(56, 86);
-            this.btnDeleteSelect.TabIndex = 28;
+            this.btnDeleteSelect.TabIndex = 13;
             this.btnDeleteSelect.Text = "删除所选记录";
             this.btnDeleteSelect.UseVisualStyleBackColor = true;
             this.btnDeleteSelect.Click += new System.EventHandler(this.btnDeleteSelect_Click);
@@ -236,7 +236,7 @@ namespace BookkeepingAssistant
             this.txtRemake.Location = new System.Drawing.Point(477, 61);
             this.txtRemake.Name = "txtRemake";
             this.txtRemake.Size = new System.Drawing.Size(611, 39);
-            this.txtRemake.TabIndex = 4;
+            this.txtRemake.TabIndex = 5;
             this.txtRemake.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtAmount_KeyPress);
             // 
             // btnRefund
@@ -246,7 +246,7 @@ namespace BookkeepingAssistant
             this.btnRefund.Location = new System.Drawing.Point(1617, 14);
             this.btnRefund.Name = "btnRefund";
             this.btnRefund.Size = new System.Drawing.Size(38, 86);
-            this.btnRefund.TabIndex = 6;
+            this.btnRefund.TabIndex = 12;
             this.btnRefund.Text = "退款";
             this.btnRefund.UseVisualStyleBackColor = true;
             this.btnRefund.Click += new System.EventHandler(this.btnRefund_Click);
@@ -310,7 +310,7 @@ namespace BookkeepingAssistant
             this.linkLabelManageTransactionType.Location = new System.Drawing.Point(1434, 64);
             this.linkLabelManageTransactionType.Name = "linkLabelManageTransactionType";
             this.linkLabelManageTransactionType.Size = new System.Drawing.Size(158, 31);
-            this.linkLabelManageTransactionType.TabIndex = 21;
+            this.linkLabelManageTransactionType.TabIndex = 11;
             this.linkLabelManageTransactionType.TabStop = true;
             this.linkLabelManageTransactionType.Text = "管理交易类型";
             this.linkLabelManageTransactionType.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelModifyTransactionType_LinkClicked);
@@ -322,7 +322,7 @@ namespace BookkeepingAssistant
             this.linkLabelManageAssets.Location = new System.Drawing.Point(1434, 18);
             this.linkLabelManageAssets.Name = "linkLabelManageAssets";
             this.linkLabelManageAssets.Size = new System.Drawing.Size(110, 31);
-            this.linkLabelManageAssets.TabIndex = 20;
+            this.linkLabelManageAssets.TabIndex = 10;
             this.linkLabelManageAssets.TabStop = true;
             this.linkLabelManageAssets.Text = "管理资产";
             this.linkLabelManageAssets.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelModifyAssets_LinkClicked);
