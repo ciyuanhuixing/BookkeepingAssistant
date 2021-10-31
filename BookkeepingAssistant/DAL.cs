@@ -18,6 +18,8 @@ namespace BookkeepingAssistant
 
     public class DAL
     {
+        public const string TimeFormat = "yyyy-MM-dd";
+
         private ConfigModel _config;
         private string _assetsDataFile;
         private string _transactionTypeDataFile;
@@ -439,7 +441,10 @@ namespace BookkeepingAssistant
             {
                 tr.Id = _transactionRecords.Last().Id + 1;
             }
-            tr.Time = DateTime.Now;
+            if (tr.Time == DateTime.MinValue)
+            {
+                tr.Time = DateTime.Now;
+            }
 
             string message = string.Empty;
             if (_dicAssets.ContainsKey(tr.AssetName))
@@ -553,9 +558,9 @@ namespace BookkeepingAssistant
                 "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
                 });
             }
-            File.AppendAllLines(_transactionRecordDataFile, models.Select(o => "|" + string.Join('|', o.Id, o.Time,
-                o.Amount, o.TransactionType, o.AssetName, o.AssetValue, o.AssetsTotalValue, o.RefundLinkId,
-                o.Remark, o.DeleteLinkId) + "|"));
+            File.AppendAllLines(_transactionRecordDataFile, models.Select(o => "|" + string.Join('|', o.Id,
+                o.Time.ToString(TimeFormat), o.Amount, o.TransactionType, o.AssetName, o.AssetValue,
+                o.AssetsTotalValue, o.RefundLinkId, o.Remark, o.DeleteLinkId) + "|"));
 
             StageFile(_transactionRecordDataFile);
             StageFile(_assetsDataFile);
