@@ -153,6 +153,7 @@ namespace BookkeepingAssistant
             this.txtDate.Name = "txtDate";
             this.txtDate.Size = new System.Drawing.Size(159, 39);
             this.txtDate.TabIndex = 4;
+            this.txtDate.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtAmount_KeyPress);
             // 
             // btnTransfer
             // 
