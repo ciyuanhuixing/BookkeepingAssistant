@@ -286,7 +286,7 @@ namespace BookkeepingAssistant
 
                     new FormRefundRecord(refundRecords)
                     {
-                        Text = $"【退款记录】原交易记录 Id：{record.Id}，时间：{record.Time.ToString("yyyy-MM-dd HH")}，金额：{record.Amount}"
+                        Text = $"【退款记录】原交易记录 Id：{record.Id}，时间：{record.Time.ToString(DAL.TimeFormat)}，金额：{record.Amount}"
                     }.ShowDialog();
                 }
                 else
