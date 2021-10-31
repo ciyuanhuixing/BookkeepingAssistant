@@ -284,10 +284,7 @@ namespace BookkeepingAssistant
                     var totalRefundAmount = refundRecords.Sum(o => o.Amount);
                     btnRefund.Enabled = totalRefundAmount + record.Amount >= 0 ? false : true;
 
-                    new FormRefundRecord(refundRecords)
-                    {
-                        Text = $"【退款记录】原交易记录 Id：{record.Id}，日期：{record.Time.ToString(DAL.TimeFormat)}，金额：{record.Amount}"
-                    }.ShowDialog();
+                    new FormRefundRecord(record, refundRecords).ShowDialog();
                 }
                 else
                 {
