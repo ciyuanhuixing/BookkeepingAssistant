@@ -436,10 +436,7 @@ namespace BookkeepingAssistant
                 throw new Exception("金额不能等于0");
             }
 
-            if (_transactionRecords.Any())
-            {
-                tr.Id = _transactionRecords.Last().Id + 1;
-            }
+            tr.Id = GetTransactionRecordNewId();
             if (tr.Time == DateTime.MinValue)
             {
                 tr.Time = DateTime.Now;
@@ -465,6 +462,16 @@ namespace BookkeepingAssistant
             _transactionRecords.Add(tr);
             PossibleRollback(SaveTransactionRecord, tr);
             return message;
+        }
+
+        private int GetTransactionRecordNewId()
+        {
+            int id = 0;
+            if (_transactionRecords.Any())
+            {
+                id = _transactionRecords.Max(o => o.Id) + 1;
+            }
+            return id;
         }
 
         public string Loan(string fromAsset, string toAsset, decimal amount, TransferType transferType)
@@ -504,11 +511,7 @@ namespace BookkeepingAssistant
                     break;
             }
 
-            int id = 0;
-            if (_transactionRecords.Any())
-            {
-                id = _transactionRecords.Last().Id + 1;
-            }
+            int id = GetTransactionRecordNewId();
 
             TransactionRecordModel trFrom = new TransactionRecordModel();
             trFrom.Id = id;
