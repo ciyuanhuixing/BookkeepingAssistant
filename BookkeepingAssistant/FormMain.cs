@@ -60,7 +60,7 @@ namespace BookkeepingAssistant
             DataTable dt = new DataTable();
             dt.Columns.Add("Id", typeof(int));
             dt.Columns.Add("年-月-日");
-            dt.Columns.Add("金额", typeof(int));
+            dt.Columns.Add("金额", typeof(decimal));
             dt.Columns.Add("交易类型");
             dt.Columns.Add("资产");
             dt.Columns.Add("交易后该资产余额");
@@ -204,7 +204,7 @@ namespace BookkeepingAssistant
         private void dgvDetail_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
         {
             var row = dgvDetail.Rows[e.RowIndex];
-            if ((int)row.Cells["金额"].Value > 0)
+            if ((decimal)row.Cells["金额"].Value > 0)
             {
                 row.DefaultCellStyle.BackColor = Color.LightGreen;
             }
