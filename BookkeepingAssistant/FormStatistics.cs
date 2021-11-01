@@ -35,11 +35,11 @@ namespace BookkeepingAssistant
 
             DataTable dtMonth = new DataTable();
             dtMonth.Columns.Add($"{timeUnit}份");
-            dtMonth.Columns.Add($"{timeUnit}度总收入");
-            dtMonth.Columns.Add($"{timeUnit}度总支出");
-            dtMonth.Columns.Add($"{timeUnit}度盈余");
+            dtMonth.Columns.Add($"{timeUnit}度总收入", typeof(decimal));
+            dtMonth.Columns.Add($"{timeUnit}度总支出", typeof(decimal));
+            dtMonth.Columns.Add($"{timeUnit}度盈余", typeof(decimal));
 
-            var monthsData = _models.GroupBy(o => o.Time.ToString(isMonth ? "yyyy-MM" : "yyyy")).OrderByDescending(o => o).ToList();
+            var monthsData = _models.GroupBy(o => o.Time.ToString(isMonth ? "yyyy-MM" : "yyyy")).OrderByDescending(o => o.Key).ToList();
             foreach (var month in monthsData)
             {
                 var monthIn = month.Where(o => o.isIncome).ToList();
@@ -67,7 +67,7 @@ namespace BookkeepingAssistant
                         monthInTypesAmount.Add(columnName, inTypeAmount);
                         if (!dtMonth.Columns.Contains(columnName))
                         {
-                            dtMonth.Columns.Add(columnName);
+                            dtMonth.Columns.Add(columnName, typeof(decimal));
                         }
                     }
                 }
@@ -84,7 +84,7 @@ namespace BookkeepingAssistant
                         monthOutTypesAmount.Add(columnName, outTypeAmount);
                         if (!dtMonth.Columns.Contains(columnName))
                         {
-                            dtMonth.Columns.Add(columnName);
+                            dtMonth.Columns.Add(columnName, typeof(decimal));
                         }
                     }
                 }
@@ -94,9 +94,25 @@ namespace BookkeepingAssistant
                 row[$"{timeUnit}份"] = month.Key;
                 var inAmount = monthIn.Sum(o => o.Amount) - monthRefundAmount;
                 var outAmount = monthOut.Sum(o => o.Amount) + monthRefundAmount;
+                var profit = inAmount + outAmount;
+
+                //避免有时显示为「0.0」
+                if (inAmount == 0)
+                {
+                    inAmount = 0;
+                };
+                if (outAmount == 0)
+                {
+                    outAmount = 0;
+                }
+                if (profit == 0)
+                {
+                    profit = 0;
+                }
+
                 row[$"{timeUnit}度总收入"] = inAmount;
                 row[$"{timeUnit}度总支出"] = outAmount;
-                row[$"{timeUnit}度盈余"] = inAmount + outAmount;
+                row[$"{timeUnit}度盈余"] = profit;
                 foreach (var typeAndAmount in monthInTypesAmount)
                 {
                     row[typeAndAmount.Key] = typeAndAmount.Value;
