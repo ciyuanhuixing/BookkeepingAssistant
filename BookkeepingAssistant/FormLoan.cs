@@ -131,5 +131,14 @@ namespace BookkeepingAssistant
             DisplayAssets();
             comboBoxFromAssets.Focus();
         }
+
+        private void FormLoan_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                e.Handled = true;
+                Close();
+            }
+        }
     }
 }

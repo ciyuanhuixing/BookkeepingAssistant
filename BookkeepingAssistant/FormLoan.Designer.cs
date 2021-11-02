@@ -144,9 +144,11 @@ namespace BookkeepingAssistant
             this.Controls.Add(this.label3);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.comboBoxFromAssets);
+            this.KeyPreview = true;
             this.Name = "FormLoan";
             this.Text = "借款";
             this.Load += new System.EventHandler(this.FormLoan_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormLoan_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
