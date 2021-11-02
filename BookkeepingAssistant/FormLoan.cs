@@ -127,6 +127,9 @@ namespace BookkeepingAssistant
             txtLoanAmount.Clear();
             FormMessage.Show(new StringBuilder().AppendLine($"已新增{_transferType}记录，资产变动计算过程：")
                 .AppendLine(resultMessage).ToString());
+
+            DisplayAssets();
+            comboBoxFromAssets.Focus();
         }
     }
 }

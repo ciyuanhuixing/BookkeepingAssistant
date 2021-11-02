@@ -56,7 +56,7 @@ namespace BookkeepingAssistant
             this.btnOK.Location = new System.Drawing.Point(337, 378);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(112, 47);
-            this.btnOK.TabIndex = 12;
+            this.btnOK.TabIndex = 3;
             this.btnOK.Text = "确定";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
@@ -69,7 +69,7 @@ namespace BookkeepingAssistant
             this.comboBoxFromAssets.Location = new System.Drawing.Point(235, 41);
             this.comboBoxFromAssets.Name = "comboBoxFromAssets";
             this.comboBoxFromAssets.Size = new System.Drawing.Size(372, 39);
-            this.comboBoxFromAssets.TabIndex = 11;
+            this.comboBoxFromAssets.TabIndex = 0;
             // 
             // lblPayType
             // 
@@ -87,7 +87,7 @@ namespace BookkeepingAssistant
             this.txtLoanAmount.Location = new System.Drawing.Point(235, 145);
             this.txtLoanAmount.Name = "txtLoanAmount";
             this.txtLoanAmount.Size = new System.Drawing.Size(195, 38);
-            this.txtLoanAmount.TabIndex = 14;
+            this.txtLoanAmount.TabIndex = 1;
             // 
             // label2
             // 
@@ -117,7 +117,7 @@ namespace BookkeepingAssistant
             this.comboBoxToAssets.Location = new System.Drawing.Point(235, 270);
             this.comboBoxToAssets.Name = "comboBoxToAssets";
             this.comboBoxToAssets.Size = new System.Drawing.Size(372, 39);
-            this.comboBoxToAssets.TabIndex = 17;
+            this.comboBoxToAssets.TabIndex = 2;
             // 
             // lblTip
             // 
