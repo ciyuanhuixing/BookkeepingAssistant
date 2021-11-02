@@ -14,6 +14,8 @@ namespace BookkeepingAssistant
     public partial class FormMain : Form
     {
         private List<TransactionRecordModel> _records;
+        private List<string> _excludeTypes = new TransferType[] { TransferType.借款, TransferType.还款,
+                TransferType.资产间转账 }.Select(o => o.ToString()).ToList();
 
         public FormMain()
         {
@@ -204,7 +206,11 @@ namespace BookkeepingAssistant
         private void dgvDetail_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
         {
             var row = dgvDetail.Rows[e.RowIndex];
-            if ((decimal)row.Cells["金额"].Value > 0)
+            if (_excludeTypes.Contains(row.Cells["交易类型"].Value.ToString()))
+            {
+                row.DefaultCellStyle.BackColor = Color.LightGray;
+            }
+            else if ((decimal)row.Cells["金额"].Value > 0)
             {
                 row.DefaultCellStyle.BackColor = Color.LightGreen;
             }
@@ -269,9 +275,7 @@ namespace BookkeepingAssistant
 
             int id = (int)dgvDetail.SelectedRows[0].Cells["Id"].Value;
             var record = _records.Single(o => o.Id == id);
-            List<string> excludeTypes = new TransferType[] { TransferType.借款, TransferType.还款,
-                TransferType.资产间转账 }.Select(o => o.ToString()).ToList();
-            if (record.isIncome || excludeTypes.Contains(record.TransactionType))
+            if (record.isIncome || _excludeTypes.Contains(record.TransactionType))
             {
                 btnRefund.Enabled = false;
             }
