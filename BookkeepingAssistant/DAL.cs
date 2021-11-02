@@ -79,11 +79,11 @@ namespace BookkeepingAssistant
                 return null;
             }
             var allWorkFileGitPaths = paths.Select(o => GetGitRelativePath(o)).ToList();
-            var treeFilePaths = _repo.Head.Tip.Tree.Select(o => o.Path).ToList();
-            if (!treeFilePaths.All(o => allWorkFileGitPaths.Contains(o)))
-            {
-                throw new Exception("警告：Git 仓库已提交过非本程序提交的文件");
-            }
+            //var treeFilePaths = _repo.Head.Tip.Tree.Select(o => o.Path).ToList();
+            //if (!treeFilePaths.All(o => allWorkFileGitPaths.Contains(o)))
+            //{
+            //    throw new Exception("警告：Git 仓库已提交过非本程序提交的文件");
+            //}
             var commit = _repo.Head.TrackedBranch.Tip;
             if (_repo.Head.TrackingDetails.AheadBy > 0)
             {

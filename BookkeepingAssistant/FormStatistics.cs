@@ -44,21 +44,18 @@ namespace BookkeepingAssistant
             {
                 var monthIn = month.Where(o => o.isIncome).ToList();
                 var monthOut = month.Where(o => !o.isIncome).ToList();
-                var monthRefundAmount = monthIn.Where(o => !string.IsNullOrWhiteSpace(o.RefundLinkId)).Sum(o => o.Amount);
 
                 var monthInTypes = monthIn.GroupBy(o => o.TransactionType).ToList();
                 var monthOutTypes = monthOut.GroupBy(o => o.TransactionType).ToList();
                 Dictionary<string, decimal> monthInTypesAmount = new Dictionary<string, decimal>();
                 Dictionary<string, decimal> monthOutTypesAmount = new Dictionary<string, decimal>();
 
-                Dictionary<string, decimal> monthTypesRefundAmount = new Dictionary<string, decimal>();
                 foreach (var inType in monthInTypes)
                 {
                     var inTypeAmount = inType.Sum(o => o.Amount);
                     var typeRefundAmount = inType.Where(o => !string.IsNullOrWhiteSpace(o.RefundLinkId)).Sum(o => o.Amount);
                     if (typeRefundAmount > 0)
                     {
-                        monthTypesRefundAmount.Add(inType.Key, typeRefundAmount);
                         inTypeAmount -= typeRefundAmount;
                     }
                     if (inTypeAmount != 0)
@@ -74,10 +71,20 @@ namespace BookkeepingAssistant
                 foreach (var outType in monthOutTypes)
                 {
                     var outTypeAmount = outType.Sum(o => o.Amount);
-                    if (monthTypesRefundAmount.ContainsKey(outType.Key))
+                    var refundLinkModels = outType.Where(o => !string.IsNullOrWhiteSpace(o.RefundLinkId)).ToList();
+                    foreach (var rlm in refundLinkModels)
                     {
-                        outTypeAmount += monthTypesRefundAmount[outType.Key];
+                        var ids = rlm.RefundLinkId.Split(',');
+                        foreach (var id in ids)
+                        {
+                            if (!string.IsNullOrWhiteSpace(id))
+                            {
+                                var refund = _models.Single(o => o.Id.ToString() == id);
+                                outTypeAmount += refund.Amount;
+                            }
+                        }
                     }
+
                     if (outTypeAmount != 0)
                     {
                         string columnName = $"【{outType.Key}】支出";
@@ -92,8 +99,8 @@ namespace BookkeepingAssistant
                 var row = dtMonth.NewRow();
                 dtMonth.Rows.Add(row);
                 row[$"{timeUnit}份"] = month.Key;
-                var inAmount = monthIn.Sum(o => o.Amount) - monthRefundAmount;
-                var outAmount = monthOut.Sum(o => o.Amount) + monthRefundAmount;
+                var inAmount = monthInTypesAmount.Sum(o => o.Value);
+                var outAmount = monthOutTypesAmount.Sum(o => o.Value);
                 var profit = inAmount + outAmount;
 
                 //避免有时显示为「0.0」
