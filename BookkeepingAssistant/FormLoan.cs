@@ -13,11 +13,13 @@ namespace BookkeepingAssistant
     {
         private TransferType _transferType;
         private string _transferTypeShortName;
+        private Action _refreshParent;
 
-        public FormLoan(TransferType transferType)
+        public FormLoan(TransferType transferType, Action refreshParent)
         {
             InitializeComponent();
             _transferType = transferType;
+            _refreshParent = refreshParent;
             switch (_transferType)
             {
                 case TransferType.资产间转账:
@@ -128,6 +130,10 @@ namespace BookkeepingAssistant
             FormMessage.Show(new StringBuilder().AppendLine($"已新增{_transferType}记录，资产变动计算过程：")
                 .AppendLine(resultMessage).ToString());
 
+            if (_refreshParent != null)
+            {
+                _refreshParent();
+            }
             DisplayAssets();
             comboBoxFromAssets.Focus();
         }

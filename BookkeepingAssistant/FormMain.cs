@@ -35,11 +35,21 @@ namespace BookkeepingAssistant
             }
 
             _records = DAL.Singleton.GetTransactionRecords();
-            CleanAndFocusTxtAmount(_records.Any() && _records.First().isIncome);
-            txtAmount_TextChanged(null, null);
 
             RefreshAssetsControl();
             RefreshTransactionTypesControl();
+            var first = _records.FirstOrDefault(x => !_excludeTypes.Contains(x.TransactionType));
+            if (first != null)
+            {
+                comboBoxAssets.SelectedValue = first.AssetName;
+                if (DAL.Singleton.GetTransactionTypes().Contains(first.TransactionType))
+                {
+                    comboBoxTransactionTypes.SelectedItem = first.TransactionType;
+                }
+            }
+
+            CleanAndFocusTxtAmount(first != null && first.isIncome);
+            txtAmount_TextChanged(null, null);
             RefreshDetailView(_records);
         }
 
@@ -167,11 +177,6 @@ namespace BookkeepingAssistant
             comboBoxAssets.DisplayMember = "Value";
             comboBoxAssets.ValueMember = "Key";
             comboBoxAssets.DataSource = bs;
-            if (_records.Any())
-            {
-                var r = _records.First();
-                comboBoxAssets.SelectedValue = r.AssetName;
-            }
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("【所有资产余额】");
@@ -193,14 +198,6 @@ namespace BookkeepingAssistant
                 return;
             }
             comboBoxTransactionTypes.DataSource = types;
-            if (_records.Any())
-            {
-                var r = _records.First();
-                if (types.Contains(r.TransactionType))
-                {
-                    comboBoxTransactionTypes.SelectedItem = r.TransactionType;
-                }
-            }
         }
 
         private void dgvDetail_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
@@ -392,20 +389,17 @@ namespace BookkeepingAssistant
 
         private void btnLoan_Click(object sender, EventArgs e)
         {
-            new FormLoan(TransferType.借款).ShowDialog();
-            RefreshTransactionRecordsView();
+            new FormLoan(TransferType.借款, RefreshTransactionRecordsView).ShowDialog();
         }
 
         private void btnRepay_Click(object sender, EventArgs e)
         {
-            new FormLoan(TransferType.还款).ShowDialog();
-            RefreshTransactionRecordsView();
+            new FormLoan(TransferType.还款, RefreshTransactionRecordsView).ShowDialog();
         }
 
         private void btnTransfer_Click(object sender, EventArgs e)
         {
-            new FormLoan(TransferType.资产间转账).ShowDialog();
-            RefreshTransactionRecordsView();
+            new FormLoan(TransferType.资产间转账, RefreshTransactionRecordsView).ShowDialog();
         }
     }
 }
