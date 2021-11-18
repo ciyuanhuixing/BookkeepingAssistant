@@ -14,6 +14,8 @@ namespace BookkeepingAssistant
     public partial class FormMain : Form
     {
         private List<TransactionRecordModel> _records;
+        private List<string> _excludeTypes = new TransferType[] { TransferType.借款, TransferType.还款,
+                TransferType.资产间转账 }.Select(o => o.ToString()).ToList();
 
         public FormMain()
         {
@@ -33,11 +35,21 @@ namespace BookkeepingAssistant
             }
 
             _records = DAL.Singleton.GetTransactionRecords();
-            CleanAndFocusTxtAmount(_records.Any() && _records.First().isIncome);
-            txtAmount_TextChanged(null, null);
 
             RefreshAssetsControl();
             RefreshTransactionTypesControl();
+            var first = _records.FirstOrDefault(x => !_excludeTypes.Contains(x.TransactionType));
+            if (first != null)
+            {
+                comboBoxAssets.SelectedValue = first.AssetName;
+                if (DAL.Singleton.GetTransactionTypes().Contains(first.TransactionType))
+                {
+                    comboBoxTransactionTypes.SelectedItem = first.TransactionType;
+                }
+            }
+
+            CleanAndFocusTxtAmount(first != null && first.isIncome);
+            txtAmount_TextChanged(null, null);
             RefreshDetailView(_records);
         }
 
@@ -165,11 +177,6 @@ namespace BookkeepingAssistant
             comboBoxAssets.DisplayMember = "Value";
             comboBoxAssets.ValueMember = "Key";
             comboBoxAssets.DataSource = bs;
-            if (_records.Any())
-            {
-                var r = _records.First();
-                comboBoxAssets.SelectedValue = r.AssetName;
-            }
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("【所有资产余额】");
@@ -191,20 +198,16 @@ namespace BookkeepingAssistant
                 return;
             }
             comboBoxTransactionTypes.DataSource = types;
-            if (_records.Any())
-            {
-                var r = _records.First();
-                if (types.Contains(r.TransactionType))
-                {
-                    comboBoxTransactionTypes.SelectedItem = r.TransactionType;
-                }
-            }
         }
 
         private void dgvDetail_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
         {
             var row = dgvDetail.Rows[e.RowIndex];
-            if ((decimal)row.Cells["金额"].Value > 0)
+            if (_excludeTypes.Contains(row.Cells["交易类型"].Value.ToString()))
+            {
+                row.DefaultCellStyle.BackColor = Color.LightGray;
+            }
+            else if ((decimal)row.Cells["金额"].Value > 0)
             {
                 row.DefaultCellStyle.BackColor = Color.LightGreen;
             }
@@ -269,9 +272,7 @@ namespace BookkeepingAssistant
 
             int id = (int)dgvDetail.SelectedRows[0].Cells["Id"].Value;
             var record = _records.Single(o => o.Id == id);
-            List<string> excludeTypes = new TransferType[] { TransferType.借款, TransferType.还款,
-                TransferType.资产间转账 }.Select(o => o.ToString()).ToList();
-            if (record.isIncome || excludeTypes.Contains(record.TransactionType))
+            if (record.isIncome || _excludeTypes.Contains(record.TransactionType))
             {
                 btnRefund.Enabled = false;
             }
@@ -388,20 +389,17 @@ namespace BookkeepingAssistant
 
         private void btnLoan_Click(object sender, EventArgs e)
         {
-            new FormLoan(TransferType.借款).ShowDialog();
-            RefreshTransactionRecordsView();
+            new FormLoan(TransferType.借款, RefreshTransactionRecordsView).ShowDialog();
         }
 
         private void btnRepay_Click(object sender, EventArgs e)
         {
-            new FormLoan(TransferType.还款).ShowDialog();
-            RefreshTransactionRecordsView();
+            new FormLoan(TransferType.还款, RefreshTransactionRecordsView).ShowDialog();
         }
 
         private void btnTransfer_Click(object sender, EventArgs e)
         {
-            new FormLoan(TransferType.资产间转账).ShowDialog();
-            RefreshTransactionRecordsView();
+            new FormLoan(TransferType.资产间转账, RefreshTransactionRecordsView).ShowDialog();
         }
     }
 }
