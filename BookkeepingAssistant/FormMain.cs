@@ -172,11 +172,23 @@ namespace BookkeepingAssistant
                 comboBoxAssets.DataSource = null;
                 return;
             }
+
+            string selectedValue = null;
+            if (comboBoxAssets.SelectedValue != null)
+            {
+                selectedValue = (string)comboBoxAssets.SelectedValue;
+            }
+
             BindingSource bs = new BindingSource();
             bs.DataSource = assets;
             comboBoxAssets.DisplayMember = "Value";
             comboBoxAssets.ValueMember = "Key";
             comboBoxAssets.DataSource = bs;
+
+            if (selectedValue != null && assets.ContainsKey(selectedValue))
+            {
+                comboBoxAssets.SelectedValue = selectedValue;
+            }
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("【所有资产余额】");
@@ -220,6 +232,7 @@ namespace BookkeepingAssistant
                 FormMessage.Show("请先选中一行记录。");
                 return;
             }
+
             int id = (int)dgvDetail.SelectedRows[0].Cells["Id"].Value;
             var record = _records.Single(o => o.Id == id);
             if (record.isIncome)
@@ -227,6 +240,12 @@ namespace BookkeepingAssistant
                 FormMessage.Show("收入不可退款。");
                 return;
             }
+            if (!DAL.Singleton.GetAssets().ContainsKey(record.AssetName))
+            {
+                FormMessage.Show($"资产「{record.AssetName}」不存在，无法退款。");
+                return;
+            }
+
             var linkIds = record.RefundLinkId.Split(',').Where(o => !string.IsNullOrWhiteSpace(o)).ToList();
             var totalRefundAmount = _records.Where(o => linkIds.Contains(o.Id.ToString())).Sum(o => o.Amount);
             if (totalRefundAmount + record.Amount >= 0)
