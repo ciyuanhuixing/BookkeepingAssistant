@@ -172,11 +172,23 @@ namespace BookkeepingAssistant
                 comboBoxAssets.DataSource = null;
                 return;
             }
+
+            string selectedValue = null;
+            if (comboBoxAssets.SelectedValue != null)
+            {
+                selectedValue = (string)comboBoxAssets.SelectedValue;
+            }
+
             BindingSource bs = new BindingSource();
             bs.DataSource = assets;
             comboBoxAssets.DisplayMember = "Value";
             comboBoxAssets.ValueMember = "Key";
             comboBoxAssets.DataSource = bs;
+
+            if (selectedValue != null && assets.ContainsKey(selectedValue))
+            {
+                comboBoxAssets.SelectedValue = selectedValue;
+            }
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("【所有资产余额】");
