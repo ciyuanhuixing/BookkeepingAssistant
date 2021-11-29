@@ -38,7 +38,7 @@ namespace BookkeepingAssistant
 
             RefreshAssetsControl();
             RefreshTransactionTypesControl();
-            var first = _records.FirstOrDefault(x => !_excludeTypes.Contains(x.TransactionType));
+            var first = _records.FirstOrDefault(x => !_excludeTypes.Contains(x.TransactionType) && string.IsNullOrWhiteSpace(x.RefundLinkId));
             if (first != null)
             {
                 comboBoxAssets.SelectedValue = first.AssetName;
