@@ -387,9 +387,10 @@ namespace BookkeepingAssistant
 
         private void FormMain_KeyDown(object sender, KeyEventArgs e)
         {
+            e.Handled = true;
+
             if (e.KeyCode == Keys.F2 || (e.Control && e.KeyCode == Keys.Enter))
             {
-                e.Handled = true;
                 txtAmount.Focus();
             }
             else if (e.KeyCode == Keys.F8)
@@ -403,6 +404,26 @@ namespace BookkeepingAssistant
             else if (e.KeyCode == Keys.Escape)
             {
                 Close();
+            }
+            else if (e.KeyCode == Keys.T)
+            {
+                btnRefund.PerformClick();
+            }
+            else if (e.KeyCode == Keys.Z)
+            {
+                btnTransfer.PerformClick();
+            }
+            else if (e.KeyCode == Keys.J)
+            {
+                btnLoan.PerformClick();
+            }
+            else if (e.KeyCode == Keys.H)
+            {
+                btnRepay.PerformClick();
+            }
+            else
+            {
+                e.Handled = false;
             }
         }
 

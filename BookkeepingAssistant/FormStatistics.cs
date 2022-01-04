@@ -35,8 +35,8 @@ namespace BookkeepingAssistant
 
             DataTable dtMonth = new DataTable();
             dtMonth.Columns.Add($"{timeUnit}份");
-            dtMonth.Columns.Add($"{timeUnit}度总收入", typeof(decimal));
-            dtMonth.Columns.Add($"{timeUnit}度总支出", typeof(decimal));
+            dtMonth.Columns.Add($"{timeUnit}度总收", typeof(decimal));
+            dtMonth.Columns.Add($"{timeUnit}度总支", typeof(decimal));
             dtMonth.Columns.Add($"{timeUnit}度盈余", typeof(decimal));
 
             var monthsData = _models.GroupBy(o => o.Time.ToString(isMonth ? "yyyy-MM" : "yyyy")).OrderByDescending(o => o.Key).ToList();
@@ -60,7 +60,7 @@ namespace BookkeepingAssistant
                     }
                     if (inTypeAmount != 0)
                     {
-                        string columnName = $"【{inType.Key}】收入";
+                        string columnName = $"{inType.Key}-收";
                         monthInTypesAmount.Add(columnName, inTypeAmount);
                         if (!dtMonth.Columns.Contains(columnName))
                         {
@@ -87,7 +87,7 @@ namespace BookkeepingAssistant
 
                     if (outTypeAmount != 0)
                     {
-                        string columnName = $"【{outType.Key}】支出";
+                        string columnName = $"{outType.Key}-支";
                         monthOutTypesAmount.Add(columnName, outTypeAmount);
                         if (!dtMonth.Columns.Contains(columnName))
                         {
@@ -117,8 +117,8 @@ namespace BookkeepingAssistant
                     profit = 0;
                 }
 
-                row[$"{timeUnit}度总收入"] = inAmount;
-                row[$"{timeUnit}度总支出"] = outAmount;
+                row[$"{timeUnit}度总收"] = inAmount;
+                row[$"{timeUnit}度总支"] = outAmount;
                 row[$"{timeUnit}度盈余"] = profit;
                 foreach (var typeAndAmount in monthInTypesAmount)
                 {
