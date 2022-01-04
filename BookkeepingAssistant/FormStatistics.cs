@@ -31,24 +31,20 @@ namespace BookkeepingAssistant
 
         private DataTable GetStatisticsTable(bool isMonth)
         {
-            string timeUnit = isMonth ? "月" : "年";
 
-            DataTable dtMonth = new DataTable();
-            dtMonth.Columns.Add($"{timeUnit}份");
-            dtMonth.Columns.Add($"{timeUnit}度总收", typeof(decimal));
-            dtMonth.Columns.Add($"{timeUnit}度总支", typeof(decimal));
-            dtMonth.Columns.Add($"{timeUnit}度盈余", typeof(decimal));
-
+            List<MonthData> monthDatas = new List<MonthData>();
             var monthsData = _models.GroupBy(o => o.Time.ToString(isMonth ? "yyyy-MM" : "yyyy")).OrderByDescending(o => o.Key).ToList();
             foreach (var month in monthsData)
             {
+                MonthData monthData = new MonthData();
+                monthDatas.Add(monthData);
+                monthData.Name = month.Key;
+
                 var monthIn = month.Where(o => o.isIncome).ToList();
                 var monthOut = month.Where(o => !o.isIncome).ToList();
 
                 var monthInTypes = monthIn.GroupBy(o => o.TransactionType).ToList();
                 var monthOutTypes = monthOut.GroupBy(o => o.TransactionType).ToList();
-                Dictionary<string, decimal> monthInTypesAmount = new Dictionary<string, decimal>();
-                Dictionary<string, decimal> monthOutTypesAmount = new Dictionary<string, decimal>();
 
                 foreach (var inType in monthInTypes)
                 {
@@ -61,11 +57,7 @@ namespace BookkeepingAssistant
                     if (inTypeAmount != 0)
                     {
                         string columnName = $"{inType.Key}-收";
-                        monthInTypesAmount.Add(columnName, inTypeAmount);
-                        if (!dtMonth.Columns.Contains(columnName))
-                        {
-                            dtMonth.Columns.Add(columnName, typeof(decimal));
-                        }
+                        monthData.InTypesAmount.Add(columnName, inTypeAmount);
                     }
                 }
                 foreach (var outType in monthOutTypes)
@@ -88,19 +80,47 @@ namespace BookkeepingAssistant
                     if (outTypeAmount != 0)
                     {
                         string columnName = $"{outType.Key}-支";
-                        monthOutTypesAmount.Add(columnName, outTypeAmount);
-                        if (!dtMonth.Columns.Contains(columnName))
-                        {
-                            dtMonth.Columns.Add(columnName, typeof(decimal));
-                        }
+                        monthData.OutTypesAmount.Add(columnName, outTypeAmount);
                     }
                 }
+            }
 
+            string timeUnit = isMonth ? "月" : "年";
+
+            DataTable dtMonth = new DataTable();
+            dtMonth.Columns.Add($"{timeUnit}份");
+            dtMonth.Columns.Add($"{timeUnit}度总收", typeof(decimal));
+            dtMonth.Columns.Add($"{timeUnit}度总支", typeof(decimal));
+            dtMonth.Columns.Add($"{timeUnit}度盈余", typeof(decimal));
+
+            foreach (var md in monthDatas)
+            {
+                foreach (var typeAndAmount in md.InTypesAmount.OrderByDescending(o=>o.Value))
+                {
+                    if (!dtMonth.Columns.Contains(typeAndAmount.Key))
+                    {
+                        dtMonth.Columns.Add(typeAndAmount.Key, typeof(decimal));
+                    }
+                }
+            }
+            foreach (var md in monthDatas)
+            {
+                foreach (var typeAndAmount in md.OutTypesAmount.OrderBy(o => o.Value))
+                {
+                    if (!dtMonth.Columns.Contains(typeAndAmount.Key))
+                    {
+                        dtMonth.Columns.Add(typeAndAmount.Key, typeof(decimal));
+                    }
+                }
+            }
+
+            foreach (var md in monthDatas)
+            {
                 var row = dtMonth.NewRow();
                 dtMonth.Rows.Add(row);
-                row[$"{timeUnit}份"] = month.Key;
-                var inAmount = monthInTypesAmount.Sum(o => o.Value);
-                var outAmount = monthOutTypesAmount.Sum(o => o.Value);
+                row[$"{timeUnit}份"] = md.Name;
+                var inAmount = md.InTypesAmount.Sum(o => o.Value);
+                var outAmount = md.OutTypesAmount.Sum(o => o.Value);
                 var profit = inAmount + outAmount;
 
                 //避免有时显示为「0.0」
@@ -120,11 +140,11 @@ namespace BookkeepingAssistant
                 row[$"{timeUnit}度总收"] = inAmount;
                 row[$"{timeUnit}度总支"] = outAmount;
                 row[$"{timeUnit}度盈余"] = profit;
-                foreach (var typeAndAmount in monthInTypesAmount)
+                foreach (var typeAndAmount in md.InTypesAmount)
                 {
                     row[typeAndAmount.Key] = typeAndAmount.Value;
                 }
-                foreach (var typeAndAmount in monthOutTypesAmount)
+                foreach (var typeAndAmount in md.OutTypesAmount)
                 {
                     row[typeAndAmount.Key] = typeAndAmount.Value;
                 }
@@ -140,5 +160,12 @@ namespace BookkeepingAssistant
                 Close();
             }
         }
+    }
+
+    public class MonthData
+    {
+        public string Name { get; set; }
+        public Dictionary<string, decimal> InTypesAmount { get; set; } = new Dictionary<string, decimal>();
+        public Dictionary<string, decimal> OutTypesAmount { get; set; } = new Dictionary<string, decimal>();
     }
 }
