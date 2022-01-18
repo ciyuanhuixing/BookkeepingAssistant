@@ -197,6 +197,8 @@ namespace BookkeepingAssistant
                 sb.AppendLine(item.Value);
             }
             sb.AppendLine();
+            sb.AppendLine("正资产：" + DAL.Singleton.GetAssets().Values.Where(o => o > 0).Sum());
+            sb.AppendLine("负资产：" + DAL.Singleton.GetAssets().Values.Where(o => o < 0).Sum());
             sb.AppendLine("总余额：" + DAL.Singleton.GetAssets().Values.Sum());
             txtAssets.Text = sb.ToString();
         }
